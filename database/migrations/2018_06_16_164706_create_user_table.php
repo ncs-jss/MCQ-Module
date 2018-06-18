@@ -16,7 +16,7 @@ class CreateUserTable extends Migration
         Schema::create('user', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 100);
-            $table->string('admno', 7);
+            $table->string('admno', 8);
             $table->integer('rollno');
             $table->integer('type');
         });

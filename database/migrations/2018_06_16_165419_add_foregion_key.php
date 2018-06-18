@@ -39,9 +39,9 @@ class AddForegionKey extends Migration
 
         Schema::table('response', function (Blueprint $table) {
             $table->index('userid');
-            $table->index('quesid');
+            $table->index('queid');
             $table->foreign('userid')->references('id')->on('user')->onDelete('cascade');
-            $table->foreign('quesid')->references('id')->on('queans')->onDelete('cascade');
+            $table->foreign('queid')->references('id')->on('queans')->onDelete('cascade');
         });
         
     }
@@ -79,9 +79,9 @@ class AddForegionKey extends Migration
 
         Schema::table('response', function (Blueprint $table) {
             $table->dropForeign('userid');
-            $table->dropForeign('quesid');
+            $table->dropForeign('queid');
             $table->dropIndex('userid');
-            $table->dropIndex('quesid');
+            $table->dropIndex('queid');
         });
         
     }

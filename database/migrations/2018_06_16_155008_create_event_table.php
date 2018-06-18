@@ -18,7 +18,7 @@ class CreateEventTable extends Migration
             $table->string('name', 100);
             $table->text('description');
             $table->integer('subid');
-            $table->string('img', 50);
+            $table->string('img', 50)->nullable();
             $table->dateTime('start');
             $table->dateTime('end');
             $table->integer('creator');

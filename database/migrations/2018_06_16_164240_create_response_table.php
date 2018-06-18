@@ -15,8 +15,8 @@ class CreateResponseTable extends Migration
     {
         Schema::create('response', function (Blueprint $table) {
             $table->integer('userid');
-            $table->integer('quesid');
-            $table->integer('ans');
+            $table->integer('queid');
+            $table->string('ans', 100);
         });
     }
 
