@@ -17,7 +17,7 @@ class CreateQueansTable extends Migration
             $table->increments('id');
             $table->text('que');
             $table->string('img', 50)->nullable();
-            $table->integer('eventid');
+            $table->integer('eventid')->unsigned();
         });
     }
 
