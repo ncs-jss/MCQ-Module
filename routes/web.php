@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/tp', function () {
-    return view('home');
+Route::get('/', function () {
+    return view('pages.home');
 });
