@@ -14,8 +14,8 @@ class CreateRequestTable extends Migration
     public function up()
     {
         Schema::create('request', function (Blueprint $table) {
-            $table->integer('userid');
-            $table->integer('eventid');
+            $table->integer('userid')->unsigned();
+            $table->integer('eventid')->unsigned();
             $table->boolean('status');
         });
     }
