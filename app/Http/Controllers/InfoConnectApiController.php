@@ -54,19 +54,36 @@ class InfoConnectApiController extends Controller
 	    if (array_key_exists('username',$arr))
 	    {
 
-	    	$user = User::where('admno', '=', $arr['username'])->first();
+	    	$user = User::select('id')->where('admno', '=', $arr['username'])->first();
 	    	if (empty($user))
 	    	{
-	    		//
-	    	}
-	    	if(Auth::loginUsingId($user->id))
-	    	{
+	    		$user = new User;
+	    		$user->name = $arr['first_name'];
+	    		$user->admno = $arr['username'];
 	    		if($arr['group']=="student")
-	    			return redirect('student');
+	    			$user->type = 0; // Student
 	    		else if($arr['group']=="others")
-	    			return redirect('society');
+	    			$user->type = 1; // Society
 	    		else
-	    			return redirect('teacher');
+	    			$user->type = 2; // Teacher
+	    		$user->save();
+	    	}
+
+	    	Auth::loginUsingId($user->id);
+	    	if($arr['group']=="student")
+	    	{
+	    		session(['UserType' => 'student']);
+	    		return redirect('student');
+	    	}
+	    	else if($arr['group']=="others")
+	    	{
+	    		session(['UserType' => 'society']);
+	    		return redirect('society');
+	    	}
+	    	else
+	    	{
+	    		session(['UserType' => 'teacher']);
+	    		return redirect('teacher');
 	    	}
 	    }
 	    else

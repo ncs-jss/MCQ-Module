@@ -6,7 +6,10 @@
 	background-size: cover;
 	background-position: center;
 }
-.form-container{margin-top: 10rem; background-color: #C0C0C0;}
+.form-container{
+	margin-top: 8rem;
+	background-color: #C0C0C0;
+}
 .footer{
 	position: fixed;
     left: 0;
