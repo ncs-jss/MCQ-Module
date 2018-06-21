@@ -17,11 +17,11 @@ class CreateEventTable extends Migration
             $table->increments('id');
             $table->string('name', 100);
             $table->text('description');
-            $table->integer('subid');
+            $table->integer('subid')->unsigned();
             $table->string('img', 50)->nullable();
             $table->dateTime('start');
             $table->dateTime('end');
-            $table->integer('creator');
+            $table->integer('creator')->unsigned();
             $table->integer('duration');
             $table->integer('correctmark');
             $table->integer('wrongmark');
