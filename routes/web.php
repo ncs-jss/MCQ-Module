@@ -16,7 +16,7 @@ Route::group(['middleware' => ['web']], function ()
 	Route::get('/', function ()
 	{
     	return view('pages.home');
-	})->name('login');
+	})->middleware('RedirectIfAuthenticated')->name('login');
 
 	Route::post('login', 'InfoConnectApiController@login')->name('LoginUrl');
 
@@ -25,33 +25,29 @@ Route::group(['middleware' => ['web']], function ()
 	Route::group(['middleware' => ['auth']], function ()
 	{
 
-		Route::group(['prefix' => '/student'], function()
+		Route::group(['prefix' => '/student', 'middleware' => 'UserType:student'], function()
 		{
 			Route::get('/', function ()
 			{
-		    	//return view('home');
-		    	dd("Student Dashboard");
+		    	return view('student.home');
 			});
 		});
 
-		Route::group(['prefix' => '/teacher'], function()
+		Route::group(['prefix' => '/teacher', 'middleware' => 'UserType:teacher'], function()
 		{
 			Route::get('/', function ()
 			{
-		    	//return view('home');
-		    	dd("Teacher Dashboard");
+		    	return view('teacher.home');
 			});
 		});
 
-		Route::group(['prefix' => '/society'], function()
+		Route::group(['prefix' => '/society', 'middleware' => 'UserType:society'], function()
 		{
 			Route::get('/', function ()
 			{
-		    	//return view('home');
-		    	dd("Society Dashboard");
+		    	return view('society.home');
 			});
 		});
 
 	});
 });
-
