@@ -3,15 +3,15 @@
 <head>
     @include('includes.head')
 </head>
-<body>
+<body class="bg">
     <div class="container">
         <header class="row">
-            @include('includes.navbar')
+            @include('includes.header')
         </header>
         <div id="main" class="row">
                 @yield('content')
         </div>
-        <footer class="row">
+        <footer class="row footer">
             @include('includes.footer')
         </footer>
     </div>

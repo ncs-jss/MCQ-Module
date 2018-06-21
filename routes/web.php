@@ -15,7 +15,7 @@ Route::group(['middleware' => ['web']], function ()
 {
 	Route::get('/', function ()
 	{
-    	return view('home');
+    	return view('pages.home');
 	})->name('login');
 
 	Route::post('login', 'InfoConnectApiController@login')->name('LoginUrl');
@@ -54,3 +54,4 @@ Route::group(['middleware' => ['web']], function ()
 
 	});
 });
+
