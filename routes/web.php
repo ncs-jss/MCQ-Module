@@ -29,8 +29,7 @@ Route::group(['middleware' => ['web']], function ()
 		{
 			Route::get('/', function ()
 			{
-		    	//return view('home');
-		    	dd("Student Dashboard");
+		    	return view('student.home');
 			});
 		});
 
@@ -38,8 +37,7 @@ Route::group(['middleware' => ['web']], function ()
 		{
 			Route::get('/', function ()
 			{
-		    	//return view('home');
-		    	dd("Teacher Dashboard");
+		    	return view('teacher.home');
 			});
 		});
 
@@ -47,8 +45,7 @@ Route::group(['middleware' => ['web']], function ()
 		{
 			Route::get('/', function ()
 			{
-		    	// return view('student/home');
-		    	dd("Society Dashboard");
+		    	return view('society.home');
 			});
 		});
 

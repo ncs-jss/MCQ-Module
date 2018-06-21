@@ -1,5 +1,4 @@
-<div class="container">
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark shadow">
 			<!-- Toggler/collapsibe Button -->
   	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
@@ -21,4 +20,3 @@
   		</ul>
 	</div>
 </nav>
-</div>
