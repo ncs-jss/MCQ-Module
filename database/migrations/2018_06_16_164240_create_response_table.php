@@ -14,8 +14,8 @@ class CreateResponseTable extends Migration
     public function up()
     {
         Schema::create('response', function (Blueprint $table) {
-            $table->integer('userid');
-            $table->integer('queid');
+            $table->integer('userid')->unsigned();
+            $table->integer('queid')->unsigned();
             $table->string('ans', 100);
         });
     }
