@@ -45,6 +45,11 @@ Route::group(['middleware' => ['web']], function ()
 			{
 		    	return view('teacher.home');
 			});
+			Route::get('/event/create', function ()
+			{
+		    	return view('teacher.create-event');
+			})->name('teacherCreateEvent');
+			Route::post('/event/ques', 'EventController@create');
 		});
 
 		Route::group(['prefix' => '/society', 'middleware' => 'UserType:society'], function()
