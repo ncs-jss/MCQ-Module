@@ -22,7 +22,7 @@ class InfoConnectApiController extends Controller
 	    );
 	    
 	    //API URL
-	    $url='http://yashasingh.tech:8085/api/profiles/login/';
+	    $url=config('infoConnectApi.url');
 	    
 	    // init the resource
 	    $ch = curl_init();

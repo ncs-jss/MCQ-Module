@@ -13,14 +13,14 @@ body {
 @section('content')
 <div class="container">
 	<div class="card">
-		<div class="card-header  text-white bg-purple shadow">
+		<div class="card-header text-white bg-purple shadow">
 			<h2>Quiz</h2>
 		</div>
 		<div class="card-body">
 			@for ($i = 0; $i < 3; $i++)
     			<div class="card-deck">
 				@for ($j = 0; $j < 3; $j++)
-  					<div class="card shadow">
+  					<div class="card animated pulse shadow">
     					<div class="card-body">
       						<h5 class="card-title">MCQ title</h5>
       						<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>

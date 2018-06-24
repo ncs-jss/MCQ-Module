@@ -13,7 +13,7 @@ body {
 @section('content')
 <div class="container">
 	<div class="card">
-		<div class="card-header  text-white bg-purple shadow">
+		<div class="card-header text-white bg-purple shadow">
 			<h2>Quiz</h2>
 		</div>
 		<div class="card-body">
