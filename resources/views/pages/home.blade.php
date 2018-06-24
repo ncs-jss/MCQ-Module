@@ -7,7 +7,7 @@
     <div class="row">
 		<div class="col-md-4 col-sm-4 col-xs-12"></div>
 		<div class="col-md-4 col-sm-4 col-xs-12">
-			<form action="{{ route('LoginUrl') }}" class="form-control form-control-file form-container" method="post" >
+			<form action="{{ route('LoginUrl') }}" class="animated zoomIn form-control form-control-file form-container" method="post" >
 				<center>
 					<h1>MCQ Module</h1>
 					@if (session('msg'))

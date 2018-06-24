@@ -8,8 +8,6 @@
     <main role="main">
         @yield('content')
     </main>
-    <footer class=" footer">
-        @include('includes.footer')
-    </footer>
+    @include('includes.footer')
 </body>
 </html>

@@ -20,7 +20,7 @@ Route::group(['middleware' => ['web']], function ()
 
 	Route::post('login', 'InfoConnectApiController@login')->name('LoginUrl');
 
-	Route::get('/logout', 'InfoConnectApiController@logout')->name('LogoutinUrl');
+	Route::get('/logout', 'InfoConnectApiController@logout')->name('logout');
 
 	Route::group(['middleware' => ['auth']], function ()
 	{
@@ -29,7 +29,13 @@ Route::group(['middleware' => ['web']], function ()
 		{
 			Route::get('/', function ()
 			{
-		    	return view('student.home');
+				$events = App\Event::paginate(9);
+		    	return view('student.home', ['events' => $events]);
+			});
+			Route::get('/event/{id}', function ()
+			{
+				dd("This is event page");
+		    	// return view('student.event',);
 			});
 		});
 
