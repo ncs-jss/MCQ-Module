@@ -1,6 +1,6 @@
 <footer style="position: fixed;bottom: 0;background-color: #C0C0C0;color: white;width: 100%;text-align: center;" class=" bg-dark">
 	<div style="padding:5px">
-		&copy; Copyright <?php echo date("Y"); ?> <a href="http://hackncs.com" target="_blank">Nibble Computer Society</a>
+		&copy; Copyright <?php echo date("Y"); ?> <a href="http://hackncs.com" target="_blank"><strong>Nibble Computer Society</strong></a>
 	</div>
 </footer>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

@@ -18,7 +18,7 @@ class CreateEventTable extends Migration
             $table->string('name', 100);
             $table->text('description');
             $table->integer('subid')->unsigned();
-            $table->string('img', 50)->nullable();
+            $table->string('img', 50)->default('img/EventIcon.png');
             $table->dateTime('start');
             $table->dateTime('end');
             $table->integer('creator')->unsigned();
@@ -26,6 +26,7 @@ class CreateEventTable extends Migration
             $table->integer('correctmark');
             $table->integer('wrongmark');
             $table->integer('quedisplay');
+            $table->boolean('isactive');
         });
     }
 

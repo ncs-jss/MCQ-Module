@@ -69,7 +69,7 @@ class InfoConnectApiController extends Controller
 	    		$user->save();
 	    	}
 
-	    	Auth::loginUsingId($user->id);
+	    	Auth::loginUsingId($user->id, ($request->has('remember')) ? true : false);
 	    	if($arr['group']=="student")
 	    	{
 	    		session(['UserType' => 'student']);

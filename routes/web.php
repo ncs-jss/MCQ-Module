@@ -29,13 +29,16 @@ Route::group(['middleware' => ['web']], function ()
 		{
 			Route::get('/', function ()
 			{
-				$events = App\Event::paginate(9);
+				$events = App\Event::where('isactive', '1')->orderBy('id', 'desc')->paginate(9);
 		    	return view('student.home', ['events' => $events]);
 			});
-			Route::get('/event/{id}', function ()
+			Route::get('/event/{id}', function ($id)
 			{
-				dd("This is event page");
-		    	// return view('student.event',);
+				$event = App\Event::where('id', $id)->first();
+				if($event->isactive == 1 && $event->start <= date('Y-m-d H:i:s') && $event->end >= date('Y-m-d H:i:s'))
+		    		return view('student.event', ['event' => $event, 'id' => $id]);
+		    	else
+		    		return redirect('student');
 			});
 		});
 
