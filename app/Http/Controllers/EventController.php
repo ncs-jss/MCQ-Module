@@ -36,6 +36,6 @@ class EventController extends Controller
 
 			    $task->save();
 
-			    return back();
+			    return view('teacher.add-ques');
 			}
 }
