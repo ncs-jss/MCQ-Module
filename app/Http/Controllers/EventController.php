@@ -13,7 +13,8 @@ class EventController extends Controller
 			    $this -> validate($request, [
 			        'name' => 'required|max:255',
 			        'description' => 'required',
-			        'subject' => 'required',
+			        'subject' => 'required|not_in:0',
+			        'quiz-image' => 'image|mimes:jpg,png|max:1000',
 			        'start_time' => 'required',
 			        'end_time' => 'required',
 			        'duration' => 'required',
