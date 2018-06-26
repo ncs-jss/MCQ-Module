@@ -13,8 +13,6 @@ body {
 @section('content')
 <div class="container">
 	<div class="card">
-		<div class="card-header text-white bg-purple shadow">
-			<h2>Quiz</h2>
 		<div class="card-header  text-white bg-purple shadow">
 			<h2 class="float-left">Quiz</h2>
 			<a class="anchor btn-success btn-lg float-right" href="{{ route('teacherCreateEvent') }}" style="text-decoration: none;"> <i class="fa fa-plus"></i> Create New Quiz</a>
