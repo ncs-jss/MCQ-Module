@@ -36,7 +36,7 @@
 					@endif
 				</div>
 				<div class="form-group form-check">
-					<input class="form-check-input" type="checkbox" namme="remember"> 
+					<input class="form-check-input" type="checkbox" name="remember"> 
 					<label class="form-check-label" for="remember">Remember me</label>
 				</div>
 				<button type="submit" class="btn btn-success btn-block">Submit</button>

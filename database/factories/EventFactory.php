@@ -13,5 +13,6 @@ $factory->define(App\Event::class, function (Faker\Generator $faker) {
         'correctmark' => rand(1,5),
         'wrongmark' => rand(-5,0),
         'quedisplay' => '0',
+        'isactive' => rand(0,1),
     ];
 });

@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark shadow">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="{{ url('/') }}">
         {{ config('app.name', 'MCQ Model') }}
     </a>
 		<!-- Toggler/collapsibe Button -->
@@ -9,7 +9,7 @@
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
 		<ul class="navbar-nav">
     		<li class="nav-item active">
-      			<a class="nav-link" href="#">Home</a>
+      			<a class="nav-link" href="{{ url('/') }}">Home</a>
     		</li>
     		<li class="nav-item">
       			<a class="nav-link" href="#">About</a>
