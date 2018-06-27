@@ -29,7 +29,7 @@ Route::group(['middleware' => ['web']], function ()
 		{
 			Route::get('/', function ()
 			{
-				$events = App\Event::where('isactive', '1')->orderBy('id', 'desc')->paginate(9);
+				$events = App\Event::select('id','name','start','end','duration')->where('isactive', '1')->orderBy('id', 'desc')->paginate(9);
 		    	return view('student.home', ['events' => $events]);
 			});
 			Route::get('/event/{id}', function ($id)
