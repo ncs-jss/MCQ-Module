@@ -18,24 +18,37 @@ body {
             <!-- Task Name -->
             <div class="form-group">
                 <label for="name" class="control-label">Name</label>
-
-                <div>
-                    <input type="text" name="name" id="name" class="form-control" required>
-                </div>
+                    @if ($errors->has('name'))
+                        <div class="alert alert-danger">
+                            <strong>{{ $errors->first('name') }}</strong>
+                        </div>
+                    @endif
+                    <div>
+                        <input type="text" name="name" id="name" class="form-control">
+                    </div>
             </div>
+                
             <div class="form-group">
                 <label for="description" class="control-label">Description</label>
-
+                    @if ($errors->has('description'))
+                        <div class="alert alert-danger">
+                            <strong>{{ $errors->first('description') }}</strong>
+                        </div>
+                    @endif
                 <div>
                     <textarea class="form-control" rows="5" id="description" name="description"></textarea>
                 </div>
             </div>
             <div class="form-group">
                 <label for="subject" class="control-label">Subject</label>
-
+                     @if ($errors->has('subject'))
+                        <div class="alert alert-danger">
+                            <strong>{{ $errors->first('subject') }}</strong>
+                        </div>
+                    @endif
                 <div>
                     <select name="subject" class="custom-select mb-3" required>
-                          <option selected>Choose Subject</option>
+                          <option selected value="0">Choose Subject</option>
                           <option value="1">Data Structure</option>
                           <option value="2">Operating System</option>
                           <option value="3">Microprocessor</option>
@@ -44,7 +57,11 @@ body {
             </div>
             <div class="form-group">
                 <label for="quiz-image" class="control-label">Image</label>
-
+                    @if ($errors->has('quiz-image'))
+                        <div class="alert alert-danger">
+                            <strong>{{ $errors->first('quiz-image') }}</strong>
+                        </div>
+                    @endif
                 <div>
                     <input type="file" class="form-control-file" id="quiz-image" aria-describedby="fileHelp" name="quiz-image">
                         <small id="fileHelp" class="form-text text-muted">Choose a quiz-image to upload otherwise leave it. </small>
