@@ -14,7 +14,7 @@ class EventController extends Controller
 			        'name' => 'required|max:255',
 			        'description' => 'required',
 			        'subject' => 'required|not_in:0',
-			        'quiz-image' => 'image|mimes:jpg,png|max:1000',
+			        'quizimage' => 'image|max:1000',
 			        'start_time' => 'required',
 			        'end_time' => 'required',
 			        'duration' => 'required',
@@ -27,6 +27,7 @@ class EventController extends Controller
 			    $task->name = $request->name;
 			    $task->description = $request->description;
 			    $task->subid = $request->subject;
+			    $task->img = $request->quizimage;
 			    $task->start = $request->start_time;
 			    $task->end = $request->end_time;
 			    $task->duration = $request->duration;

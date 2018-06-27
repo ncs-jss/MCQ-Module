@@ -12,7 +12,7 @@ body {
 	<div class="col-md-3 col-sm-3 col-xs-12"></div>
 	<div class="col-md-6 col-sm-6 col-xs-12">
         <!-- New Event Form -->
-        <form action="ques" method="POST">
+        <form action="ques" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
 
             <!-- Task Name -->
@@ -56,14 +56,16 @@ body {
                 </div>
             </div>
             <div class="form-group">
-                <label for="quiz-image" class="control-label">Image</label>
-                    @if ($errors->has('quiz-image'))
+                <label for="quizimage" class="control-label">Image</label>
+                    @if ($errors->has('quizimage'))
                         <div class="alert alert-danger">
-                            <strong>{{ $errors->first('quiz-image') }}</strong>
+                            @foreach ($errors->get('quizimage') as $valimg)
+                                <strong>{{$valimg}}</strong>
+                            @endforeach
                         </div>
                     @endif
                 <div>
-                    <input type="file" class="form-control-file" id="quiz-image" aria-describedby="fileHelp" name="quiz-image">
+                    <input type="file" class="form-control-file" id="quizimage" aria-describedby="fileHelp" name="quizimage">
                         <small id="fileHelp" class="form-text text-muted">Choose a quiz-image to upload otherwise leave it. </small>
                 </div>
             </div>
