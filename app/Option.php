@@ -8,4 +8,9 @@ class Option extends Model
 {
     protected $table = 'option';
     public $timestamps = false;
+
+    public function queans()
+    {
+    	return $this->belongsTo('App\Queans', 'queid');
+    }
 }

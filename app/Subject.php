@@ -8,4 +8,9 @@ class Subject extends Model
 {
     protected $table = 'subject';
     public $timestamps = false;
+
+    public function event()
+    {
+    	return $this->hasMany('App\Event', 'subid');
+    }
 }
