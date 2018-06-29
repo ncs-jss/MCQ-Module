@@ -34,12 +34,16 @@ Route::group(['middleware' => ['web']], function ()
 			});
 			Route::get('/event/{id}', function ($id)
 			{
-				$event = App\Event::where('id', $id)->first();
+				$event = App\Event::select('name','description','img','duration','start','end','duration','correctmark','wrongmark','isactive')->where('id', $id)->first();
 				if($event->isactive == 1 && $event->start <= date('Y-m-d H:i:s') && $event->end >= date('Y-m-d H:i:s'))
-		    		return view('student.event', ['event' => $event, 'id' => $id]);
+				{
+					$req = App\Req::select('status')->where('userid', Auth::id())->where('eventid', $id)->first();
+		    		return view('student.event', ['event' => $event, 'id' => $id, 'req' => $req]);
+				}
 		    	else
 		    		return redirect('student');
 			});
+			Route::post('event/req', 'ReqController@join')->name('RequestUrl');
 		});
 
 		Route::group(['prefix' => '/teacher', 'middleware' => 'UserType:teacher'], function()

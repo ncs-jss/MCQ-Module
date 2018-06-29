@@ -17,7 +17,7 @@ class User extends Authenticatable
 
     public function eventRequest()
     {
-    	return $this->belongsToMany('App\Event', 'request', 'userid', 'eventid')->withPivot('status');
+    	return $this->belongsToMany('App\Event', 'req', 'userid', 'eventid')->withPivot('status');
     }
 
     public function response()
