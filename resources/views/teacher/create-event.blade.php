@@ -10,12 +10,13 @@ body {
 @section('content')
 <div class="row" >
 	<div class="col-md-3 col-sm-3 col-xs-12"></div>
+
 	<div class="col-md-6 col-sm-6 col-xs-12">
         <!-- New Event Form -->
         <form action="ques" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
 
-            <!-- Task Name -->
+            <!-- Event Name -->
             <div class="form-group">
                 <label for="name" class="control-label">Name</label>
                     @if ($errors->has('name'))
@@ -32,57 +33,76 @@ body {
                 <label for="description" class="control-label">Description</label>
                     @if ($errors->has('description'))
                         <div class="alert alert-danger">
-                            <strong>{{ $errors->first('description') }}</strong>
+                            @foreach ($errors->get('description') as $desc)
+                                <strong>{{$desc}}</strong>
+                            @endforeach
                         </div>
                     @endif
                 <div>
                     <textarea class="form-control" rows="5" id="description" name="description"></textarea>
                 </div>
             </div>
+
             <div class="form-group">
                 <label for="subject" class="control-label">Subject</label>
-                     @if ($errors->has('subject'))
-                        <div class="alert alert-danger">
-                            <strong>{{ $errors->first('subject') }}</strong>
-                        </div>
-                    @endif
+                @if ($errors->has('subject'))
+                    <div class="alert alert-danger">
+                        <strong>{{ $errors->first('subject') }}</strong>
+                    </div>
+                @endif
                 <div>
                     <select name="subject" class="custom-select mb-3" required>
-                          <option selected value="0">Choose Subject</option>
+                          <option selected value="0" disabled>Choose Subject</option>
                           <option value="1">Data Structure</option>
                           <option value="2">Operating System</option>
                           <option value="3">Microprocessor</option>
-                        </select>
+                    </select>
                 </div>
             </div>
+
             <div class="form-group">
                 <label for="quizimage" class="control-label">Image</label>
-                    @if ($errors->has('quizimage'))
-                        <div class="alert alert-danger">
-                            @foreach ($errors->get('quizimage') as $valimg)
-                                <strong>{{$valimg}}</strong>
-                            @endforeach
-                        </div>
-                    @endif
+                @if ($errors->has('quizimage'))
+                    <div class="alert alert-danger">
+                        @foreach ($errors->get('quizimage') as $valimg)
+                            <strong>{{$valimg}}</strong>
+                        @endforeach
+                    </div>
+                @endif
                 <div>
                     <input type="file" class="form-control-file" id="quizimage" aria-describedby="fileHelp" name="quizimage">
                         <small id="fileHelp" class="form-text text-muted">Choose a quiz-image to upload otherwise leave it. </small>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="start-time" class="control-label">Start Date and time</label>
 
+            <div class="form-group">
+                <label for="start_time" class="control-label">Start Date and time</label>
+                 @if ($errors->has('start_time'))
+                    <div class="alert alert-danger">
+                        @foreach ($errors->get('start_time') as $st)
+                            <strong>{{$st}}</strong>
+                        @endforeach
+                        </div>
+                @endif
                 <div>
-                    <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="start_time" name="start_time" required>
+                    <input class="form-control" type="datetime-local" value="2018-06-19T13:00:00" id="start_time" name="start_time" required>
                 </div>
             </div>
+
             <div class="form-group">
                 <label for="end-time" class="control-label">End Date and time</label>
-
+                @if ($errors->has('end_time'))
+                    <div class="alert alert-danger">
+                        @foreach ($errors->get('end_time') as $et)
+                            <strong>{{$et}}</strong>
+                        @endforeach
+                    </div>
+                @endif
                 <div>
-                    <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="end_time" name="end_time" required>
+                    <input class="form-control" type="datetime-local" value="2018-06-19T13:30:00" id="end_time" name="end_time" required>
                 </div>
             </div>
+
             <div class="form-group">
                 <label for="duration" class="control-label">Duration</label>
 
@@ -90,6 +110,7 @@ body {
                     <input class="form-control" type="number" value=30 id="duration" name="duration" required>
                 </div>
             </div>
+
             <div class="form-group">
                 <label for="correct-mark" class="control-label">Correct Mark</label>
 
@@ -112,12 +133,14 @@ body {
                 </div>
             </div>
 
+            <input type="hidden" name="Current_Date_Time" id="Current_Date_Time" value="{{date("m-d-Y H:i:s")}}">
 
-            <!-- Add Task Button -->
+
+            <!-- Add Event Button -->
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-6">
-                    <button type="submit" class="btn btn-success">
-                        <i class="fa fa-plus"></i> Add Task
+                    <button type="submit" id="btn2" class="btn btn-success">
+                        <i class="fa fa-plus"></i> Add Event
                     </button>
                 </div>
             </div>
