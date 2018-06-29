@@ -30,7 +30,7 @@ class AddForegionKey extends Migration
             $table->foreign('eventid')->references('id')->on('event')->onDelete('cascade');
         });
 
-        Schema::table('request', function (Blueprint $table) {
+        Schema::table('req', function (Blueprint $table) {
             $table->index('userid');
             $table->index('eventid');
             $table->foreign('userid')->references('id')->on('user')->onDelete('cascade');

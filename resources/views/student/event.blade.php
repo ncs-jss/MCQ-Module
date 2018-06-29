@@ -18,6 +18,11 @@ body {
 			<h2>{{ $event->name }}</h2>
 		</div>
 		<div class="card-body">
+      @if (session('msg'))
+        <div class="alert alert-success">
+            {{ session('msg') }}
+          </div>
+      @endif
 			<div class="row">
 				<div class="col-3">
 					<center>
@@ -45,11 +50,36 @@ body {
       				</div>
       				<br>
 					<center>
-      					<form action="" method="POST">
+						@if (empty($req))
+      					<form action="{{ route('RequestUrl') }}" method="POST">
       						{{ csrf_field() }}
       						<input type="hidden" value="{{ $id }}" name="id" required>
       						<button type="submit" class="btn btn-danger btn-lg btn-block">Request to join this Event</button>
       					</form>
+      					@elseif ($req-> status == 0)
+      					<h3>
+      						<i>
+      							Your request to join this event is pending for approval.
+      							<br>This page will get refresh in <font color="red" id="count">15</font> seconds to again check the status of your request.
+      						</i>
+      					</h3>
+      					<script>
+      						window.onload = function()
+      						{
+      							var i = 15;
+      							setInterval(function()
+      							{
+      								i--;
+      								if(i>0)
+      									document.getElementById("count").innerHTML = i;
+      								else
+      									location.reload();
+      							},1000);
+      						}
+      					</script>
+      					@else
+      					
+      					@endif
       				</center>
 				</div>
 			</div>

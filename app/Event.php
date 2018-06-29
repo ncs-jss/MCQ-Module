@@ -16,7 +16,7 @@ class Event extends Model
 
     public function userRequest()
     {
-    	return $this->belongsToMany('App\User', 'request', 'eventid', 'userid')->withPivot('status');
+    	return $this->belongsToMany('App\User', 'req', 'eventid', 'userid')->withPivot('status');
     }
 
     public function subject()
