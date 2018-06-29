@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class RequestTableSeeder extends Seeder
+class ReqTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,6 @@ class RequestTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Request::class, 5)->create();
+        factory(App\Req::class, 5)->create();
     }
 }
