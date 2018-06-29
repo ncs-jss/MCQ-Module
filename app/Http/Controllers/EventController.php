@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Event;
+use Auth;
 
 class EventController extends Controller
 {
@@ -12,15 +13,15 @@ class EventController extends Controller
     public function create(Request $request) {
 			    $this -> validate($request, [
 			        'name' => 'required|max:255',
-			        'description' => 'required',
+			        'description' => 'required|not_in:<br>',
 			        'subject' => 'required|not_in:0',
 			        'quizimage' => 'image|max:1000',
-			        'start_time' => 'required',
-			        'end_time' => 'required',
-			        'duration' => 'required',
-			        'correct_mark' => 'required',
-			        'wrong_mark' => 'required',
-			        'display_ques' => 'required',
+			        'start_time' => 'required|after:Current_Date_Time',
+			        'end_time' => 'required|after:start_time',
+			        'duration' => 'required|numeric|not_in:0',
+			        'correct_mark' => 'required|numeric|not_in:0',
+			        'wrong_mark' => 'required|numeric',
+			        'display_ques' => 'required|numeric|not_in:0',
 			    ]);
 
 			    $task = new Event;
@@ -34,7 +35,7 @@ class EventController extends Controller
 			    $task->correctmark = $request->correct_mark;
 			    $task->wrongmark = $request->wrong_mark;
 			    $task->quedisplay = $request->display_ques;
-			    $task->creator = 1;
+			    $task->creator = auth::id();
 
 			    $task->save();
 
