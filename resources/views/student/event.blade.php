@@ -51,12 +51,12 @@ body {
       				<br>
 					<center>
 						@if (empty($req))
-      					<form action="{{ route('RequestUrl') }}" method="POST">
+                <form action="{{ url('student/event/'.$id.'/req') }}" method="POST">
       						{{ csrf_field() }}
       						<input type="hidden" value="{{ $id }}" name="id" required>
       						<button type="submit" class="btn btn-danger btn-lg btn-block">Request to join this Event</button>
       					</form>
-      					@elseif ($req-> status == 0)
+      			@elseif ($req->status == 0)
       					<h3>
       						<i>
       							Your request to join this event is pending for approval.
@@ -77,13 +77,34 @@ body {
       							},1000);
       						}
       					</script>
-      					@else
-      					
-      					@endif
+      			@else
+                  <button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#EventJoin" data-whatever="@fat">Start this Event</button>
+      			@endif
       				</center>
 				</div>
 			</div>
   		</div>
 	</div>
 </div>
+@if (!empty($req))
+@if(($req-> status == 1))
+<div class="modal fade shadow" id="EventJoin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <center>
+          <h5>Please note that this action is irreversible and timer once start can not be reset.<br>Are you confirm that you really want to start this event ? </h5>
+                <form action="{{ url('student/event/'.$id.'/join') }}" method="POST">
+                  {{ csrf_field() }}
+                  <input type="hidden" value="{{ $id }}" name="id" required>
+        <button type="submit" class="btn btn-success">Yes, start event</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">No, not now</button>
+                </form>
+        </center>
+      </div>
+    </div>
+  </div>
+</div>
+@endif
+@endif
 @stop

@@ -32,18 +32,21 @@ Route::group(['middleware' => ['web']], function ()
 				$events = App\Event::select('id','name','start','end','duration')->where('isactive', '1')->orderBy('id', 'desc')->paginate(9);
 		    	return view('student.home', ['events' => $events]);
 			});
-			Route::get('/event/{id}', function ($id)
+			Route::group(['middleware' => ['EventAccess']], function ()
 			{
-				$event = App\Event::select('name','description','img','duration','start','end','duration','correctmark','wrongmark','isactive')->where('id', $id)->first();
-				if($event->isactive == 1 && $event->start <= date('Y-m-d H:i:s') && $event->end >= date('Y-m-d H:i:s'))
+				Route::get('/event/{id}', function ($id)
 				{
+					$event = App\Event::select('name','description','img','duration','correctmark','wrongmark')->where('id', $id)->first();
 					$req = App\Req::select('status')->where('userid', Auth::id())->where('eventid', $id)->first();
-		    		return view('student.event', ['event' => $event, 'id' => $id, 'req' => $req]);
-				}
-		    	else
-		    		return redirect('student');
+			    	return view('student.event', ['event' => $event, 'id' => $id, 'req' => $req]);
+				});
+				Route::post('event/{id}/req', 'EventPlayController@req');
+				Route::post('event/{id}/join', 'EventPlayController@join');
+				Route::get('event/{id}/play/{queid}', function ($id,$queid)
+				{
+					dd(session()->all());
+				});
 			});
-			Route::post('event/req', 'ReqController@join')->name('RequestUrl');
 		});
 
 		Route::group(['prefix' => '/teacher', 'middleware' => 'UserType:teacher'], function()
