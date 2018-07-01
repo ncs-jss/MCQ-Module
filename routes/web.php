@@ -57,6 +57,14 @@ Route::group(['middleware' => ['web']], function ()
 		    	return view('teacher.create-event');
 			})->name('teacherCreateEvent');
 			Route::post('event/ques', 'EventController@create');
+			Route::get('event/{id}', function($id) {
+				$event = App\Event::select('creator')->where('id', $id)->first();
+				$authe =Auth::id();
+				if($authe == $event->creator)
+				return view('teacher.add-ques')->with('id',$id);
+				else return back();
+			});
+			Route::post('event/{id}', 'EventController@add');
 		});
 
 		Route::group(['prefix' => '/society', 'middleware' => 'UserType:society'], function()
@@ -66,6 +74,7 @@ Route::group(['middleware' => ['web']], function ()
 		    	return view('society.home');
 			});
 		});
+
 
 	});
 });

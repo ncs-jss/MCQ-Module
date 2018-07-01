@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Event;
+use App\Queans;
 use Auth;
 
 class EventController extends Controller
@@ -12,7 +13,7 @@ class EventController extends Controller
     //
     public function create(Request $request) {
 			    $this -> validate($request, [
-			        'name' => 'required|max:255',
+			        'name' => 'required|max:100',
 			        'description' => 'required|not_in:<br>',
 			        'subject' => 'required|not_in:0',
 			        'quizimage' => 'image|max:1000',
@@ -36,9 +37,26 @@ class EventController extends Controller
 			    $task->wrongmark = $request->wrong_mark;
 			    $task->quedisplay = $request->display_ques;
 			    $task->creator = auth::id();
+			    $task->isactive = '0';
 
 			    $task->save();
 
-			    return view('teacher.add-ques');
+			    return redirect('teacher/event/'.$task->id);
 			}
+	public function add(Request $request) {
+				$this -> validate($request, [
+					'ques' => 'required|not_in:<br>',
+					'opt1' => 'required|not_in:<br>',
+					'opt2' => 'required|not_in:<br>',
+					'opt3' => 'sometimes|not_in:<br>',
+					'opt4' => 'sometimes|not_in:<br>',
+					'opt5' => 'sometimes|not_in:<br>',
+				]);
+
+				$addque = new Queans;
+				$addque->que = $request->ques;
+				$addque->eventid = $request->route('id');
+				$addque->save();
+				return back();
+	}
 }

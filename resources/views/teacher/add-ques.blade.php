@@ -14,7 +14,7 @@ body {
 <div class="container">
 	<div class="panel-body">
         <!-- New Task Form -->
-        <form action="#" method="POST" class="form-horizontal">
+        <form action="{{$id}}" method="POST" class="form-horizontal">
             {{ csrf_field() }}
 
             <!-- Task Name -->
@@ -54,7 +54,7 @@ body {
             <script>
             	var count = 3;
             	$("#btn1").click(function(){
-            	$("#add").append('<label for="opt3" class="col-sm-3 control-label">Option '+count+'.</label> <div> <textarea class="form-control col-sm-6" rows="5" id="opt3" name="opt3"></textarea> </div>');
+            	$("#add").append('<label for="opt3" class="col-sm-3 control-label">Option '+count+'.</label> <div> <textarea class="form-control col-sm-6" rows="5" id="opt'+count+'" name="opt'+count+'"></textarea> </div>');
             	count++;
             	    });
             </script>
