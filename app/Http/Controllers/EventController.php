@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Event;
 use App\Queans;
+use App\Option;
 use Auth;
 
 class EventController extends Controller
@@ -44,19 +45,34 @@ class EventController extends Controller
 			    return redirect('teacher/event/'.$task->id);
 			}
 	public function add(Request $request) {
-				$this -> validate($request, [
-					'ques' => 'required|not_in:<br>',
-					'opt1' => 'required|not_in:<br>',
-					'opt2' => 'required|not_in:<br>',
-					'opt3' => 'sometimes|not_in:<br>',
-					'opt4' => 'sometimes|not_in:<br>',
-					'opt5' => 'sometimes|not_in:<br>',
-				]);
+				// $this -> validate($request, [
+				// 	'ques' => 'required|not_in:<br>',
+				// 	'opt1' => 'required|not_in:<br>',
+				// 	'opt2' => 'required|not_in:<br>',
+				// 	'opt3' => 'sometimes|not_in:<br>',
+				// 	'opt4' => 'sometimes|not_in:<br>',
+				// 	'opt5' => 'sometimes|not_in:<br>',
+				// ]);
+				
 
 				$addque = new Queans;
 				$addque->que = $request->ques;
 				$addque->eventid = $request->route('id');
 				$addque->save();
+
+
+				$count = $request->count;
+				for($x=1; $x<=$count; $x++){
+					$option = new Option;
+					$option->queid = $addque->id;
+					$option->ans = $request->input('opt'.$x);
+					$opt = $request->input('option'.$x);
+					if(is_null($opt))
+						$option->iscorrect = 0;
+					else $option->iscorrect = 1;
+					$option->save();
+				}
+
 				return back();
 	}
 }

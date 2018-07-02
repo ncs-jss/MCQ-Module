@@ -26,15 +26,17 @@ body {
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group form-check">
+                <input class="form-check-input" type="checkbox" value="1" id="option1" name="option1">
                 <label for="opt1" class="col-sm-3 control-label">Option 1.</label>
 
-               <div>
+                <div>
                     <textarea class="form-control col-sm-6" rows="5" id="opt1" name="opt1"></textarea>
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group form-check">
+                <input class="form-check-input" type="checkbox" value="1" id="option2" name="option2">
                 <label for="opt2" class="col-sm-3 control-label">Option 2.</label>
 
                <div>
@@ -42,7 +44,8 @@ body {
                 </div>
             </div>
 
-            <div class="form-group" id="add">
+            <div class="form-group form-check" id="add">
+                <input type="hidden" name="count" value="2">
                 
             </div>
       
@@ -54,7 +57,7 @@ body {
             <script>
             	var count = 3;
             	$("#btn1").click(function(){
-            	$("#add").append('<label for="opt3" class="col-sm-3 control-label">Option '+count+'.</label> <div> <textarea class="form-control col-sm-6" rows="5" id="opt'+count+'" name="opt'+count+'"></textarea> </div>');
+            	$("#add").append('<input type="hidden" name="count" value="'+count+'"><input class="form-check-input" type="checkbox" value="1" id="option'+count+'" name="option'+count+'"><label for="opt" class="col-sm-3 control-label">Option '+count+'.</label> <div> <textarea class="form-control col-sm-6" rows="5" id="opt'+count+'" name="opt'+count+'"></textarea> </div>');
             	count++;
             	    });
             </script>
