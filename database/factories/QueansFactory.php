@@ -4,5 +4,6 @@ $factory->define(App\Queans::class, function (Faker\Generator $faker) {
     return [
         'que' => $faker->realText(200,2),
         'eventid' => $faker->randomElement($event_id),
+        'quetype' => rand(0,1),
     ];
 });
