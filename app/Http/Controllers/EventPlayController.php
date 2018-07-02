@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Event;
 use App\Req;
 use App\Queans;
+use App\Option;
 use Auth;
 
 class EventPlayController extends Controller
@@ -34,11 +35,11 @@ class EventPlayController extends Controller
             {
                 if(!session()->has('event'))
                 {
-                    $req = new Req;
-                    $req->start = date("Y-m-d H:i:s");
-                    $req->where('userid', Auth::id())->where('eventid', $request->input('id'))->first()->save();
+                    $req = Req::where('userid', Auth::id())->where('eventid', $request->input('id'))->update(['start' => date("Y-m-d H:i:s")]);
 
-                    $que = Queans::where('eventid',$request->input('id'))->pluck('id')->toArray();
+                    $event = Event::select('quedisplay')->where('id', $request->input('id'))->first();
+
+                    $que = Queans::where('eventid',$request->input('id'))->take($event->quedisplay)->pluck('id')->toArray();
                     shuffle($que);
 
                     $submit = [];
@@ -50,6 +51,39 @@ class EventPlayController extends Controller
                     return redirect(url('student/event/'.$request->input('id').'/play/1'));
                 }
             }
+        }
+    }
+
+    public function play(Request $request, $id, $queid)
+    {
+        if(session()->has('event'))
+        {
+            if(session()->has('event') == $id)
+            {
+                if($queid <= count(session('que')))
+                {
+                    $queNo = session('que')[$queid-1];
+                    $que = Queans::where('id',$queNo)->first();
+                    $option = Option::where('queid',$queNo)->get();
+                    $duration = Event::where('id', $id)->pluck('duration')->toArray();
+                    $start = Req::where('userid', Auth::id())->where('eventid', $id)->pluck('start')->toArray();
+                    $end = strtotime($start[0]." + ".$duration[0]." minute");
+                    $end = date('Y-m-d H:i:s', $end);
+                    return view('student.play',['queid' => $queid, 'que' => $que, 'options' => $option, 'eventid' => $id, 'end' => $end]);
+                }
+                else
+                {
+                    return back();
+                }
+            }
+            else
+            {
+                return back();
+            }
+        }
+        else
+        {
+            return back();
         }
     }
 }

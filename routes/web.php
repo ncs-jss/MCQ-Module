@@ -42,10 +42,8 @@ Route::group(['middleware' => ['web']], function ()
 				});
 				Route::post('event/{id}/req', 'EventPlayController@req');
 				Route::post('event/{id}/join', 'EventPlayController@join');
-				Route::get('event/{id}/play/{queid}', function ($id,$queid)
-				{
-					dd(session()->all());
-				});
+				Route::get('event/{id}/play/{queid}', 'EventPlayController@play');
+				Route::post('/event/{id}/play/{queid}', 'EventPlayController@play');
 			});
 		});
 
