@@ -18,21 +18,49 @@ body {
 			<a class="anchor btn-success btn-lg float-right" href="{{ route('teacherCreateEvent') }}" style="text-decoration: none;"> <i class="fa fa-plus"></i> Create New Quiz</a>
 		</div>
 		<div class="card-body">
-			@for ($i = 0; $i < 3; $i++)
+			<?php $i = 0 ?>
+			@foreach ($events as $event)
+				<?php $i++ ?>
+				@if ($i==1 || $i==4 || $i==7)
     			<div class="card-deck">
-				@for ($j = 0; $j < 3; $j++)
-  					<div class="card shadow">
-    					<div class="card-body">
-      						<h5 class="card-title">MCQ title</h5>
-      						<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-      						<a href="#" class="btn btn-primary">Start Quiz</a>
-    					</div>
+    			@endif
+  					<div class="card text-white bg-success
+  					 animated pulse shadow">
+  					<div class="card-header">
+      						<h3>{{ $event->name }}</h3>
+      				</div>
+      				<div class="card-body">
+      					<table class="table table-borderless table-sm">
+                    		<tbody>
+      							<tr>
+      								<td>Start: </td><td> {{ date('d M Y, g:i a',strtotime($event->start)) }}</td>
+      							</tr>
+      							<tr>
+      								<td>Close: </td><td> {{ date('d M Y, g:i a',strtotime($event->end)) }}</td>
+      							</tr>
+      							<tr>
+      								<td>Duration: </td><td> {{ sprintf("%02d",intdiv($event->duration, 60)).':'. sprintf("%02d",($event->duration % 60)) }}</td>
+      							</tr>
+                 			 </tbody>
+      					</table>
+    				</div>
+                    <a href="#"><div class="bg-primary card-footer"><center><strong class="text-white">Launch Event</strong></center></div></a>
   					</div>
+      				@if ($i==3 || $i==6 || $i==9)
+				</div>
+				<br>
+				@endif
+			@endforeach
+			@if( $events->count()%3 != 0)
+				@for ($i=1; $i<=(3-($events->count()%3)); $i++)
+					<div style="border:0px" class="card"></div>
 				@endfor
 				</div>
 				<br>
-			@endfor
-  		</div>
+			@endif
+			<center>
+				{{ $events->links() }}
+			</center>
 	</div>
 </div>
 @stop
