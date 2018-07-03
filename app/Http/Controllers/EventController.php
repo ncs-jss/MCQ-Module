@@ -45,19 +45,20 @@ class EventController extends Controller
 			    return redirect('teacher/event/'.$task->id);
 			}
 	public function add(Request $request) {
-				// $this -> validate($request, [
-				// 	'ques' => 'required|not_in:<br>',
-				// 	'opt1' => 'required|not_in:<br>',
-				// 	'opt2' => 'required|not_in:<br>',
-				// 	'opt3' => 'sometimes|not_in:<br>',
-				// 	'opt4' => 'sometimes|not_in:<br>',
-				// 	'opt5' => 'sometimes|not_in:<br>',
-				// ]);
+				$this -> validate($request, [
+					'question' => 'required|not_in:<br>',
+					'quetype' => 'required',
+					'opt1' => 'required|not_in:<br>',
+					'opt2' => 'required|not_in:<br>',
+					'opt3' => 'sometimes|not_in:<br>',
+					'opt4' => 'sometimes|not_in:<br>',
+					'opt5' => 'sometimes|not_in:<br>',
+				]);
 				
-
 				$addque = new Queans;
-				$addque->que = $request->ques;
+				$addque->que = $request->question;
 				$addque->eventid = $request->route('id');
+				$addque->quetype = $request->quetype;
 				$addque->save();
 
 
@@ -73,6 +74,6 @@ class EventController extends Controller
 					$option->save();
 				}
 
-				return back();
+				return back()->with('success','Question added successfuly');
 	}
 }
