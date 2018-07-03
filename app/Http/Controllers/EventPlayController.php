@@ -35,18 +35,36 @@ class EventPlayController extends Controller
             {
                 if(!session()->has('event'))
                 {
-                    $req = Req::where('userid', Auth::id())->where('eventid', $request->input('id'))->update(['start' => date("Y-m-d H:i:s")]);
+                    $event = Event::select('quedisplay','duration')->where('id', $request->input('id'))->first();
 
-                    $event = Event::select('quedisplay')->where('id', $request->input('id'))->first();
-
-                    $que = Queans::where('eventid',$request->input('id'))->take($event->quedisplay)->pluck('id')->toArray();
+                    $que = Queans::select('id','que','quetype')->where('eventid',$request->input('id'))->take($event->quedisplay)->get()->toArray();
                     shuffle($que);
+
+                    $req = Req::where('userid', Auth::id())->where('eventid', $request->input('id'))->update(
+                        [
+                            'start' => date("Y-m-d H:i:s"),
+                            'que' => implode(",",array_column($que,'id'))
+                        ]
+                    );
+
+                    $options = Option::select('id','ans','queid')->whereIn('queid',array_column($que,'id'))->get()->toArray();
 
                     $submit = [];
                     for($i=0; $i<count($que); $i++)
                         $submit[$i] = 0;
 
-                    session(['event' => $request->input('id'), 'que' => $que, 'submit' => $submit]);
+                    session(
+                        [
+                            'event' => $request->input('id'),
+                            'que' => $que,
+                            'submit' => $submit,
+                            'duration' => $event->duration,
+                            'start' => date("Y-m-d H:i:s"),
+                            'options' => $options,
+                        ]
+                    );
+
+                    // dd(session()->all());
 
                     return redirect(url('student/event/'.$request->input('id').'/play/1'));
                 }
@@ -62,14 +80,7 @@ class EventPlayController extends Controller
             {
                 if($queid <= count(session('que')))
                 {
-                    $queNo = session('que')[$queid-1];
-                    $que = Queans::where('id',$queNo)->first();
-                    $option = Option::where('queid',$queNo)->get();
-                    $duration = Event::where('id', $id)->pluck('duration')->toArray();
-                    $start = Req::where('userid', Auth::id())->where('eventid', $id)->pluck('start')->toArray();
-                    $end = strtotime($start[0]." + ".$duration[0]." minute");
-                    $end = date('Y-m-d H:i:s', $end);
-                    return view('student.play',['queid' => $queid, 'que' => $que, 'options' => $option, 'eventid' => $id, 'end' => $end]);
+                    return view('student.play',['queid' => $queid, 'eventid' => $id]);
                 }
                 else
                 {
