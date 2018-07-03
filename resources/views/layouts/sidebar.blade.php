@@ -6,7 +6,7 @@
     <body>
     <div class="container">
         <header class="row">
-            @include('includes.navbar')
+            @include('includes.header')
         </header>
         <div id="main" class="row">
             <!-- main content -->
