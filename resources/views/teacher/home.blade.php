@@ -44,8 +44,10 @@ body {
                  			 </tbody>
       					</table>
     				</div>
-                    <a href="#"><div class="bg-primary card-footer"><center><strong class="text-white">Launch Event</strong></center></div></a>
+
+                   	<div><a href="#" class="btn btn-primary float-left" role="button" aria-pressed="true"><i class="fa fa-plus"></i> Add Questions</a><a href="{{url('teacher/event/launch/'.$event->id)}}" class="btn btn-primary float-right disabled" role="button" aria-pressed="true">Launch Event</a></div>
   					</div>
+  					{{$count}};
       				@if ($i==3 || $i==6 || $i==9)
 				</div>
 				<br>

@@ -51,9 +51,15 @@ Route::group(['middleware' => ['web']], function ()
 		{
 			Route::get('/', function ()
 			{
-		    	return view('teacher.home');
+				$events = App\Event::select('id','name','start','end','duration')->where('creator', Auth::id())->orderBy('id', 'desc')->paginate(9);
+		    	return view('teacher.home', ['events' => $events]);
 			});
+			Route::get('/event/launch/{id}', function($id))
 			Route::get('/event/create', function ()
+			{
+				$que = App\Queans::get()->where('eventid', $id)->count();
+				return return view('teacher.home', ['count' => $que]);
+			}
 			{
 		    	return view('teacher.create-event');
 			})->name('teacherCreateEvent');
