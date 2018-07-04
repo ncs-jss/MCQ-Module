@@ -18,7 +18,7 @@ class CreateReqTable extends Migration
             $table->integer('eventid')->unsigned();
             $table->boolean('status');
             $table->dateTime('start')->nullable()->default(NULL);
-            $table->dateTime('lastaction')->nullable()->default(NULL);
+            $table->string('que', 300)->nullable()->default(NULL);
         });
     }
 

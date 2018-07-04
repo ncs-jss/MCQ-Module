@@ -42,9 +42,10 @@ Route::group(['middleware' => ['web']], function ()
 				});
 				Route::post('event/{id}/req', 'EventPlayController@req');
 				Route::post('event/{id}/join', 'EventPlayController@join');
-				Route::get('event/{id}/play/{queid}', 'EventPlayController@play');
-				Route::post('/event/{id}/play/{queid}', 'EventPlayController@play');
 			});
+			Route::get('event/play/{queid}', 'EventPlayController@play');
+			Route::post('/event/play/{queid}', 'EventPlayController@response');
+			Route::post('/event/submit', 'EventPlayController@submit');
 		});
 
 		Route::group(['prefix' => '/teacher', 'middleware' => 'UserType:teacher'], function()

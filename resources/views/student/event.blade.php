@@ -24,12 +24,14 @@ body {
           </div>
       @endif
 			<div class="row">
-				<div class="col-3">
+				<div class="col-sm-3">
 					<center>
 						<img class="rounded border border-dark shadow" src="{{ url($event->img) }}" width="200px" height="200px">
+            <br>
+            <br>
 					</center>
 				</div>
-				<div class="col-9">
+				<div class="col-sm-9">
 					{{ $event->description }}
 					<br>
 					<br>
@@ -57,12 +59,12 @@ body {
       						<button type="submit" class="btn btn-danger btn-lg btn-block">Request to join this Event</button>
       					</form>
       			@elseif ($req->status == 0)
-      					<h3>
-      						<i>
-      							Your request to join this event is pending for approval.
-      							<br>This page will get refresh in <font color="red" id="count">15</font> seconds to again check the status of your request.
-      						</i>
-      					</h3>
+                <div class="alert alert-primary" role="alert">
+        					<h5>
+        							Your request to join this event is pending for approval.
+        							<br>This page will get refresh in <font color="red" id="count">15</font> seconds to again check the status of your request.
+        					</h5>
+                </div>
       					<script>
       						window.onload = function()
       						{
