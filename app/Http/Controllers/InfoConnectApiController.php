@@ -65,7 +65,7 @@ class InfoConnectApiController extends Controller
 	    		else if($arr['group']=="others")
 	    			$user->type = 1; // Society
 	    		else
-	    			$user->type = 2; // Teacher
+	    			$user->type = 2; // Teacher, HOD, Adminitration
 	    		$user->save();
 	    	}
 
