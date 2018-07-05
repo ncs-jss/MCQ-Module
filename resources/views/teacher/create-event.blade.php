@@ -10,7 +10,9 @@ body {
 @section('content')
 <div class="row" >
 	<div class="col-md-3 col-sm-3 col-xs-12"></div>
-
+    <?php
+    $sub = array_column($subject, 'name','id'); 
+    ?>
 	<div class="col-md-6 col-sm-6 col-xs-12">
         <!-- New Event Form -->
         <form action="ques" method="POST" enctype="multipart/form-data">
@@ -53,9 +55,9 @@ body {
                 <div>
                     <select name="subject" class="custom-select mb-3" required>
                           <option selected value="0" disabled>Choose Subject</option>
-                          <option value="1">Data Structure</option>
-                          <option value="2">Operating System</option>
-                          <option value="3">Microprocessor</option>
+                          @foreach($sub as $id => $subname) {
+                          <option value="{{$id}}">{{$subname}}</option>
+                          @endforeach
                     </select>
                 </div>
             </div>

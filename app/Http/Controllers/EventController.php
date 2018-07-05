@@ -30,7 +30,9 @@ class EventController extends Controller
 			    $task->name = $request->name;
 			    $task->description = $request->description;
 			    $task->subid = $request->subject;
-			    $task->img = $request->quizimage;
+			    $img = $request->quizimage;
+			    if(!is_null($img))
+			    	$task->img = $img;
 			    $task->start = $request->start_time;
 			    $task->end = $request->end_time;
 			    $task->duration = $request->duration;

@@ -13,6 +13,9 @@ body {
 @stop
 @section('content')
 <div class="container">
+	<?php
+	$sub = array_column($subject,'name', 'id');
+	?>
 	<div class="card animated fadeIn">
 		<div class="card-header text-white bg-purple shadow text-capitalize text-center">
 			<h2>{{ $event->name }}</h2>
@@ -33,7 +36,7 @@ body {
 		      			<table class="table table-striped table-bordered shadow">
 		      				<tbody>
 		      					<tr>
-			      					<td>Subject: </td><td> {{ $event->subid }}</td>
+			      					<td>Subject: </td><td> {{ $sub[$event->subid] }}</td>
 			      				</tr>
 			      				<tr>
 			      					<td>Start Time: </td><td><?php $date = strtotime($event->start);echo date("D j F Y H".":"."i".":"."s" ,$date);?></td>
