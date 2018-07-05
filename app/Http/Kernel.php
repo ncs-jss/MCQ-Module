@@ -59,5 +59,6 @@ class Kernel extends HttpKernel
         'UserType' => \App\Http\Middleware\UserType::class,
         'RedirectIfAuthenticated' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'EventAccess' => \App\Http\Middleware\EventAccess::class,
+        'EventPlay' => \App\Http\Middleware\EventPlay::class,
     ];
 }

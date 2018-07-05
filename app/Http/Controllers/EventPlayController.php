@@ -36,7 +36,7 @@ class EventPlayController extends Controller
             {
                 if(!session()->has('event') || 1==1)
                 {
-                    $event = Event::select('quedisplay','duration')->where('id', $request->input('id'))->first();
+                    $event = Event::select('id','quedisplay','duration')->where('id', $request->input('id'))->first();
 
                     $que = Queans::select('id','que','quetype')->where('eventid',$request->input('id'))->take($event->quedisplay)->get()->toArray();
                     shuffle($que);
@@ -74,8 +74,6 @@ class EventPlayController extends Controller
                             'response' => $response,
                         ]
                     );
-
-                    // dd(session()->all());
 
                     return redirect(url('student/event/play/1'));
                 }
@@ -130,7 +128,7 @@ class EventPlayController extends Controller
         return $this->play($queid);
     }
 
-    public function submit(Request $request)
+    public function submit(Request $request, $val = NULL)
     {
         if(!empty($request->input('opt')))
         {
@@ -142,7 +140,6 @@ class EventPlayController extends Controller
             $response[$request->input('curid')-1] = implode(",",$request->input('opt'));
             session(['response' => $response]);
         }
-
 
         $data = [];
         $userid = Auth::id();
@@ -163,6 +160,25 @@ class EventPlayController extends Controller
         }
         Response::insert($data);
 
-        return 1;
+        $req = Req::where('userid', Auth::id())->where('eventid', session('event')['id'])->update(
+            [
+                'status' => 2,
+            ]
+        );
+
+        $eventid = session('event')['id'];
+
+        session()->forget('event');
+        session()->forget('que');
+        session()->forget('submit');
+        session()->forget('duration');
+        session()->forget('start');
+        session()->forget('options');
+        session()->forget('response');
+
+        if(empty($val))
+            return redirect(url('student/event/'.$eventid));
+        else
+            return redirect(route('logout'));
     }
 }
