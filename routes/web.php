@@ -27,25 +27,28 @@ Route::group(['middleware' => ['web']], function ()
 
 		Route::group(['prefix' => '/student', 'middleware' => 'UserType:student'], function()
 		{
-			Route::get('/', function ()
+			Route::group(['middleware' => ['EventPlay']], function ()
 			{
-				$events = App\Event::select('id','name','start','end','duration')->where('isactive', '1')->orderBy('id', 'desc')->paginate(9);
-		    	return view('student.home', ['events' => $events]);
-			});
-			Route::group(['middleware' => ['EventAccess']], function ()
-			{
-				Route::get('/event/{id}', function ($id)
+				Route::get('/', function ()
 				{
-					$event = App\Event::select('name','description','img','duration','correctmark','wrongmark')->where('id', $id)->first();
-					$req = App\Req::select('status')->where('userid', Auth::id())->where('eventid', $id)->first();
-			    	return view('student.event', ['event' => $event, 'id' => $id, 'req' => $req]);
+					$events = App\Event::select('id','name','start','end','duration')->where('isactive', '1')->orderBy('id', 'desc')->paginate(9);
+			    	return view('student.home', ['events' => $events]);
 				});
-				Route::post('event/{id}/req', 'EventPlayController@req');
-				Route::post('event/{id}/join', 'EventPlayController@join');
+				Route::group(['middleware' => ['EventAccess']], function ()
+				{
+					Route::get('/event/{id}', function ($id)
+					{
+						$event = App\Event::select('name','description','img','duration','correctmark','wrongmark')->where('id', $id)->first();
+						$req = App\Req::select('status')->where('userid', Auth::id())->where('eventid', $id)->first();
+				    	return view('student.event', ['event' => $event, 'id' => $id, 'req' => $req]);
+					});
+					Route::post('event/{id}/req', 'EventPlayController@req');
+					Route::post('event/{id}/join', 'EventPlayController@join');
+				});
 			});
 			Route::get('event/play/{queid}', 'EventPlayController@play');
 			Route::post('/event/play/{queid}', 'EventPlayController@response');
-			Route::post('/event/submit', 'EventPlayController@submit');
+			Route::post('/event/submit/{val?}', 'EventPlayController@submit');
 		});
 
 		Route::group(['prefix' => '/teacher', 'middleware' => 'UserType:teacher'], function()
@@ -76,7 +79,5 @@ Route::group(['middleware' => ['web']], function ()
 		    	return view('society.home');
 			});
 		});
-
-
 	});
 });

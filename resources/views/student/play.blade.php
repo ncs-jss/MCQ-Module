@@ -143,7 +143,9 @@ body {
   <ul class="list-group list-group-flush">
     @php
       $quetype = session('que')[$queid-1]['quetype'];
-      $quetype = 1;
+
+      $response = explode(',', session('response')[$queid-1]);
+
       $keys = array_keys(array_column(session('options'),'queid'),session('que')[$queid-1]['id']);
       $end = strtotime(session('start')." + ".session('duration')." minute");
       $end = date('Y-m-d H:i:s', $end);
@@ -152,10 +154,18 @@ body {
     <li class="list-group-item">
       <label class="lbl">
       @if ($quetype==0)
-        <input type="radio" name="opt[]" value="{{ session('options')[$keys[$i]]['id'] }}">
+        <input type="radio" name="opt[]" value="{{ session('options')[$keys[$i]]['id'] }}"
+        @if (in_array(session('options')[$keys[$i]]['id'], $response))
+          checked="checked"
+        @endif
+        >
       <span class="checkmark rb"></span>
       @else
-        <input type="checkbox" name="opt[]" value="{{ session('options')[$keys[$i]]['id'] }}">
+        <input type="checkbox" name="opt[]" value="{{ session('options')[$keys[$i]]['id'] }}"
+        @if (in_array(session('options')[$keys[$i]]['id'], $response))
+          checked="checked"
+        @endif
+        >
       <span class="checkmark cb"></span>
       @endif
       {{ session('options')[$keys[$i]]['ans'] }}
@@ -186,6 +196,19 @@ body {
         <center>
           <h5>Please note that this action is irreversible.<br>Are you confirm that you really want to submit your response and exit this quiz ? </h5>
         <button type="submit" class="btn btn-success">Yes, Save & Exit this quiz</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+        </center>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade shadow" id="EventLogout" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <center>
+          <h5>Please note that this action is irreversible.<br>Are you confirm that you really want submit your response and logout ? </h5>
+        <button type="submit" class="btn btn-success" formaction="{{ url('student/event/submit/logout') }}">Yes, Save & Logout</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
         </center>
       </div>

@@ -79,8 +79,14 @@ body {
       							},1000);
       						}
       					</script>
-      			@else
+      			@elseif ($req->status == 1)
                   <button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#EventJoin" data-whatever="@fat">Start this Event</button>
+            @elseif ($req->status == 2)
+                <div class="alert alert-success" role="alert">
+                  <h5>
+                      Your had successfully played this event.
+                  </h5>
+                </div>
       			@endif
       				</center>
 				</div>

@@ -23,6 +23,10 @@
   	</ul>
     </div>
     @if (Auth::check())
+      @if (session()->has('event'))
+        <button class="btn btn-danger my-2 my-sm-0" type="button" data-toggle="modal" data-target="#EventLogout" data-whatever="@fat">Logout</button>
+      @else
         <a href="{{ route('logout') }}"><button class="btn btn-danger my-2 my-sm-0" type="submit">Logout</button></a>
+      @endif
     @endif
 </nav>
