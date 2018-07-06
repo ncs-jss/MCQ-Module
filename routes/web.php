@@ -64,15 +64,18 @@ Route::group(['middleware' => ['web']], function ()
 			});
 			Route::get('/event/create', function ()
 			{
-		    	return view('teacher.create-event');
+				$subject = App\Subject::select('*')->get()->toArray();
+		    	return view('teacher.create-event')->with('subject',$subject);
 			})->name('teacherCreateEvent');
 			Route::post('event/ques', 'EventController@create');
 			Route::get('event/view/{id}', function($id){
 				$event = App\Event::select('name','description','subid','img','start','end','duration','correctmark','wrongmark','quedisplay','isactive','creator')->where('id', $id)->first();
 				$authe =Auth::id();
+				$subject = App\Subject::select('*')->get()->toArray();
 				if($authe == $event->creator)
-					return view('teacher.view-event',['event' =>$event, 'id'=>$id]);
+					return view('teacher.view-event',['event' =>$event, 'id'=>$id, 'subject'=>$subject]);
 			});
+			Route::get('event/edit/{id}', 'EventController@edit');
 			Route::get('event/{id}', function($id) {
 				$event = App\Event::select('creator')->where('id', $id)->first();
 				$authe =Auth::id();
@@ -80,6 +83,7 @@ Route::group(['middleware' => ['web']], function ()
 					return view('teacher.add-ques')->with('id',$id);
 				else return back();
 			});
+			Route::post('event/delete/{id}', 'EventController@deleteEvent');
 			Route::post('event/{id}', 'EventController@add');
 		});
 

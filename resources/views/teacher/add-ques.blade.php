@@ -1,14 +1,6 @@
 @extends('layouts.default')
 @section('css')
-<style>
-body {
-  padding-top: 5rem;
-  background-color: #e9ecef;
-}
-.bg-purple {
-    background-color: #6f42c1;
-}
-</style>
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/panel.css') }}">
 @stop
 @section('content')
 <div class="container">

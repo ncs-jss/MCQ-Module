@@ -1,16 +1,13 @@
 @extends('layouts.default')
 @section('css')
-<style>
-body {
-  padding-top: 5rem;
-  background-color: #e9ecef;
-}
-.bg-purple {
-    background-color: #6f42c1;
-}
-</style>
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/panel.css') }}">
 @stop
 @section('content')
+@if (session('delete'))
+  <div class="alert alert-success">
+    {{ session('delete') }}
+  </div>
+@endif
 <div class="container">
 	<div class="card">
 		<div class="card-header  text-white bg-purple shadow">
@@ -21,8 +18,8 @@ body {
 			<?php $i = 0 ?>
 			@foreach ($events as $event)
 				<?php $i++;
-              $count = array_column($quecount, 'total','eventid');
-              $count =  $count[$event->id];
+             $count = array_column($quecount, 'total','eventid');
+             $count =  $count[$event->id];
         ?>
 				@if ($i==1 || $i==4 || $i==7)
     			<div class="card-deck">
