@@ -1,15 +1,6 @@
 @extends('layouts.default')
 @section('css')
-<style>
-body {
-  padding-top: 5rem;
-  padding-bottom: 3rem;
-  background-color: #e9ecef;
-}
-.bg-purple {
-    background-color: #6f42c1;
-}
-</style>
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/panel.css') }}">
 @stop
 @section('content')
 <div class="container">
@@ -26,7 +17,7 @@ body {
 			<div class="row">
 				<div class="col-sm-3">
 					<center>
-						<img class="rounded border border-dark shadow" src="{{ url($event->img) }}" width="200px" height="200px">
+						<img class="rounded border border-dark shadow" src="{{ url($event->img) }}" width="200px">
             <br>
             <br>
 					</center>
@@ -51,7 +42,7 @@ body {
 	      				</table>
       				</div>
       				<br>
-					<center>
+					<center id="data">
 						@if (empty($req))
                 <form action="{{ url('student/event/'.$id.'/req') }}" method="POST">
       						{{ csrf_field() }}
@@ -59,26 +50,48 @@ body {
       						<button type="submit" class="btn btn-danger btn-lg btn-block">Request to join this Event</button>
       					</form>
       			@elseif ($req->status == 0)
-                <div class="alert alert-primary" role="alert">
+                <div class="alert alert-primary" role="alert" id="Alert">
         					<h5>
         							Your request to join this event is pending for approval.
-        							<br>This page will get refresh in <font color="red" id="count">15</font> seconds to again check the status of your request.
+        							<br>This status of your request will be again check in <font color="red" id="count">15</font> seconds.
         					</h5>
                 </div>
+
       					<script>
       						window.onload = function()
       						{
       							var i = 15;
-      							setInterval(function()
+      							var check = setInterval(test,1000);
+                    function test()
       							{
       								i--;
       								if(i>0)
       									document.getElementById("count").innerHTML = i;
       								else
-      									location.reload();
-      							},1000);
+                      {
+                          $.post("{{ url('student/ajax/event/req') }}",
+                          {
+                              "id": "{{ $id }}",
+                              "_token": "{{ csrf_token() }}"
+                          },
+                          function(data, status){
+                            data = jQuery.parseJSON(data);
+                              if(data.status == 1)
+                              {
+                                $("#Alert").hide();
+                                $("#Joinbutton").show();
+                                clearInterval(check);
+                              }
+                              else
+                              {
+                                i = 15;
+                              }
+                          });
+                      }
+      							};
       						}
       					</script>
+                  <button type="button" class="btn btn-success btn-lg btn-block" style="display:none" id="Joinbutton" data-toggle="modal" data-target="#EventJoin" data-whatever="@fat">Start this Event</button>
       			@elseif ($req->status == 1)
                   <button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#EventJoin" data-whatever="@fat">Start this Event</button>
             @elseif ($req->status == 2)
@@ -95,7 +108,6 @@ body {
 	</div>
 </div>
 @if (!empty($req))
-@if(($req-> status == 1))
 <div class="modal fade shadow" id="EventJoin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -113,6 +125,5 @@ body {
     </div>
   </div>
 </div>
-@endif
 @endif
 @stop

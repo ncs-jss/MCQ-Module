@@ -20,7 +20,7 @@ Route::group(['middleware' => ['web']], function ()
 
 	Route::post('login', 'InfoConnectApiController@login')->name('LoginUrl');
 
-	Route::get('/logout', 'InfoConnectApiController@logout')->name('logout');
+	Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
 	Route::group(['middleware' => ['auth']], function ()
 	{
@@ -46,6 +46,7 @@ Route::group(['middleware' => ['web']], function ()
 					Route::post('event/{id}/join', 'EventPlayController@join');
 				});
 			});
+			Route::post('/ajax/event/req', 'AjaxController@event_req');
 			Route::get('event/play/{queid}', 'EventPlayController@play');
 			Route::post('/event/play/{queid}', 'EventPlayController@response');
 			Route::post('/event/submit/{val?}', 'EventPlayController@submit');
