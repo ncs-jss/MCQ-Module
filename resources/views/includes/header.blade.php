@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark shadow">
     <a class="navbar-brand" href="{{ url('/') }}">
-        {{ config('app.name', 'MCQ Model') }}
+        {{ config('app.name', 'MCQ Modul') }}
     </a>
 		<!-- Toggler/collapsibe Button -->
   	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
