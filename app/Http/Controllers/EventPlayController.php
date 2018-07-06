@@ -25,6 +25,10 @@ class EventPlayController extends Controller
     		$req->save();
     		return back()->with('msg','You had successfully requested to join this event.');
     	}
+        else
+        {
+            return back();
+        }
     }
 
     public function join(Request $request)
@@ -34,7 +38,7 @@ class EventPlayController extends Controller
         {
             if($req->status == 1)
             {
-                if(!session()->has('event') || 1==1)
+                if(!session()->has('event'))
                 {
                     $event = Event::select('id','quedisplay','duration')->where('id', $request->input('id'))->first();
 
@@ -77,7 +81,19 @@ class EventPlayController extends Controller
 
                     return redirect(url('student/event/play/1'));
                 }
+                else
+                {
+                    return back();
+                }
             }
+            else
+            {
+                return back();
+            }
+        }
+        else
+        {
+            return back();
         }
     }
 
@@ -130,55 +146,62 @@ class EventPlayController extends Controller
 
     public function submit(Request $request, $val = NULL)
     {
-        if(!empty($request->input('opt')))
-        {
-            $submit = session('submit');
-            $submit[$request->input('curid')-1] = 2;
-            session(['submit' => $submit]);
+        $duration = session('duration')+1;
+        $end = strtotime(session('start')." + ".$duration." minute");
+        $now = strtotime(date('Y-m-d H:i:s'));
 
-            $response = session('response');
-            $response[$request->input('curid')-1] = implode(",",$request->input('opt'));
-            session(['response' => $response]);
-        }
-
-        $data = [];
-        $userid = Auth::id();
-        $submit = session('submit');
-        $que = session('que');
-        $response = session('response');
-        for($i=0; $i<count(session('submit')); $i++)
+        if($end >= $now)
         {
-            if($submit[$i] == 2)
+            if(!empty($request->input('opt')))
             {
-                $value = [];
-                $value['userid'] =  $userid;
-                $value['queid'] =  $que[$i]['id'];
-                $value['ans'] =  $response[$i];
-                array_push($data,$value);
-                unset($value);
+                $submit = session('submit');
+                $submit[$request->input('curid')-1] = 2;
+                session(['submit' => $submit]);
+
+                $response = session('response');
+                $response[$request->input('curid')-1] = implode(",",$request->input('opt'));
+                session(['response' => $response]);
             }
+
+            $data = [];
+            $userid = Auth::id();
+            $submit = session('submit');
+            $que = session('que');
+            $response = session('response');
+            for($i=0; $i<count(session('submit')); $i++)
+            {
+                if($submit[$i] == 2)
+                {
+                    $value = [];
+                    $value['userid'] =  $userid;
+                    $value['queid'] =  $que[$i]['id'];
+                    $value['ans'] =  $response[$i];
+                    array_push($data,$value);
+                    unset($value);
+                }
+            }
+            Response::insert($data);
+
+            $req = Req::where('userid', Auth::id())->where('eventid', session('event')['id'])->update(
+                [
+                    'status' => 2,
+                ]
+            );
+
+            $eventid = session('event')['id'];
+
+            session()->forget('event');
+            session()->forget('que');
+            session()->forget('submit');
+            session()->forget('duration');
+            session()->forget('start');
+            session()->forget('options');
+            session()->forget('response');
+
+            if(empty($val))
+                return redirect(url('student/event/'.$eventid));
+            else
+                return redirect(route('logout'));
         }
-        Response::insert($data);
-
-        $req = Req::where('userid', Auth::id())->where('eventid', session('event')['id'])->update(
-            [
-                'status' => 2,
-            ]
-        );
-
-        $eventid = session('event')['id'];
-
-        session()->forget('event');
-        session()->forget('que');
-        session()->forget('submit');
-        session()->forget('duration');
-        session()->forget('start');
-        session()->forget('options');
-        session()->forget('response');
-
-        if(empty($val))
-            return redirect(url('student/event/'.$eventid));
-        else
-            return redirect(route('logout'));
     }
 }

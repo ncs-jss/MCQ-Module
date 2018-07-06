@@ -91,10 +91,4 @@ class InfoConnectApiController extends Controller
 	    	return back()->with('msg','The username and/or password you specified are not correct.');
 	    }
     }
-
-    public function logout()
-    {
-    	Auth::logout();
-    	return redirect()->route('login');
-    }
 }
