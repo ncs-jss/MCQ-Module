@@ -82,4 +82,10 @@ class EventController extends Controller
 		$event = Event::findOrFail($id);
 		return view('teacher.edit-event', compact('event'));
 	}
+
+	public function deleteEvent(Request $request, $id){
+		$event = Event::findOrFail($id);
+		$event->delete();
+		return redirect('teacher')->with('delete','Event Deleted Successfully');
+	}
 }

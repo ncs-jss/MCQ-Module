@@ -83,6 +83,7 @@ Route::group(['middleware' => ['web']], function ()
 					return view('teacher.add-ques')->with('id',$id);
 				else return back();
 			});
+			Route::post('event/delete/{id}', 'EventController@deleteEvent');
 			Route::post('event/{id}', 'EventController@add');
 		});
 

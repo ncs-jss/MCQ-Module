@@ -1,15 +1,6 @@
 @extends('layouts.default')
 @section('css')
-<style>
-body {
-  padding-top: 5rem;
-  padding-bottom: 3rem;
-  background-color: #e9ecef;
-}
-.bg-purple {
-    background-color: #6f42c1;
-}
-</style>
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/panel.css') }}">
 @stop
 @section('content')
 <div class="container">
@@ -17,8 +8,12 @@ body {
 	$sub = array_column($subject,'name', 'id');
 	?>
 	<div class="card animated fadeIn">
-		<div class="card-header text-white bg-purple shadow text-capitalize text-center">
-			<h2>{{ $event->name }}</h2>
+		<div class="card-header text-white bg-purple shadow text-capitalize">
+			<h2 class="float-left">{{ $event->name }}</h2>
+			<form method="post" action="{{url('teacher/event/delete/'.$id)}}">
+			    {{ csrf_field() }}
+			    <button type="submit" class="btn btn-danger btn-lg float-right" onclick="return confirm('Are you sure to delete?')">Delete</button>
+			</form>
 		</div>
 		<div class="card-body">
 			<div class="row">
@@ -61,7 +56,7 @@ body {
       				</div>
 				</div>
 				<div style="margin-top: 1rem;" class="container">
-					<a href="{{url('teacher/event/edit/'.$id)}}" class="btn btn-primary btn-lg float-left" role="button" aria-pressed="true"><i class="fa fa-edit"></i> Edit Event</a><a href="{{url('teacher/event/edit/'.$event->id)}}" class="btn btn-success btn-lg float-right" role="button" aria-pressed="true">Launch event</a>
+					<a href="{{url('teacher/event/edit/'.$id)}}" class="btn btn-primary btn-lg float-left" role="button" aria-pressed="true"><i class="fa fa-edit"></i> Edit Event</a><a href="{{url('teacher/event/edit/'.$id)}}" class="btn btn-success btn-lg float-right" role="button" aria-pressed="true">Launch event</a>
 				</div>
 			</div>
 		</div>
