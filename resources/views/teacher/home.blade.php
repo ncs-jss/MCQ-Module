@@ -20,34 +20,50 @@ body {
 		<div class="card-body">
 			<?php $i = 0 ?>
 			@foreach ($events as $event)
-				<?php $i++ ?>
+				<?php $i++;
+              $count = array_column($quecount, 'total','eventid');
+              $count =  $count[$event->id];
+        ?>
 				@if ($i==1 || $i==4 || $i==7)
     			<div class="card-deck">
-    			@endif
-  					<div class="card text-white bg-success
-  					 animated pulse shadow">
-  					<div class="card-header">
-      						<h3>{{ $event->name }}</h3>
-      				</div>
-      				<div class="card-body">
-      					<table class="table table-borderless table-sm">
-                    		<tbody>
-      							<tr>
-      								<td>Start: </td><td> {{ date('d M Y, g:i a',strtotime($event->start)) }}</td>
-      							</tr>
-      							<tr>
-      								<td>Close: </td><td> {{ date('d M Y, g:i a',strtotime($event->end)) }}</td>
-      							</tr>
-      							<tr>
-      								<td>Duration: </td><td> {{ sprintf("%02d",intdiv($event->duration, 60)).':'. sprintf("%02d",($event->duration % 60)) }}</td>
-      							</tr>
-                 			 </tbody>
-      					</table>
-    				</div>
-                    <a href="#"><div class="bg-primary card-footer"><center><strong class="text-white">Launch Event</strong></center></div></a>
-  					</div>
+    		@endif
+  			<div class="card text-white animated pulse shadow 
+          @if($count >= $event->quedisplay)
+            bg-warning 
+          @else bg-danger
+          @endif" id="cardbg">
+  				<a href="{{url('teacher/event/view/'.$event->id)}}" class="card-header text-capitalize" style="text-decoration: none;">
+      			<h3>{{ $event->name }}</h3>
+      		</a>
+      		<div class="card-body">
+      			<table class="table table-borderless table-sm">
+              <tbody>
+      					<tr>
+      						<td>Start: </td><td> {{ date('d M Y, g:i a',strtotime($event->start)) }}</td>
+      					</tr>
+                <tr>
+                  <td>display: </td><td>{{$event->quedisplay}}</td>
+                </tr>
+                <tr>
+      						<td>Close: </td><td> {{ date('d M Y, g:i a',strtotime($event->end)) }}</td>
+      					</tr>
+                <tr>
+                  <td>Questions</td><td>{{$count}}</td>
+                </tr>
+      					<tr>
+      						<td>Duration: </td><td> {{ sprintf("%02d",intdiv($event->duration, 60)).':'. sprintf("%02d",($event->duration % 60)) }}</td>
+      					</tr>
+              </tbody>
+      			</table>
+    			</div>
+          <div>
+            <a href="{{url('teacher/event/'.$event->id)}}" class="btn btn-primary float-left" role="button" aria-pressed="true"><i class="fa fa-plus"></i> Add Questions</a><a href="" id ="launch" class="btn btn-primary float-right 
+            @if ($count < $event->quedisplay)
+            disabled"@endif role="button" aria-pressed="true">Launch Event</a>
+          </div>
+  			</div>
       				@if ($i==3 || $i==6 || $i==9)
-				</div>
+			</div>
 				<br>
 				@endif
 			@endforeach
@@ -58,6 +74,7 @@ body {
 				</div>
 				<br>
 			@endif
+
 			<center>
 				{{ $events->links() }}
 			</center>

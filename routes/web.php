@@ -55,18 +55,28 @@ Route::group(['middleware' => ['web']], function ()
 		{
 			Route::get('/', function ()
 			{
-		    	return view('teacher.home');
+				$events = App\Event::select('id','name','start','end','duration','quedisplay')->where('creator', Auth::id())->orderBy('id', 'desc');
+				$eventarrey = $events->get()->toArray();
+				$events = $events->paginate(9);
+				$quecount = App\Queans::select('eventid',DB::raw('count(id) as total'))->whereIn('eventid',array_column($eventarrey, 'id'))->groupBy('eventid')->get()->toArray();
+				return view('teacher.home', ['events' => $events, 'quecount' => $quecount]);
 			});
 			Route::get('/event/create', function ()
 			{
 		    	return view('teacher.create-event');
 			})->name('teacherCreateEvent');
 			Route::post('event/ques', 'EventController@create');
+			Route::get('event/view/{id}', function($id){
+				$event = App\Event::select('name','description','subid','img','start','end','duration','correctmark','wrongmark','quedisplay','isactive','creator')->where('id', $id)->first();
+				$authe =Auth::id();
+				if($authe == $event->creator)
+					return view('teacher.view-event',['event' =>$event, 'id'=>$id]);
+			});
 			Route::get('event/{id}', function($id) {
 				$event = App\Event::select('creator')->where('id', $id)->first();
 				$authe =Auth::id();
 				if($authe == $event->creator)
-				return view('teacher.add-ques')->with('id',$id);
+					return view('teacher.add-ques')->with('id',$id);
 				else return back();
 			});
 			Route::post('event/{id}', 'EventController@add');
