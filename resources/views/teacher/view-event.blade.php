@@ -60,6 +60,9 @@ body {
 	      				</table>
       				</div>
 				</div>
+				<div style="margin-top: 1rem;" class="container">
+					<a href="{{url('teacher/event/edit/'.$id)}}" class="btn btn-primary btn-lg float-left" role="button" aria-pressed="true"><i class="fa fa-edit"></i> Edit Event</a><a href="{{url('teacher/event/edit/'.$event->id)}}" class="btn btn-success btn-lg float-right" role="button" aria-pressed="true">Launch event</a>
+				</div>
 			</div>
 		</div>
 	</div>

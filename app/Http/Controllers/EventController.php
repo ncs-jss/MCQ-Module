@@ -78,4 +78,8 @@ class EventController extends Controller
 
 				return back()->with('success','Question added successfuly');
 	}
+	public function edit($id){
+		$event = Event::findOrFail($id);
+		return view('teacher.edit-event', compact('event'));
+	}
 }

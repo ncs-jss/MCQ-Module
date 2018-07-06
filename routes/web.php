@@ -74,6 +74,7 @@ Route::group(['middleware' => ['web']], function ()
 				if($authe == $event->creator)
 					return view('teacher.view-event',['event' =>$event, 'id'=>$id, 'subject'=>$subject]);
 			});
+			Route::get('event/edit/{id}', 'EventController@edit');
 			Route::get('event/{id}', function($id) {
 				$event = App\Event::select('creator')->where('id', $id)->first();
 				$authe =Auth::id();
