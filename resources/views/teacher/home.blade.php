@@ -3,6 +3,13 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/panel.css') }}">
 @stop
 @section('content')
+
+@if (session('edit'))
+  <div class="alert alert-success">
+    {{ session('edit') }}
+  </div>
+@endif
+
 @if (session('delete'))
   <div class="alert alert-success">
     {{ session('delete') }}
@@ -25,8 +32,10 @@
     			<div class="card-deck">
     		@endif
   			<div class="card text-white animated pulse shadow 
-          @if($count >= $event->quedisplay)
-            bg-warning 
+          @if($count >= $event->quedisplay && $event->isactive == 0)
+            bg-warning
+          @elseif($count >= $event->quedisplay && $event->isactive == 1)
+          bg-success 
           @else bg-danger
           @endif" id="cardbg">
   				<a href="{{url('teacher/event/view/'.$event->id)}}" class="card-header text-capitalize" style="text-decoration: none;">
@@ -54,8 +63,8 @@
       			</table>
     			</div>
           <div>
-            <a href="{{url('teacher/event/'.$event->id)}}" class="btn btn-primary float-left" role="button" aria-pressed="true"><i class="fa fa-plus"></i> Add Questions</a><a href="" id ="launch" class="btn btn-primary float-right 
-            @if ($count < $event->quedisplay)
+            <a href="{{url('teacher/event/'.$event->id)}}" class="btn btn-primary float-left" role="button" aria-pressed="true"><i class="fa fa-plus"></i> Add Questions</a><a href="{{url('teacher/event/launch/'.$event->id)}}" id ="launch" class="btn btn-primary float-right 
+            @if ($count < $event->quedisplay || $event->isactive == 1)
             disabled"@endif role="button" aria-pressed="true">Launch Event</a>
           </div>
   			</div>

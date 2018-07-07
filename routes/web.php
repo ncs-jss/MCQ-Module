@@ -56,7 +56,7 @@ Route::group(['middleware' => ['web']], function ()
 		{
 			Route::get('/', function ()
 			{
-				$events = App\Event::select('id','name','start','end','duration','quedisplay')->where('creator', Auth::id())->orderBy('id', 'desc');
+				$events = App\Event::select('id','name','start','end','duration','quedisplay','isactive')->where('creator', Auth::id())->orderBy('id', 'desc');
 				$eventarrey = $events->get()->toArray();
 				$events = $events->paginate(9);
 				$quecount = App\Queans::select('eventid',DB::raw('count(id) as total'))->whereIn('eventid',array_column($eventarrey, 'id'))->groupBy('eventid')->get()->toArray();
@@ -64,18 +64,35 @@ Route::group(['middleware' => ['web']], function ()
 			});
 			Route::get('/event/create', function ()
 			{
-				$subject = App\Subject::select('*')->get()->toArray();
+				$subject = App\Subject::select('*')->orderBy('name' , 'asc')->get()->toArray();
 		    	return view('teacher.create-event')->with('subject',$subject);
 			})->name('teacherCreateEvent');
 			Route::post('event/ques', 'EventController@create');
 			Route::get('event/view/{id}', function($id){
 				$event = App\Event::select('name','description','subid','img','start','end','duration','correctmark','wrongmark','quedisplay','isactive','creator')->where('id', $id)->first();
 				$authe =Auth::id();
-				$subject = App\Subject::select('*')->get()->toArray();
+				$subject = App\Subject::select('*')->orderBy('name', 'asc')->get()->toArray();
 				if($authe == $event->creator)
 					return view('teacher.view-event',['event' =>$event, 'id'=>$id, 'subject'=>$subject]);
 			});
-			Route::get('event/edit/{id}', 'EventController@edit');
+			Route::get('event/edit/{id}', function($id){
+				$event = App\Event::findOrFail($id);
+				$subject = App\Subject::select('*')->get()->toArray();
+				return view('teacher.create-event',['event' =>$event, 'id'=>$id, 'subject'=>$subject]);
+			});
+			Route::post('event/edit/{id}', 'EventController@editEvent');
+			Route::get('event/launch/{id}', function($id){
+				$quecount = App\Queans::where('eventid' , $id)->get()->count();
+				$event = App\Event::select('quedisplay', 'isactive', 'id', 'name')->findOrFail($id);
+				$req = App\Req::select('userid', 'status')->where('eventid', $id)->get()->toArray();
+				$user = App\User::select('name', 'admno', 'rollno')->whereIn('id' , array_column($req, 'userid'))->get()->toArray();
+				if($quecount >= $event->quedisplay){
+					$event->isactive = 1;
+					$event->save();
+					return view('teacher.launched-event', ['request' => $req, 'user' => $user, 'event' => $event])
+;				}
+				else return back();
+			});
 			Route::get('event/{id}', function($id) {
 				$event = App\Event::select('creator')->where('id', $id)->first();
 				$authe =Auth::id();
