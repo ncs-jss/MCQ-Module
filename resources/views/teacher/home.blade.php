@@ -1,16 +1,20 @@
 @extends('layouts.default')
 @section('css')
-<style>
-body {
-  padding-top: 5rem;
-  background-color: #e9ecef;
-}
-.bg-purple {
-    background-color: #6f42c1;
-}
-</style>
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/panel.css') }}">
 @stop
 @section('content')
+
+@if (session('edit'))
+  <div class="alert alert-success">
+    {{ session('edit') }}
+  </div>
+@endif
+
+@if (session('delete'))
+  <div class="alert alert-success">
+    {{ session('delete') }}
+  </div>
+@endif
 <div class="container">
 	<div class="card">
 		<div class="card-header  text-white bg-purple shadow">
@@ -21,15 +25,17 @@ body {
 			<?php $i = 0 ?>
 			@foreach ($events as $event)
 				<?php $i++;
-              $count = array_column($quecount, 'total','eventid');
-              $count =  $count[$event->id];
+             $count = array_column($quecount, 'total','eventid');
+             $count =  $count[$event->id];
         ?>
 				@if ($i==1 || $i==4 || $i==7)
     			<div class="card-deck">
     		@endif
   			<div class="card text-white animated pulse shadow 
-          @if($count >= $event->quedisplay)
-            bg-warning 
+          @if($count >= $event->quedisplay && $event->isactive == 0)
+            bg-warning
+          @elseif($count >= $event->quedisplay && $event->isactive == 1)
+          bg-success 
           @else bg-danger
           @endif" id="cardbg">
   				<a href="{{url('teacher/event/view/'.$event->id)}}" class="card-header text-capitalize" style="text-decoration: none;">
@@ -57,8 +63,8 @@ body {
       			</table>
     			</div>
           <div>
-            <a href="{{url('teacher/event/'.$event->id)}}" class="btn btn-primary float-left" role="button" aria-pressed="true"><i class="fa fa-plus"></i> Add Questions</a><a href="" id ="launch" class="btn btn-primary float-right 
-            @if ($count < $event->quedisplay)
+            <a href="{{url('teacher/event/'.$event->id)}}" class="btn btn-primary float-left" role="button" aria-pressed="true"><i class="fa fa-plus"></i> Add Questions</a><a href="{{url('teacher/event/launch/'.$event->id)}}" id ="launch" class="btn btn-primary float-right 
+            @if ($count < $event->quedisplay || $event->isactive == 1)
             disabled"@endif role="button" aria-pressed="true">Launch Event</a>
           </div>
   			</div>

@@ -30,7 +30,9 @@ class EventController extends Controller
 			    $task->name = $request->name;
 			    $task->description = $request->description;
 			    $task->subid = $request->subject;
-			    $task->img = $request->quizimage;
+			    $img = $request->quizimage;
+			    if(!is_null($img))
+			    	$task->img = $img;
 			    $task->start = $request->start_time;
 			    $task->end = $request->end_time;
 			    $task->duration = $request->duration;
@@ -75,5 +77,42 @@ class EventController extends Controller
 				}
 
 				return back()->with('success','Question added successfuly');
+	}
+	public function editEvent(Request $request, $id){
+		$event = Event::findOrFail($id);
+			$this -> validate($request, [
+			        'name' => 'required|max:100',
+			        'description' => 'required|not_in:<br>',
+			        'subject' => 'required|not_in:0',
+			        'quizimage' => 'image|max:1000',
+			        'start_time' => 'required|after:Current_Date_Time',
+			        'end_time' => 'required|after:start_time',
+			        'duration' => 'required|numeric|not_in:0',
+			        'correct_mark' => 'required|numeric|not_in:0',
+			        'wrong_mark' => 'required|numeric',
+			        'display_ques' => 'required|numeric|not_in:0',
+					
+				]);
+				$event->name = $request->name;
+			    $event->description = $request->description;
+			    $event->subid = $request->subject;
+			    $img = $request->quizimage;
+			    if(!is_null($img))
+			    	$event->img = $img;
+			    $event->start = $request->start_time;
+			    $event->end = $request->end_time;
+			    $event->duration = $request->duration;
+			    $event->correctmark = $request->correct_mark;
+			    $event->wrongmark = $request->wrong_mark;
+			    $event->quedisplay = $request->display_ques;
+
+			    $event->save();
+			    return redirect('teacher')->with('edit','Event Edited Successfully');
+	}
+
+	public function deleteEvent(Request $request, $id){
+		$event = Event::findOrFail($id);
+		$event->delete();
+		return redirect('teacher')->with('delete','Event Deleted Successfully');
 	}
 }
