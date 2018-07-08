@@ -53,7 +53,7 @@ class InfoConnectApiController extends Controller
 
 	    if (array_key_exists('username',$arr))
 	    {
-
+	    	$newUser = 0; // Not a new user
 	    	$user = User::select('id')->where('admno', '=', $arr['username'])->first();
 	    	if (empty($user))
 	    	{
@@ -67,13 +67,18 @@ class InfoConnectApiController extends Controller
 	    		else
 	    			$user->type = 2; // Teacher, HOD, Adminitration
 	    		$user->save();
+
+	    		$newUser = 1; // New user
 	    	}
 
 	    	Auth::loginUsingId($user->id, ($request->has('remember')) ? true : false);
 	    	if($arr['group']=="student")
 	    	{
 	    		session(['UserType' => 'student']);
-	    		return redirect('student');
+	    		if($newUser == 1)
+	    			return redirect('student/profile/new')->with(['msg' => 'You are first time user hence please update your details.', 'class' => 'alert-primary']);
+	    		else
+	    			return redirect('student');
 	    	}
 	    	else if($arr['group']=="others")
 	    	{

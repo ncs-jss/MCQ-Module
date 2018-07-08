@@ -27,6 +27,10 @@ Route::group(['middleware' => ['web']], function ()
 
 		Route::group(['prefix' => '/student', 'middleware' => 'UserType:student'], function()
 		{
+			Route::get('profile/{val?}',function($val = NULL){
+				return view('student.profile', ['val' => $val]);
+			});
+			Route::post('profile','ProfileController@edit');
 			Route::group(['middleware' => ['EventPlay']], function ()
 			{
 				Route::get('/', function ()
