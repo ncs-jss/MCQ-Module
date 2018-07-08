@@ -84,12 +84,11 @@ Route::group(['middleware' => ['web']], function ()
 			Route::get('event/launch/{id}', function($id){
 				$quecount = App\Queans::where('eventid' , $id)->get()->count();
 				$event = App\Event::select('quedisplay', 'isactive', 'id', 'name')->findOrFail($id);
-				$req = App\Req::select('userid', 'status')->where('eventid', $id)->get()->toArray();
-				$user = App\User::select('name', 'admno', 'rollno')->whereIn('id' , array_column($req, 'userid'))->get()->toArray();
+				$req = App\Req::join('user', 'req.userid', '=', 'user.id')->select('userid', 'name',  'admno' ,  'rollno', 'status') ->where('eventid', $id)->get()->toArray();
 				if($quecount >= $event->quedisplay){
 					$event->isactive = 1;
 					$event->save();
-					return view('teacher.launched-event', ['request' => $req, 'user' => $user, 'event' => $event])
+					return view('teacher.launched-event', ['req' => $req, 'event' => $event])
 ;				}
 				else return back();
 			});
