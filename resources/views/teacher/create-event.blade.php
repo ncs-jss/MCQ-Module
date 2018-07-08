@@ -135,7 +135,7 @@
                 </div>
             </div>
 
-            <input type="hidden" name="Current_Date_Time" id="Current_Date_Time" value="{{date("m-d-Y H:i:s")}}">
+            <input type="hidden" name="Current_Date_Time" id="Current_Date_Time" value="{{date("Y-m-d H:i:s")}}">
 
 
             <!-- Add Event Button -->
