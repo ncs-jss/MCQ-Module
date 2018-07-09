@@ -14,6 +14,11 @@
                         {{ session('success') }}
                     </div>
             @endif
+            @if (session('Option'))
+                    <div class="alert alert-danger">
+                        {{ session('Option') }}
+                    </div>
+            @endif
             <!-- Question -->
             <div class="form-group">
                 <label for="question" class="col-sm-3 control-label">Question 1.</label>
@@ -69,6 +74,14 @@
                 <input type="hidden" name="count" value="2">
                 
             </div>
+
+             {{-- @if ($errors->has('option'))
+                    <div class="alert alert-danger">
+                        @foreach ($errors->get('option') as $opt)
+                                <strong>{{$opt}}</strong>
+                        @endforeach
+                        </div>
+                @endif --}}
       
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-6">
@@ -83,11 +96,11 @@
             	    });
             </script>
 
-            <!-- Add Task Button -->
+            <!-- Add Question Button -->
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-6">
                     <button type="submit" class="btn btn-success">
-                        <i class="fa fa-plus"></i> Add Task
+                        <i class="fa fa-plus"></i> Add Question
                     </button>
                 </div>
             </div>
