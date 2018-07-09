@@ -8,6 +8,7 @@ use App\Event;
 use App\Queans;
 use App\Option;
 use Auth;
+use App\Req;
 
 class EventController extends Controller
 {
@@ -31,8 +32,11 @@ class EventController extends Controller
 			    $task->description = $request->description;
 			    $task->subid = $request->subject;
 			    $img = $request->quizimage;
-			    if(!is_null($img))
+			    if(!is_null($img)){
+			    	$path_parts = pathinfo($_FILES["quizimage"]["name"]);
+			    	$image_path = $path_parts['filename'].'_'.time().'.'.$path_parts['extension'];
 			    	$task->img = $img;
+			    }
 			    $task->start = $request->start_time;
 			    $task->end = $request->end_time;
 			    $task->duration = $request->duration;
@@ -55,6 +59,7 @@ class EventController extends Controller
 					'opt3' => 'sometimes|not_in:<br>',
 					'opt4' => 'sometimes|not_in:<br>',
 					'opt5' => 'sometimes|not_in:<br>',
+					// 'option' => 'required|array|min:1'
 				]);
 				
 				$addque = new Queans;
@@ -65,6 +70,17 @@ class EventController extends Controller
 
 
 				$count = $request->count;
+				$flag=0;
+				for($y=1;$y <= $count; $y++){
+					$opti = $request->input('option'.$y);
+					if(!is_null($opti)){
+						$flag=1;
+						break;
+					}
+				}
+				if($flag==0)
+					return back()->with('Option', 'Please select atleast 1 correct answer');
+				
 				for($x=1; $x<=$count; $x++){
 					$option = new Option;
 					$option->queid = $addque->id;
@@ -114,5 +130,11 @@ class EventController extends Controller
 		$event = Event::findOrFail($id);
 		$event->delete();
 		return redirect('teacher')->with('delete','Event Deleted Successfully');
+	}
+	public function accessEvent(Request $request){
+		$allowaccess = $request->input('access');
+		if(!is_null($allowaccess))
+		$req = Req::whereIn('userid', $allowaccess)->update(['status' => 1]);
+		return back(); 
 	}
 }
