@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Auth;
 
 class ProfileUpdate
 {
@@ -15,6 +16,23 @@ class ProfileUpdate
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+        if(!session()->has('profilecheck'))
+        {
+            $adm_yr = substr(Auth::user()->admno, 0, 5);
+            $cur_yr = date("Y") - 2000;
+            if($cur_yr > $adm_yr)
+            {
+                session(['profilecheck' => 1]);
+                return redirect(url('student/profile/new'))->with(['msg' => 'You need to mention your universty roll number.', 'class' => 'alert-primary']);
+            }
+            else
+            {
+                return $next($request);
+            }
+        }
+        else
+        {
+            return $next($request);
+        }
     }
 }

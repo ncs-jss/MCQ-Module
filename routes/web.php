@@ -31,7 +31,7 @@ Route::group(['middleware' => ['web']], function ()
 				return view('student.profile', ['val' => $val]);
 			});
 			Route::post('profile','ProfileController@edit');
-			Route::group(['middleware' => ['EventPlay']], function ()
+			Route::group(['middleware' => ['EventPlay','ProfileUpdate']], function ()
 			{
 				Route::get('/', function ()
 				{

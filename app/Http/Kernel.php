@@ -60,5 +60,6 @@ class Kernel extends HttpKernel
         'RedirectIfAuthenticated' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'EventAccess' => \App\Http\Middleware\EventAccess::class,
         'EventPlay' => \App\Http\Middleware\EventPlay::class,
+        'ProfileUpdate' => \App\Http\Middleware\ProfileUpdate::class,
     ];
 }
