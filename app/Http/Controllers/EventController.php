@@ -35,7 +35,7 @@ class EventController extends Controller
 			    if(!is_null($img)){
 			    	$path_parts = pathinfo($_FILES["quizimage"]["name"]);
 			    	$image_path = $path_parts['filename'].'_'.time().'.'.$path_parts['extension'];
-			    	$task->img = $img;
+			    	$task->img = $image_path;
 			    }
 			    $task->start = $request->start_time;
 			    $task->end = $request->end_time;
@@ -50,7 +50,7 @@ class EventController extends Controller
 
 			    return redirect('teacher/event/'.$task->id);
 			}
-	public function add(Request $request) {
+	public function add(Request $request, $id) {
 				$this -> validate($request, [
 					'question' => 'required|not_in:<br>',
 					'quetype' => 'required',
@@ -64,10 +64,9 @@ class EventController extends Controller
 				
 				$addque = new Queans;
 				$addque->que = $request->question;
-				$addque->eventid = $request->route('id');
+				$addque->eventid = $id;
 				$addque->quetype = $request->quetype;
 				$addque->save();
-
 
 				$count = $request->count;
 				$flag=0;
@@ -78,6 +77,8 @@ class EventController extends Controller
 						break;
 					}
 				}
+				if($flag==0)
+					return back()->with('Option', 'Please select atleast 1 correct answer');
 				if($flag==0)
 					return back()->with('Option', 'Please select atleast 1 correct answer');
 				
@@ -91,7 +92,6 @@ class EventController extends Controller
 					else $option->iscorrect = 1;
 					$option->save();
 				}
-
 				return back()->with('success','Question added successfuly');
 	}
 	public function editEvent(Request $request, $id){
@@ -124,6 +124,19 @@ class EventController extends Controller
 
 			    $event->save();
 			    return redirect('teacher')->with('edit','Event Edited Successfully');
+	}
+		$this -> validate($request, [
+					'question' => 'required|not_in:<br>',
+					'quetype' => 'required',
+					'opt1' => 'required|not_in:<br>',
+					'opt2' => 'required|not_in:<br>',
+					'opt3' => 'sometimes|not_in:<br>',
+					'opt4' => 'sometimes|not_in:<br>',
+					'opt5' => 'sometimes|not_in:<br>',
+					// 'option' => 'required|array|min:1'
+				]);
+
+
 	}
 
 	public function deleteEvent(Request $request, $id){

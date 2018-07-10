@@ -81,6 +81,7 @@ Route::group(['middleware' => ['web']], function ()
 				return view('teacher.create-event',['event' =>$event, 'id'=>$id, 'subject'=>$subject]);
 			});
 			Route::post('event/edit/{id}', 'EventController@editEvent');
+			Route::post('event/allowaccess', 'EventController@accessEvent');
 			Route::get('event/launch/{id}', function($id){
 				$quecount = App\Queans::where('eventid' , $id)->get()->count();
 				$event = App\Event::select('quedisplay', 'isactive', 'id', 'name')->findOrFail($id);
@@ -94,13 +95,21 @@ Route::group(['middleware' => ['web']], function ()
 			});
 			Route::get('event/{id}', function($id) {
 				$event = App\Event::select('creator')->where('id', $id)->first();
+				$queans = App\Queans::select('id','que')->where('eventid', $id)->get()->toArray();
 				$authe =Auth::id();
 				if($authe == $event->creator)
-					return view('teacher.add-ques')->with('id',$id);
+					return view('teacher.add-ques', ['id'=>$id, 'queans'=>$queans]);
 				else return back();
 			});
+			Route::get('event/{id}/que/{qid}', function(){
+				$queans = App\Queans::select('id','que', 'quetype')->where('eventid', $id)->get()->toArray();
+				$options = App\Option::select('id', 'ans', 'iscorrect')->where('queid', $qid)->get()->toArray();
+				return view('teacher.add-ques', ['id'=>$id , 'queans'=> $queans, 'options' => $options, 'qid'=>$qid]);
+			})
+			Route::post('event/{id}/edit/que/{qid}', 'EventController@editque');
 			Route::post('event/delete/{id}', 'EventController@deleteEvent');
 			Route::post('event/{id}', 'EventController@add');
+			Route::post('/ajax/event/req', 'AjaxController@event_reqs');
 		});
 
 		Route::group(['prefix' => '/society', 'middleware' => 'UserType:society'], function()
