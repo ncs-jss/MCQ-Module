@@ -88,8 +88,8 @@
                               }
                           });
                       }
-      							};
-      						}
+      							}
+      						};
       					</script>
                   <button type="button" class="btn btn-success btn-lg btn-block" style="display:none" id="Joinbutton" data-toggle="modal" data-target="#EventJoin" data-whatever="@fat">Start this Event</button>
       			@elseif ($req->status == 1)

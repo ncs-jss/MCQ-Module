@@ -5,9 +5,12 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12 ">
+        <div class="col-md-9 col-sm-9 col-xs-12 ">
         <!-- New Add-Question Form -->
-        <form action="{{$id}}" method="POST" class="">
+        @if(isset($qid))
+             <form action="{{url('teacher/event/'.$id.'/edit/que/'.$qid)}}" method="POST">
+        @endif
+        <form action="{{$id}}" method="POST">
             {{ csrf_field() }}
             @if (session('success'))
                     <div class="alert alert-success">
@@ -111,7 +114,26 @@
                 </center>
         </div>
     </div>
-    
+    <div class="col-md-3 col-sm-3 col-xs-12 ">
+        <div class="card">
+            <div class="card-header text-white bg-purple shadow text-center">
+                <h5>Questions</h5>
+            </div>
+            <div class="card-body table-responsive">
+                <table class="table table-bordered shadow text-center bg-info table-dark table-small">
+                    <thead>
+                        <tr>
+                            <td>Content</td><td>Action</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($queans as $row)
+                            <tr><td>{!! $row['que'] !!}</td><td><a href="{{ url('teacher/event/'.$id.'/que/'.$row['id']) }}" class="btn btn-primary">Edit</a> <a href="{{ url('teacher/event/'.$id.'/que/'.$row['id'].'/delete') }}" class="btn btn-danger">Delete</a></td></tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
                     
 </div>
