@@ -25,7 +25,10 @@ class EventController extends Controller
 			        'correct_mark' => 'required|numeric|not_in:0',
 			        'wrong_mark' => 'required|numeric',
 			        'display_ques' => 'required|numeric|not_in:0',
-			    ]);
+			    ]
+				,[
+					'not_in' => 'The :attribute field is required.'
+				]);
 
 			    $task = new Event;
 			    $task->name = $request->name;

@@ -11,6 +11,6 @@ class QueansTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Queans::class, 5)->create();
+        factory(App\Queans::class, 50)->create();
     }
 }

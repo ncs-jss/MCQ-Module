@@ -12,7 +12,7 @@
 			<h2 class="float-left">{{ $event->name }}</h2>
 			<form method="post" action="{{url('teacher/event/delete/'.$id)}}">
 			    {{ csrf_field() }}
-			    <button type="submit" class="btn btn-danger btn-lg float-right" onclick="return confirm('Are you sure to delete?')">Delete</button>
+			    <button type="submit" class="btn btn-danger btn-lg float-right" onclick="return confirm('Are you sure to delete?')"><i class="fa fa-trash-alt"></i> Delete</button>
 			</form>
 		</div>
 		<div class="card-body">
@@ -24,7 +24,7 @@
 				</div>
 				<div class="col-sm-9 text-capitalize">
 					<div style="margin: auto;">
-						<h5><b>Description:  </b>{{ $event->description }}</h5>
+						<h5><b>Description:</b></h5>{!! $event->description !!}
 					</div>
 
 					<div class="table-responsive">
