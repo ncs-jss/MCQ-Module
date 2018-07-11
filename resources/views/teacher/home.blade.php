@@ -3,6 +3,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/panel.css') }}">
 @stop
 @section('content')
+<div class="container">
 
 @if (session('edit'))
   <div class="alert alert-success">
@@ -15,7 +16,7 @@
     {{ session('delete') }}
   </div>
 @endif
-<div class="container">
+
 	<div class="card">
 		<div class="card-header  text-white bg-purple shadow">
 			<h2 class="float-left">Quiz</h2>
@@ -24,10 +25,14 @@
 		<div class="card-body">
 			<?php $i = 0 ?>
 			@foreach ($events as $event)
-				<?php $i++;
+				@php
+              $i++;
              $count = array_column($quecount, 'total','eventid');
-             $count =  $count[$event->id];
-        ?>
+             if(array_key_exists($event->id,$count))
+                $count =  $count[$event->id];
+              else
+                $count = 0;
+        @endphp
 				@if ($i==1 || $i==4 || $i==7)
     			<div class="card-deck">
     		@endif

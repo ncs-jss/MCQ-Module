@@ -14,34 +14,26 @@ class AddForegionKey extends Migration
     public function up()
     {
         Schema::table('event', function (Blueprint $table) {
-            $table->index('creator');
-            $table->index('subid');
-            $table->foreign('creator')->references('id')->on('user')->onDelete('cascade');
-            $table->foreign('subid')->references('id')->on('subject')->onDelete('cascade');
+            $table->foreign('creator')->references('id')->on('user');
+            $table->foreign('subid')->references('id')->on('subject');
         });
 
         Schema::table('option', function (Blueprint $table) {
-            $table->index('queid');
-            $table->foreign('queid')->references('id')->on('queans')->onDelete('cascade');
+            $table->foreign('queid')->references('id')->on('queans');
         });
 
         Schema::table('queans', function (Blueprint $table) {
-            $table->index('eventid');
-            $table->foreign('eventid')->references('id')->on('event')->onDelete('cascade');
+            $table->foreign('eventid')->references('id')->on('event');
         });
 
         Schema::table('req', function (Blueprint $table) {
-            $table->index('userid');
-            $table->index('eventid');
-            $table->foreign('userid')->references('id')->on('user')->onDelete('cascade');
-            $table->foreign('eventid')->references('id')->on('event')->onDelete('cascade');
+            $table->foreign('userid')->references('id')->on('user');
+            $table->foreign('eventid')->references('id')->on('event');
         });
 
         Schema::table('response', function (Blueprint $table) {
-            $table->index('userid');
-            $table->index('queid');
-            $table->foreign('userid')->references('id')->on('user')->onDelete('cascade');
-            $table->foreign('queid')->references('id')->on('queans')->onDelete('cascade');
+            $table->foreign('userid')->references('id')->on('user');
+            $table->foreign('queid')->references('id')->on('queans');
         });
         
     }
@@ -54,34 +46,34 @@ class AddForegionKey extends Migration
     public function down()
     {
         Schema::table('event', function (Blueprint $table) {
-            $table->dropForeign('creator');
-            $table->dropForeign('subid');
-            $table->dropIndex('creator');
-            $table->dropIndex('subid');
+            $table->dropForeign('event_creator_foreign');
+            $table->dropForeign('event_subid_foreign');
+            $table->dropIndex('event_creator_foreign');
+            $table->dropIndex('event_subid_foreign');
         });
 
         Schema::table('option', function (Blueprint $table) {
-            $table->dropForeign('queid');
-            $table->dropIndex('queid');
+            $table->dropForeign('option_queid_foreign');
+            $table->dropIndex('option_queid_foreign');
         });
 
         Schema::table('queans', function (Blueprint $table) {
-            $table->dropForeign('eventid');
-            $table->dropIndex('eventid');
+            $table->dropForeign('queans_eventid_foreign');
+            $table->dropIndex('queans_eventid_foreign');
         });
 
-        Schema::table('request', function (Blueprint $table) {
-            $table->dropForeign('userid');
-            $table->dropForeign('eventid');
-            $table->dropIndex('userid');
-            $table->dropIndex('eventid');
+        Schema::table('req', function (Blueprint $table) {
+            $table->dropForeign('req_userid_foreign');
+            $table->dropForeign('req_eventid_foreign');
+            $table->dropIndex('req_userid_foreign');
+            $table->dropIndex('req_eventid_foreign');
         });
 
         Schema::table('response', function (Blueprint $table) {
-            $table->dropForeign('userid');
-            $table->dropForeign('queid');
-            $table->dropIndex('userid');
-            $table->dropIndex('queid');
+            $table->dropForeign('response_userid_foreign');
+            $table->dropForeign('response_queid_foreign');
+            $table->dropIndex('response_userid_foreign');
+            $table->dropIndex('response_queid_foreign');
         });
         
     }

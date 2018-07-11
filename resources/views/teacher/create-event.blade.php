@@ -45,7 +45,9 @@
             <div class="form-group">
                 <label for="description" class="control-label">Description <font color="red">*</font></label>
                 @if ($errors->has('description'))
-                    {{ $errors->first('description') }}
+                    <div class="alert alert-danger">
+                        {{ $errors->first('description') }}
+                    </div>
                 @endif
                 <textarea class="form-control {{ $errors->has('description') ? ' is-invalid' : '' }}" rows="5" id="description" name="description">@if(isset($id)){{$event->description}}@else{{ old('description') }}@endif</textarea>
             </div>
@@ -145,7 +147,11 @@
             <!-- Add Event Button -->
             <div class="form-group">
                     <button type="submit" id="btn2" class="btn btn-success btn-lg btn-block">
-                        <i class="fa fa-plus"></i> Add Event
+                        @if(isset($id))
+                            Save Event
+                        @else
+                            <i class="fa fa-plus"></i> Add Event
+                        @endif
                     </button>
                 </div>
             </div>
