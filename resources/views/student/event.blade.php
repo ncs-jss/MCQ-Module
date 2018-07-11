@@ -23,7 +23,7 @@
 					</center>
 				</div>
 				<div class="col-sm-9">
-					{{ $event->description }}
+					{!! $event->description !!}
 					<br>
 					<br>
 					<div class="table-responsive">
