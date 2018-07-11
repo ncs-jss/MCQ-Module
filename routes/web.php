@@ -105,10 +105,11 @@ Route::group(['middleware' => ['web']], function ()
 					return view('teacher.add-ques', ['id'=>$id, 'queans'=>$queans]);
 				else return back();
 			});
-			Route::get('event/{id}/que/{qid}', function(){
+			Route::get('event/{id}/que/{qid}', function($id, $qid){
 				$queans = App\Queans::select('id','que', 'quetype')->where('eventid', $id)->get()->toArray();
 				$options = App\Option::select('id', 'ans', 'iscorrect')->where('queid', $qid)->get()->toArray();
-				return view('teacher.add-ques', ['id'=>$id , 'queans'=> $queans, 'options' => $options, 'qid'=>$qid]);
+				dd($options);
+				return view('teacher.edit-ques', ['id'=>$id , 'queans'=> $queans, 'options' => $options, 'qid'=>$qid]);
 			});
 			// Route::post('event/{id}/edit/que/{qid}', 'EventController@editque');
 			Route::post('event/delete/{id}', 'EventController@deleteEvent');

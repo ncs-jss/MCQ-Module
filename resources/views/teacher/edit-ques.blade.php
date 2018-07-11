@@ -6,11 +6,8 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-sm-8 col-xs-12 ">
-        <!-- New Add-Question Form -->
-        @if(isset($qid))
+        <!-- New Edit-Question Form -->
              <form action="{{url('teacher/event/'.$id.'/edit/que/'.$qid)}}" method="POST">
-        @endif
-        <form action="{{$id}}" method="POST">
             {{ csrf_field() }}
             @if (session('success'))
                     <div class="alert alert-success">
@@ -24,7 +21,7 @@
             @endif
             <!-- Question -->
             <div class="form-group">
-                <label for="question" class="col-sm-3 control-label">Question 1.</label>
+                <label for="question" class="col-sm-3 control-label">Question.</label>
                 <select name="quetype" class="form-control form-control-sm col-sm-2 col-md-2 float-right" required>
                     <option selected value="0">Single Correct</option>
                     <option value="1">Multiple Correct</option>
@@ -56,23 +53,7 @@
                     <textarea class="form-control col-sm-7" rows="5" id="opt1" name="opt1"></textarea>
                 </div>
             </div>
-
-            <div class="form-group form-check">
-                <input class="form-check-input" type="checkbox" value="1" id="option2" name="option2">
-                <label for="opt2" class="col-sm-3 control-label">Option 2.</label>
-                @if ($errors->has('opt2'))
-                    <div class="alert alert-danger">
-                        @foreach ($errors->get('opt2') as $opt)
-                                <strong>{{$opt}}</strong>
-                        @endforeach
-                        </div>
-                @endif
-
-               <div>
-                    <textarea class="form-control col-sm-7" rows="5" id="opt2" name="opt2"></textarea>
-                </div>
-            </div>
-
+            @foreach()
             <div class="form-group form-check" id="add">
                 <input type="hidden" name="count" value="2">
                 

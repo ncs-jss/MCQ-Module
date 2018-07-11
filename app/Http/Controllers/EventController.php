@@ -125,20 +125,6 @@ class EventController extends Controller
 			    $event->save();
 			    return redirect('teacher')->with('edit','Event Edited Successfully');
 	}
-		$this -> validate($request, [
-					'question' => 'required|not_in:<br>',
-					'quetype' => 'required',
-					'opt1' => 'required|not_in:<br>',
-					'opt2' => 'required|not_in:<br>',
-					'opt3' => 'sometimes|not_in:<br>',
-					'opt4' => 'sometimes|not_in:<br>',
-					'opt5' => 'sometimes|not_in:<br>',
-					// 'option' => 'required|array|min:1'
-				]);
-
-
-	}
-
 	public function deleteEvent(Request $request, $id){
 		$event = Event::findOrFail($id);
 		$event->delete();
