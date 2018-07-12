@@ -63,14 +63,6 @@ class EventPlay
                         session(['eventcheck' => 1]);
                         return redirect(url('student/event/play/1'));
                     }
-                    else
-                    {
-                        array_push($data,$events[$key]['id']);
-                    }
-                }
-                if(count($data) > 0)
-                {
-                    Req::where('userid',Auth::id())->whereIn('eventid',$data)->delete();
                 }
                 session(['eventcheck' => 1]);
             }

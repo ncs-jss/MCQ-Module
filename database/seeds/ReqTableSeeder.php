@@ -11,6 +11,6 @@ class ReqTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Req::class, 5)->create();
+        factory(App\Req::class, 25)->create();
     }
 }
