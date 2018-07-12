@@ -95,6 +95,7 @@
             	var count = 3;
             	$("#btn1").click(function(){
             	$("#add").append('<input type="hidden" name="count" value="'+count+'"><input class="form-check-input" type="checkbox" value="1" id="option'+count+'" name="option'+count+'"><label for="opt" class="col-sm-3 control-label">Option '+count+'.</label> <div> <textarea class="form-control col-sm-7" rows="5" id="opt'+count+'" name="opt'+count+'"></textarea> </div>');
+                    var te =  new nicEditor({fullPanel : true}).panelInstance('opt'+count);
             	count++;
             	    });
             </script>

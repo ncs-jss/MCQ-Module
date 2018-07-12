@@ -93,9 +93,8 @@ Route::group(['middleware' => ['web']], function ()
 				if($quecount >= $event->quedisplay){
 					$event->isactive = 1;
 					$event->save();
-					return view('teacher.launched-event', ['req' => $req, 'event' => $event])
-;				}
-				else return back();
+					return view('teacher.launched-event', ['req' => $req, 'event' => $event]);				}
+					else return back();
 			});
 			Route::get('event/{id}', function($id) {
 				$event = App\Event::select('creator')->where('id', $id)->first();
@@ -106,13 +105,13 @@ Route::group(['middleware' => ['web']], function ()
 				else return back();
 			});
 			Route::get('event/{id}/que/{qid}', function($id, $qid){
-				$queans = App\Queans::select('id','que', 'quetype')->where('eventid', $id)->get()->toArray();
+				$que = App\Queans::findOrFail($qid);
 				$options = App\Option::select('id', 'ans', 'iscorrect')->where('queid', $qid)->get()->toArray();
-				dd($options);
-				return view('teacher.edit-ques', ['id'=>$id , 'queans'=> $queans, 'options' => $options, 'qid'=>$qid]);
+				return view('teacher.edit-ques', ['id'=>$id ,'options' => $options, 'qid' => $qid, 'que' => $que]);
 			});
 			// Route::post('event/{id}/edit/que/{qid}', 'EventController@editque');
 			Route::post('event/delete/{id}', 'EventController@deleteEvent');
+			Route::post('event/{id}/edit/que/{qid}', 'EventController@editQue');
 			Route::post('event/{id}', 'EventController@add');
 			Route::post('/ajax/event/req', 'AjaxController@event_reqs');
 		});
