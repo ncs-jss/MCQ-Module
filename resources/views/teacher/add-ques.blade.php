@@ -5,7 +5,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-9 col-sm-9 col-xs-12 ">
+        <div class="col-md-8 col-sm-8 col-xs-12 ">
         <!-- New Add-Question Form -->
         @if(isset($qid))
              <form action="{{url('teacher/event/'.$id.'/edit/que/'.$qid)}}" method="POST">
@@ -53,7 +53,7 @@
                 @endif
 
                 <div>
-                    <textarea class="form-control col-sm-6" rows="5" id="opt1" name="opt1"></textarea>
+                    <textarea class="form-control col-sm-7" rows="5" id="opt1" name="opt1"></textarea>
                 </div>
             </div>
 
@@ -69,7 +69,7 @@
                 @endif
 
                <div>
-                    <textarea class="form-control col-sm-6" rows="5" id="opt2" name="opt2"></textarea>
+                    <textarea class="form-control col-sm-7" rows="5" id="opt2" name="opt2"></textarea>
                 </div>
             </div>
 
@@ -94,7 +94,8 @@
             <script>
             	var count = 3;
             	$("#btn1").click(function(){
-            	$("#add").append('<input type="hidden" name="count" value="'+count+'"><input class="form-check-input" type="checkbox" value="1" id="option'+count+'" name="option'+count+'"><label for="opt" class="col-sm-3 control-label">Option '+count+'.</label> <div> <textarea class="form-control col-sm-6" rows="5" id="opt'+count+'" name="opt'+count+'"></textarea> </div>');
+            	$("#add").append('<input type="hidden" name="count" value="'+count+'"><input class="form-check-input" type="checkbox" value="1" id="option'+count+'" name="option'+count+'"><label for="opt" class="col-sm-3 control-label">Option '+count+'.</label> <div> <textarea class="form-control col-sm-7" rows="5" id="opt'+count+'" name="opt'+count+'"></textarea> </div>');
+                    var te =  new nicEditor({fullPanel : true}).panelInstance('opt'+count);
             	count++;
             	    });
             </script>
@@ -114,7 +115,7 @@
                 </center>
         </div>
     </div>
-    <div class="col-md-3 col-sm-3 col-xs-12 ">
+    <div class="col-md-4 col-sm-4 col-xs-12 ">
         <div class="card">
             <div class="card-header text-white bg-purple shadow text-center">
                 <h5>Questions</h5>
@@ -128,7 +129,7 @@
                     </thead>
                     <tbody>
                         @foreach($queans as $row)
-                            <tr><td>{!! $row['que'] !!}</td><td><a href="{{ url('teacher/event/'.$id.'/que/'.$row['id']) }}" class="btn btn-primary">Edit</a> <a href="{{ url('teacher/event/'.$id.'/que/'.$row['id'].'/delete') }}" class="btn btn-danger">Delete</a></td></tr>
+                            <tr><td>{!! $row['que'] !!}</td><td><a href="{{ url('teacher/event/'.$id.'/que/'.$row['id']) }}" class="btn btn-primary btn-sm">Edit</a> <a href="{{ url('teacher/event/'.$id.'/que/'.$row['id'].'/delete') }}" class="btn btn-danger btn-sm">Delete</a></td></tr>
                         @endforeach
                     </tbody>
                 </table>

@@ -128,20 +128,52 @@ class EventController extends Controller
 			    $event->save();
 			    return redirect('teacher')->with('edit','Event Edited Successfully');
 	}
+	public function editQue(Request $request, $id, $qid){
+		$editque = Queans::findOrFail($qid);
 		$this -> validate($request, [
 					'question' => 'required|not_in:<br>',
 					'quetype' => 'required',
-					'opt1' => 'required|not_in:<br>',
-					'opt2' => 'required|not_in:<br>',
-					'opt3' => 'sometimes|not_in:<br>',
-					'opt4' => 'sometimes|not_in:<br>',
-					'opt5' => 'sometimes|not_in:<br>',
-					// 'option' => 'required|array|min:1'
+					// 'opt1' => 'required|not_in:<br>',
+					// 'opt2' => 'required|not_in:<br>',
+					// 'opt3' => 'sometimes|not_in:<br>',
+					// 'opt4' => 'sometimes|not_in:<br>',
+					// 'opt5' => 'sometimes|not_in:<br>',
 				]);
+		$count = $request->count;
+				$flag=0;
+				for($y=1;$y <= $count; $y++){
+					$opti = $request->input('option'.$y);
+					if(!is_null($opti)){
+						$flag=1;
+						break;
+					}
+				}
+				if($flag==0)
+					return back()->with('Option', 'Please select atleast 1 correct answer');
 
+		$editque->que = $request->question;
+		$editque->quetype = $request->quetype;
+		$editque->save();
+		$options = Option::where('queid', $qid)->delete();
+
+		
+				
+				for($x=1; $x<=$count; $x++){
+					$option = new Option;
+					$option->queid = $qid;
+					$optans = $request->input('opt'.$x);
+					if(!is_null($optans) && $optans){
+						$option->ans = $optans;
+						$opt = $request->input('option'.$x);
+						if(is_null($opt))
+							$option->iscorrect = 0;
+						else $option->iscorrect = 1;
+						$option->save();
+					}
+				}
+				return back()->with('success','Question edited successfuly');
 
 	}
-
 	public function deleteEvent(Request $request, $id){
 		$event = Event::findOrFail($id);
 		$event->delete();
