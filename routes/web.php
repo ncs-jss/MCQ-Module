@@ -114,6 +114,7 @@ Route::group(['middleware' => ['web']], function ()
 			Route::post('event/{id}/edit/que/{qid}', 'EventController@editQue');
 			Route::post('event/{id}', 'EventController@add');
 			Route::post('/ajax/event/req', 'AjaxController@event_reqs');
+			Route::get('result/{id}', 'ResultController@view');
 		});
 
 		Route::group(['prefix' => '/society', 'middleware' => 'UserType:society'], function()
