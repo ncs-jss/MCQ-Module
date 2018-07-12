@@ -109,8 +109,8 @@ Route::group(['middleware' => ['web']], function ()
 				$queans = App\Queans::select('id','que', 'quetype')->where('eventid', $id)->get()->toArray();
 				$options = App\Option::select('id', 'ans', 'iscorrect')->where('queid', $qid)->get()->toArray();
 				return view('teacher.add-ques', ['id'=>$id , 'queans'=> $queans, 'options' => $options, 'qid'=>$qid]);
-			})
-			Route::post('event/{id}/edit/que/{qid}', 'EventController@editque');
+			});
+			// Route::post('event/{id}/edit/que/{qid}', 'EventController@editque');
 			Route::post('event/delete/{id}', 'EventController@deleteEvent');
 			Route::post('event/{id}', 'EventController@add');
 			Route::post('/ajax/event/req', 'AjaxController@event_reqs');
