@@ -31,6 +31,8 @@
             @endif
         
             {{ csrf_field() }}
+          <div class="float-right"><font color="red"><i>* = Required</i></font></div>
+          <br><br>
             <!-- Event Name -->
                     <div class="form-group">
                         <label for="name" class="control-label">Name/Title <font color="red">*</font></label>
