@@ -61,12 +61,25 @@
                                 {{ $errors->first('subject') }}
                             </div>
                         @endif
-                        <select name="subject" id="subject" class="custom-select mb-3 {{ $errors->has('subject') ? ' is-invalid' : '' }}" required>
+                        <select name="subject" id="subject" onchange="myFunction()" class="custom-select mb-3 {{ $errors->has('subject') ? ' is-invalid' : '' }}" required>
                             <option selected @if(isset($id)) value="{{$event->subid}}" @else value="0" disabled @endif>@if(isset($id)) {{$sub[$event->subid]}} @else Choose Subject @endif</option>
                             @foreach($sub as $sid => $subname) {
                             <option value="{{$sid}}">{{$subname}}</option>
                             @endforeach
+                            <option value="other">Other..</option>
                         </select>
+                        <input type="text" name="newsubject" id="newsubject" class="form-control" value="subject" placeholder="Subject" disabled>
+                        <script>
+                            function myFunction(){
+                            var subject = document.getElementById('subject');
+                            var selectedSubject = subject.options[subject.selectedIndex].value;
+                            if(selectedSubject == "other"){
+                                document.getElementById('newsubject').disabled = false;
+                            }
+                            else
+                                document.getElementById('newsubject').disabled = true;
+                        }
+                        </script>
                     </div>
 
                     <div class="form-group">

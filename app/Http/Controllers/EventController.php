@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Event;
 use App\Queans;
 use App\Option;
+use App\Subject;
 use Auth;
 use App\Req;
 
@@ -25,6 +26,7 @@ class EventController extends Controller
 			        'correct_mark' => 'required|numeric|not_in:0',
 			        'wrong_mark' => 'required|numeric',
 			        'display_ques' => 'required|numeric|not_in:0',
+			        'newsubject' => 'sometimes|not_in:subject',
 			    ]
 				,[
 					'not_in' => 'The :attribute field is required.'
@@ -33,9 +35,19 @@ class EventController extends Controller
 			    $task = new Event;
 			    $task->name = $request->name;
 			    $task->description = $request->description;
-			    $task->subid = $request->subject;
-			    $img = $request->quizimage;
-			    if(!is_null($img)){
+			    if($request->newsubject != "subject"){
+			    	//Add new Subject to subject table
+			    	$subject = new Subject;
+			    	$subject->name = $request->newsubject;
+			    	$subject->save();
+			    	$subject = Subject::select('id')->where('name', $request->newsubject)->first();
+			    	$task->subid = $subject->id;
+			    }
+			    else
+			    	$task->subid = $request->subject;
+			    // $img = $request->quizimage;
+			    if($request->hasFile('quizimage')){
+			    	$img = $request->file('quizimage');
 			    	$path_parts = pathinfo($_FILES["quizimage"]["name"]);
 			    	$image_path = $path_parts['filename'].'_'.time().'.'.$path_parts['extension'];
 			    	$request->quizimage->move(public_path('img'), $image_path);
