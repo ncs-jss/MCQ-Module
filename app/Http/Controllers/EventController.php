@@ -12,8 +12,8 @@ use App\Req;
 
 class EventController extends Controller
 {
-    //
-    public function create(Request $request) {
+    public function create(Request $request)
+    {
 			    $this -> validate($request, [
 			        'name' => 'required|max:100',
 			        'description' => 'required|not_in:<br>',
@@ -38,7 +38,8 @@ class EventController extends Controller
 			    if(!is_null($img)){
 			    	$path_parts = pathinfo($_FILES["quizimage"]["name"]);
 			    	$image_path = $path_parts['filename'].'_'.time().'.'.$path_parts['extension'];
-			    	$task->img = $image_path;
+			    	$request->quizimage->move(public_path('img'), $image_path);
+			    	$task->img = 'img/'.$image_path;
 			    }
 			    $task->start = $request->start_time;
 			    $task->end = $request->end_time;
@@ -95,7 +96,7 @@ class EventController extends Controller
 					else $option->iscorrect = 1;
 					$option->save();
 				}
-				return back()->with('success','Question added successfuly');
+				return back()->with('success','Question added successfully.');
 	}
 	public function editEvent(Request $request, $id){
 		$event = Event::findOrFail($id);

@@ -36,9 +36,10 @@
 					    </p>
 					@endif
 				</div>
-				<div class="form-group form-check">
-					<label class="form-check-label">
-						<input class="form-check-input" type="checkbox" name="remember"> 
+				<div class="form-group">
+					<label class="form-check-label lbl">
+						<input class="form-check-input" type="checkbox" name="remember">
+						<span class="checkmark cb border"></span>
 						Remember me
 					</label>
 				</div>
