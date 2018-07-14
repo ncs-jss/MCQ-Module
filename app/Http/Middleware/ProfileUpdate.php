@@ -20,13 +20,13 @@ class ProfileUpdate
         {
             $adm_yr = substr(Auth::user()->admno, 0, 5);
             $cur_yr = date("Y") - 2000;
-            if($cur_yr > $adm_yr)
+            if($cur_yr > $adm_yr && Auth::user()->rollno == NULL)
             {
-                session(['profilecheck' => 1]);
                 return redirect(url('student/profile/new'))->with(['msg' => 'You need to mention your universty roll number.', 'class' => 'alert-primary']);
             }
             else
             {
+                session(['profilecheck' => 1]);
                 return $next($request);
             }
         }

@@ -9,7 +9,6 @@
 		<div class="col-md-4 col-sm-4 col-xs-12 ">
 			<form action="{{ route('LoginUrl') }}" class="animated zoomIn form-control form-control-file form-container shadow p-3 mb-5 bg-white rounded border border-primary rounded " method="post" >
 				<div class="mx-auto">
-					<div class="mx-auto">
 					<h1 class="font-weight-bold text-center">{{ config('app.name', 'MCQ Modul') }}</h1>
 					@if (session('msg'))
 						<div class="alert alert-danger">
@@ -36,9 +35,10 @@
 					    </p>
 					@endif
 				</div>
-				<div class="form-group form-check">
-					<label class="form-check-label">
-						<input class="form-check-input" type="checkbox" name="remember"> 
+				<div class="form-group">
+					<label class="form-check-label lbl">
+						<input class="form-check-input" type="checkbox" name="remember">
+						<span class="checkmark cb border"></span>
 						Remember me
 					</label>
 				</div>
