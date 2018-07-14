@@ -13,7 +13,7 @@
                 <div class="card-body">
 
                     <!-- New Add-Question Form -->
-                    <form action="{{$id}}" method="POST">
+                    <form action="{{$id}}" method="POST" class="was-validated">
 
                         {{ csrf_field() }}
                         @if (session('success'))
@@ -48,9 +48,9 @@
                             </div>
                         </div>
 
-                        <div class="form-group form-check">
-                            <input @if(!empty(old('option1'))) checked @endif class="form-check-input" type="checkbox" value="1" id="option1" name="option1">
-                            <label for="opt1" class="col-sm-3 control-label">Option 1 <font color="red">*</font></label>
+                        <div class="form-group custom-control custom-checkbox mb-3">
+                            <input @if(!empty(old('option1'))) checked @endif class="custom-control-input" type="checkbox" value="1" id="option1" name="option1">
+                            <label class="custom-control-label" for="option1">Option 1 <font color="red">*</font></label>
                             @if ($errors->has('opt1'))
                                 <div class="alert alert-danger">
                                     @foreach ($errors->get('opt1') as $opt)
@@ -63,21 +63,16 @@
                                 <textarea class="form-control col-sm-7" rows="5" id="opt1" name="opt1">{{old('opt1')}}</textarea>
                             </div>
                         </div>
-
-                        <div class="form-group form-check">
-                            <label class="lbl">
-                                <input @if(!empty(old('option2'))) checked @endif class="form-check-input" type="checkbox" value="1" id="option2" name="option2">
-                                <span class="checkmark cb border"></span>
-
-                            </label>
-                            {{-- <label for="opt2" class="col-sm-3 control-label">Option 2.</label> --}}
-                            <br><br>
+                    
+                        <div class="form-group custom-control custom-checkbox mb-3">
+                            <input @if(!empty(old('option2'))) checked @endif class="custom-control-input" type="checkbox" value="1" id="option2" name="option2">
+                            <label class="custom-control-label" for="option2">Option 2 <font color="red">*</font></label>
                             @if ($errors->has('opt2'))
                                 <div class="alert alert-danger">
                                     @foreach ($errors->get('opt2') as $opt)
                                             <strong>{{$opt}}</strong>
                                     @endforeach
-                                    </div>
+                                </div>
                             @endif
 
                            <div>
@@ -85,7 +80,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group form-check" id="add">
+                        <div class="form-group custom-control custom-checkbox mb-3" id="add">
                             <input type="hidden" name="count" value="2">
                             
                         </div>
@@ -136,7 +131,7 @@
                         </thead>
                         <tbody>
                             @foreach($queans as $row)
-                                <tr><td>{!! $row['que'] !!}</td><td><a href="{{ url('teacher/event/'.$id.'/que/'.$row['id']) }}" class="btn btn-primary btn-sm">Edit</a> <a href="{{ url('teacher/event/'.$id.'/que/'.$row['id'].'/delete') }}" class="btn btn-danger btn-sm">Delete</a></td></tr>
+                                <tr><td>{!! $row['que'] !!}</td><td><a href="{{ url('teacher/event/'.$id.'/que/'.$row['id']) }}" class="btn btn-primary btn-sm">Edit</a><form method="POST" action="{{ url('teacher/event/'.$id.'/delete/que/'.$row['id']) }}"> {{ csrf_field() }} <button class="btn btn-danger btn-sm" type="submit">Delete</button> </form></td></tr>
                             @endforeach
                         </tbody>
                     </table>
