@@ -187,6 +187,12 @@ class EventController extends Controller
 				return back()->with('success','Question edited successfuly');
 
 	}
+	public function deleteQue(Request $request, $id, $qid){
+		$deleteque = Queans::findOrFail($qid)->delete();
+		$options = Option::where('queid', $qid)->delete();
+
+		return back();
+	}
 	public function deleteEvent(Request $request, $id){
 		$event = Event::findOrFail($id);
 		$event->delete();
