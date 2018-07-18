@@ -68,7 +68,7 @@
                             @endforeach
                             <option value="other">Other..</option>
                         </select>
-                        <input type="text" name="newsubject" id="newsubject" class="form-control" value="subject" placeholder="Subject" disabled>
+                        <input type="text" name="newsubject" id="newsubject" class="form-control" placeholder="Subject" disabled>
                         <script>
                             function myFunction(){
                             var subject = document.getElementById('subject');

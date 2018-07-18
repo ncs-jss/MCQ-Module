@@ -22,14 +22,19 @@
                         {{ session('Option') }}
                     </div>
             @endif
+            @if (session('Options'))
+                    <div class="alert alert-danger">
+                        {{ session('Options') }}
+                    </div>
+            @endif
             <!-- Question -->
             <div class="form-group">
                 <label for="question" class="col-sm-3 control-label">Question.</label>
                 <select name="quetype" class="form-control form-control-sm col-sm-2 col-md-2 float-right" required>
-                    @if($que->quetype == 0)
+                    @if(old('quetype', $que->quetype) == 0)
                     <option selected value="0">Single Correct</option>
                     <option value="1">Multiple Correct</option>
-                    @elseif($que->quetype == 1)
+                    @else
                     <option selected value="1">Multiple Correct</option>
                     <option value="0">Single Correct</option>
                     @endif
@@ -42,37 +47,64 @@
                     </div>
                     @endif
                 <div>
-                    <textarea class="form-control" rows="5" id="question" name="question">{{$que->que}}</textarea>
+                    <textarea class="form-control" rows="5" id="question" name="question">{{old('question',$que->que)}}</textarea>
                 </div>
             </div>
             <?php $i =0?>
-            @foreach($options as $option)
-            <?php $i++ ?>
-            <div class="con">
-            <div class="form-group form-check">
-                <input class="form-check-input" type="checkbox" value="1" id="option{{$i}}" name="option{{$i}}"
-                 @if($option['iscorrect']==1)
-                 checked
-                 @endif>
-                <label for="opt1" class="col-sm-3 control-label">Option {{$i}}.</label>
-                @if ($errors->has('opt1'))
-                    <div class="alert alert-danger">
-                        @foreach ($errors->get('opt1') as $opt)
-                                <strong>{{$opt}}</strong>
-                        @endforeach
+            @if(empty(old('count')))
+                @foreach($options as $option)
+                <?php $i++ ?>
+                <div class="con">
+                <div class="form-group form-check">
+                    <input class="form-check-input" type="checkbox" value="1" id="option{{$i}}" name="option{{$i}}"
+                     @if($option['iscorrect']==1)
+                     checked
+                     @endif>
+                    <label for="opt1" class="col-sm-3 control-label">Option</label>
+                    @if ($errors->has('opt1'))
+                        <div class="alert alert-danger">
+                            @foreach ($errors->get('opt1') as $opt)
+                                    <strong>{{$opt}}</strong>
+                            @endforeach
+                        </div>
+                    @endif
+                    <div>
+                        <textarea class="form-control col-sm-7" rows="5" id="opt{{$i}}" name="opt{{$i}}">{{$option['ans']}}</textarea>
                     </div>
-                @endif
-                <div>
-                    <textarea class="form-control col-sm-7" rows="5" id="opt{{$i}}" name="opt{{$i}}">{{$option['ans']}}</textarea>
+                    <span class="rem" ><a href="javascript:void(0);" class="anchor btn-outline-danger"><i class="fa fa-trash"></i>Delete option</a></span>
                 </div>
-                <span class="rem" ><a href="javascript:void(0);" class="anchor btn-outline-danger"><i class="fa fa-trash"></i>Delete option</a></span>
             </div>
-        </div>
-            @endforeach
+                @endforeach
+            @else
+                @for ($i = 1; $i <= old('count'); $i++)
+                    @if(!empty(old('opt'.$i)))
+                <div class="con">
+                <div class="form-group form-check">
+                    <input class="form-check-input" type="checkbox" value="1" id="option{{$i}}" name="option{{$i}}"
+                     @if(!empty(old('option'.$i)))
+                     checked
+                     @endif>
+                    <label for="opt1" class="col-sm-3 control-label">Option</label>
+                    @if ($errors->has('opt'.$i))
+                        <div class="alert alert-danger">
+                            @foreach ($errors->get('opt'.$i) as $opt)
+                                    <strong>{{$opt}}</strong>
+                            @endforeach
+                        </div>
+                    @endif
+                    <div>
+                        <textarea class="form-control col-sm-7" rows="5" id="opt{{$i}}" name="opt{{$i}}">{{old('opt'.$i)}}</textarea>
+                    </div>
+                    <span class="rem" ><a href="javascript:void(0);" class="anchor btn-outline-danger"><i class="fa fa-trash"></i>Delete option</a></span>
+                </div>
+            </div>
+
+                    @endif
+                @endfor
+            @endif
 
             <div class="contents">
-                <input type="hidden" name="count" value="{{$i}}">
-                <input type="hidden" name="counter" value="{{$i}}">
+                <input type="hidden" name="count" value="{{old('count',$i)}}">
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-6">
@@ -114,4 +146,3 @@
         </div>   
 </div>               
 @stop
-
