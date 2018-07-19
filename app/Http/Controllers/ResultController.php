@@ -27,7 +27,7 @@ class ResultController extends Controller
 
 			$response = Response::whereIn('queid', $que)->whereIn('queid', $que)->get()->toArray();
 
-			$userid = array_column($response, 'userid');
+			$userid = array_unique(array_column($response, 'userid'));
 
 			$user = User::select('id','name','admno','rollno')->whereIn('id', $userid)->get()->toArray();
 

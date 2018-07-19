@@ -52,7 +52,7 @@
   <div class="col-sm-9">
   <div class="card shadow">
     <div class="card-body">
-      <h4><span class="badge badge-secondary">Q. {{ $queid }}</span> {{ session('que')[$queid-1]['que'] }}</h4>
+      <h4><span class="badge badge-secondary">Q. {{ $queid }}</span> {!! session('que')[$queid-1]['que'] !!}</h4>
       </div>
   <ul class="list-group list-group-flush">
     @php
@@ -82,7 +82,7 @@
         >
       <span class="checkmark cb"></span>
       @endif
-      {{ session('options')[$keys[$i]]['ans'] }}
+      {!! session('options')[$keys[$i]]['ans'] !!}
     </label>
     </li>
     @endfor

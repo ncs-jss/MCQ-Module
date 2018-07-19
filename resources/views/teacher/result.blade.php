@@ -5,19 +5,16 @@
 @section('content')
 <div class="container">
 	<div class="card animated fadeInUp">
-		<div class="card-header text-white bg-purple shadow">
-			<h2>{{ $name }}</h2>
+		<div class="card-header text-white bg-purple shadow text-capitalize text-center">
+			<h2>{{ $name }} - Result</h2>
 		</div>
 		<div class="card-body">
 			<div class="table-responsive">
-  				<table class="table table-striped">
-  					<thead class="thead-dark">
+  				<table class="table table-bordered shadow text-center bg-info table-dark" style="margin: 2rem 0 2rem 0;">
+  					<thead>
   						<tr>
-	  						<th>Rank</th>
-	  						<th>Name<br>Adm. No.<br>Roll. No.</th>
-	  						<th>Correct Attempt<br>Wrong Attemp<br>Total Attempt</th>
-	  						<th>Marks</th>
-	  					</tr>
+  							<th>Rank</th><th>Name of Student</th><th>Admission No.</th><th>Roll No.</th><th>Attempted</th><th>Correct</th><th>Wrong</th><th>Marks</th>
+  						</tr>
   					</thead>
   					@php
   						$i = 0;
@@ -40,8 +37,8 @@
 										$previous = $r['marks'];
 									@endphp
 								</td>
-								<td>{{ $r['name'] }}<br>{{ $r['admno'] }}<br>{{ $r['rollno'] }}</td>
-								<td>{{ $r['correct'] }}<br>{{ $r['wrong'] }}<br>{{ $r['correct']+$r['wrong'] }}</td>
+								<td>{{ $r['name'] }}<td>{{ $r['admno'] }}</td><td>{{ $r['rollno'] }}</td>
+								<td>{{ $r['correct']+$r['wrong'] }}</td><td>{{ $r['wrong'] }}</td><td>{{ $r['correct'] }}</td>
 								<td>{{ $r['marks'] }}</td>
 							</tr>
 						@endforeach

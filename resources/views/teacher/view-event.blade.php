@@ -55,11 +55,21 @@
 	      				</table>
       				</div>
 				</div>
-				<div style="margin-top: 1rem;" class="container">
-					<a href="{{url('teacher/event/edit/'.$id)}}" class="btn btn-primary btn-lg float-left" role="button" aria-pressed="true"><i class="fa fa-edit"></i> Edit Event</a><a href="{{url('teacher/event/edit/'.$id)}}" class="btn btn-success btn-lg float-right" role="button" aria-pressed="true">Launch event</a>
+			</div>
+			<div style="margin-top: 1rem;" class="card-footer">
+				@if($event->end > date("Y-m-d H:i:s"))
+				@if($event->isactive == 0)
+				<a href="{{url('teacher/event/edit/'.$id)}}" class="btn btn-primary btn-lg float-left" role="button" aria-pressed="true"><i class="fa fa-edit"></i> Edit Event</a>
+				<a href="{{url('teacher/event/launch/'.$id)}}" class="btn btn-success btn-lg float-right
+				@if ($quecount < $event->quedisplay)
+				disabled @endif" role="button" aria-pressed="true">Launch event</a>@else
+				 <a href="{{url('teacher/event/launch/'.$id)}}" id ="launch" class="btn btn-success btn-lg btn-block 
+            	@if ($quecount < $event->quedisplay)
+            	disabled @endif" role="button" aria-pressed="true">View Requests</a>@endif
+            	@else <a href="{{url('teacher/event/'.$id.'/result')}}" id ="viewresult" class="btn btn-success btn-lg btn-block" role="button" aria-pressed="true">View Result</a>
+            	@endif
 				</div>
 			</div>
-		</div>
 	</div>
 </div>
 @stop
