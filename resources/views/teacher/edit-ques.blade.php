@@ -29,7 +29,7 @@
             @endif
             <!-- Question -->
             <div class="form-group">
-                <label for="question" class="col-sm-3 control-label">Question.</label>
+                <label for="question" class="col-sm-3 control-label">Question <font color="red">*</font></label>
                 <select name="quetype" class="form-control form-control-sm col-sm-2 col-md-2 float-right" required>
                     @if(old('quetype', $que->quetype) == 0)
                     <option selected value="0">Single Correct</option>
@@ -55,49 +55,43 @@
                 @foreach($options as $option)
                 <?php $i++ ?>
                 <div class="con">
-                <div class="form-group form-check">
-                    <input class="form-check-input" type="checkbox" value="1" id="option{{$i}}" name="option{{$i}}"
-                     @if($option['iscorrect']==1)
-                     checked
-                     @endif>
-                    <label for="opt1" class="col-sm-3 control-label">Option</label>
-                    @if ($errors->has('opt1'))
-                        <div class="alert alert-danger">
-                            @foreach ($errors->get('opt1') as $opt)
+                    <div class="form-group custom-control custom-checkbox mb-3">
+                        <input @if($option['iscorrect']==1) checked @endif class="custom-control-input" type="checkbox" value="1" id="option{{$i}}" name="option{{$i}}" >
+                        <label class="custom-control-label" for="option{{$i}}">Option</label>
+                        @if ($errors->has('opt1'))
+                            <div class="alert alert-danger">
+                                @foreach ($errors->get('opt1') as $opt)
                                     <strong>{{$opt}}</strong>
-                            @endforeach
+                                @endforeach
+                            </div>
+                        @endif
+                        <div>
+                            <textarea class="form-control col-sm-7" rows="5" id="opt{{$i}}" name="opt{{$i}}">{{$option['ans']}}</textarea>
                         </div>
-                    @endif
-                    <div>
-                        <textarea class="form-control col-sm-7" rows="5" id="opt{{$i}}" name="opt{{$i}}">{{$option['ans']}}</textarea>
+                        <span class="rem" ><a href="javascript:void(0);" class="anchor btn-outline-danger"><i class="fa fa-trash"></i>Delete option</a></span>
                     </div>
-                    <span class="rem" ><a href="javascript:void(0);" class="anchor btn-outline-danger"><i class="fa fa-trash"></i>Delete option</a></span>
                 </div>
-            </div>
                 @endforeach
             @else
                 @for ($i = 1; $i <= old('count'); $i++)
                     @if(!empty(old('opt'.$i)))
                 <div class="con">
-                <div class="form-group form-check">
-                    <input class="form-check-input" type="checkbox" value="1" id="option{{$i}}" name="option{{$i}}"
-                     @if(!empty(old('option'.$i)))
-                     checked
-                     @endif>
-                    <label for="opt1" class="col-sm-3 control-label">Option</label>
-                    @if ($errors->has('opt'.$i))
-                        <div class="alert alert-danger">
-                            @foreach ($errors->get('opt'.$i) as $opt)
+                    <div class="form-group custom-control custom-checkbox mb-3">
+                        <input @if(!empty(old('option'.$i))) checked @endif class="custom-control-input" type="checkbox" value="1" id="option{{$i}}" name="option{{$i}}">
+                        <label class="custom-control-label" for="option{{$i}}">Option</label>
+                        @if ($errors->has('opt'.$i))
+                            <div class="alert alert-danger">
+                                @foreach ($errors->get('opt'.$i) as $opt)
                                     <strong>{{$opt}}</strong>
-                            @endforeach
+                                @endforeach
+                            </div>
+                        @endif
+                        <div>
+                            <textarea class="form-control col-sm-7" rows="5" id="opt{{$i}}" name="opt{{$i}}">{{old('opt'.$i)}}</textarea>
                         </div>
-                    @endif
-                    <div>
-                        <textarea class="form-control col-sm-7" rows="5" id="opt{{$i}}" name="opt{{$i}}">{{old('opt'.$i)}}</textarea>
+                        <span class="rem" ><a href="javascript:void(0);" class="anchor btn-outline-danger"><i class="fa fa-trash"></i>Delete option</a></span>
                     </div>
-                    <span class="rem" ><a href="javascript:void(0);" class="anchor btn-outline-danger"><i class="fa fa-trash"></i>Delete option</a></span>
                 </div>
-            </div>
 
                     @endif
                 @endfor
@@ -116,7 +110,7 @@
             $(document).ready(function() {
                 $(".add").click(function() {
                     count++;
-                    $('<div class="form-group form-check"><input type="hidden" name="count" value="'+count+'"><input class="form-check-input" type="checkbox" value="1" name="option'+count+'"><label for="opt'+count+'" class="col-sm-3 control-label">Option.</label> <textarea class="form-control col-sm-7" name="opt'+count+'" id="opt'+count+'" rows="5"></textarea><span class="rem" ><a href="javascript:void(0);" class="anchor btn-outline-danger" ><i class="fa fa-trash"></i>Delete option</span></div>').appendTo(".contents");
+                    $('<div class="form-group custom-control custom-checkbox mb-3"><input type="hidden" name="count" value="'+count+'"><input class="custom-control-input" type="checkbox" value="1" id="option'+count+'" name="option'+count+'"><label class="custom-control-label" for="option'+count+'">Option.</label> <textarea class="form-control col-sm-7" name="opt'+count+'" id="opt'+count+'" rows="5"></textarea><span class="rem" ><a href="javascript:void(0);" class="anchor btn-outline-danger" ><i class="fa fa-trash"></i>Delete option</span></div>').appendTo(".contents");
                     var te =  new nicEditor({fullPanel : true}).panelInstance('opt'+count);
                 });
                 $('.contents').on('click', '.rem', function() {

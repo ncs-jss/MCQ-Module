@@ -92,7 +92,7 @@
                             </div>
                         @endif
                         <input type="file" class="form-control-file {{ $errors->has('quizimage') ? ' is-invalid' : '' }}" accept="image/*" id="quizimage" aria-describedby="fileHelp" name="quizimage" @if(isset($id)) value="{{$event->img}}" @endif>
-                    <small id="fileHelp" class="form-text text-muted">Choose a quiz-image to upload otherwise leave it. </small>
+                        <small id="fileHelp" class="form-text text-muted">Choose a quiz-image to upload otherwise leave it. </small>
                     </div>
 
                     <div class="form-group">
