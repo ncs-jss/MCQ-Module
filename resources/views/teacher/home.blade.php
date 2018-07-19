@@ -23,6 +23,9 @@
 			<a class="anchor btn-success btn-lg float-right" href="{{ route('teacherCreateEvent') }}" style="text-decoration: none;"> <i class="fa fa-plus"></i> Create New Quiz</a>
 		</div>
 		<div class="card-body">
+      @if($events->isEmpty())
+      <h1 class="text-gray-dark text-center">No Quiz to show</h1>
+      @endif
 			<?php $i = 0 ?>
 			@foreach ($events as $event)
 				@php
@@ -36,15 +39,16 @@
 				@if ($i==1 || $i==4 || $i==7)
     			<div class="card-deck">
     		@endif
-  			<div class="card text-white animated pulse shadow 
+  			<div class="card text-white animated pulse shadow
+          @if($event->end > date("Y-m-d H:i:s")) 
           @if($count >= $event->quedisplay && $event->isactive == 0)
             bg-warning
           @elseif($count >= $event->quedisplay && $event->isactive == 1)
           bg-success 
           @else bg-danger
-          @endif" id="cardbg">
+          @endif @else bg-dark" @endif  id="cardbg">
   				<a href="{{url('teacher/event/view/'.$event->id)}}" class="card-header text-capitalize" style="text-decoration: none;">
-      			<h3>{{ $event->name }}</h3>
+      			<h3 class="text-center text-capitalize">{{ $event->name }}</h3>
       		</a>
       		<div class="card-body">
       			<table class="table table-borderless table-sm">
@@ -67,10 +71,15 @@
               </tbody>
       			</table>
     			</div>
-          <div>
+          <div class="card-footer">
+            @if($event->end > date("Y-m-d H:i:s"))
+            @if ($event->isactive == 0)
             <a href="{{url('teacher/event/'.$event->id)}}" class="btn btn-primary float-left" role="button" aria-pressed="true"><i class="fa fa-plus"></i> Add Questions</a><a href="{{url('teacher/event/launch/'.$event->id)}}" id ="launch" class="btn btn-primary float-right 
-            @if ($count < $event->quedisplay || $event->isactive == 1)
-            disabled"@endif role="button" aria-pressed="true">Launch Event</a>
+            @if ($count < $event->quedisplay)
+            disabled"@endif role="button" aria-pressed="true">Launch Event</a> @else <a href="{{url('teacher/event/launch/'.$event->id)}}" id ="launch" class="btn btn-warning btn-block btn-lg 
+            @if ($count < $event->quedisplay)
+            disabled"@endif role="button" aria-pressed="true">View Requests</a>@endif
+            @else <a href="{{url('teacher/event/'.$event->id.'/result')}}" class="btn btn-success btn-lg btn-block" role="button" aria-pressed="true">View Result</a> @endif
           </div>
   			</div>
       				@if ($i==3 || $i==6 || $i==9)

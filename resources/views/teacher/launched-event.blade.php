@@ -41,7 +41,7 @@ $count = count($req);
 	</button>
 </form>
 <h5 class="text-center">
-	The page will refresh in <font color="red" id="counts">5</font> seconds to update the incoming requests.
+	The page will refresh in <font color="red" id="counts">15</font> seconds to update the incoming requests.
 </h5>
 <script>
 	window.onload = function(){
