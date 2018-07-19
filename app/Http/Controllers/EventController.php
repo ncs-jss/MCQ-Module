@@ -69,12 +69,12 @@ class EventController extends Controller
 	public function add(Request $request, $id) {
 				$this -> validate($request, [
 					'question' => 'required|not_in:<br>',
-					'quetype' => 'required',
+					'quetype' => 'required|digits_between:0,1',
 					'opt1' => 'required|not_in:<br>',
 					'opt2' => 'required|not_in:<br>',
-					// 'opt3' => 'sometimes|not_in:<br>',
-					// 'opt4' => 'sometimes|not_in:<br>',
-					// 'option' => 'required|array|min:1'
+					]
+					,[
+					'not_in' => 'The :attribute field is required.',
 				]);
 				
 				$count = $request->count;
@@ -125,6 +125,9 @@ class EventController extends Controller
 			        'correct_mark' => 'required|numeric|not_in:0',
 			        'wrong_mark' => 'required|numeric',
 			        'display_ques' => 'required|numeric|not_in:0',
+			    ]
+			    ,[
+					'not_in' => 'The :attribute field is required.'
 					
 				]);
 				$event->name = $request->name;
@@ -147,12 +150,10 @@ class EventController extends Controller
 		$editque = Queans::findOrFail($qid);
 		$this -> validate($request, [
 					'question' => 'required|not_in:<br>',
-					'quetype' => 'required',
-					// 'opt1' => 'required|not_in:<br>',
-					// 'opt2' => 'required|not_in:<br>',
-					// 'opt3' => 'sometimes|not_in:<br>',
-					// 'opt4' => 'sometimes|not_in:<br>',
-					// 'opt5' => 'sometimes|not_in:<br>',
+					'quetype' => 'required|digits_between:0,1',
+					]
+					,[
+					'not_in' => 'The :attribute field is required.'
 				]);
 		$count = $request->count;
 		$counter =0;
