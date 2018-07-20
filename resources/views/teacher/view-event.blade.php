@@ -4,9 +4,6 @@
 @stop
 @section('content')
 <div class="container">
-	<?php
-	$sub = array_column($subject,'name', 'id');
-	?>
 	<div class="card animated fadeIn">
 		<div class="card-header text-white bg-purple shadow text-capitalize">
 			<h2 class="float-left">{{ $event->name }}</h2>
@@ -31,7 +28,7 @@
 		      			<table class="table table-striped table-bordered shadow">
 		      				<tbody>
 		      					<tr>
-			      					<td>Subject: </td><td> {{ $sub[$event->subid] }}</td>
+			      					<td>Subject: </td><td> {{ $subject }}</td>
 			      				</tr>
 			      				<tr>
 			      					<td>Start Time: </td><td><?php $date = strtotime($event->start);echo date("D j F Y H".":"."i".":"."s" ,$date);?></td>
@@ -56,20 +53,27 @@
       				</div>
 				</div>
 			</div>
-			<div style="margin-top: 1rem;" class="card-footer">
-				@if($event->end > date("Y-m-d H:i:s"))
+		</div>
+		<div style="margin-top: 1rem;" class="card-footer">
+			@if($event->end > date("Y-m-d H:i:s"))
 				@if($event->isactive == 0)
-				<a href="{{url('teacher/event/edit/'.$id)}}" class="btn btn-primary btn-lg float-left" role="button" aria-pressed="true"><i class="fa fa-edit"></i> Edit Event</a>
-				<a href="{{url('teacher/event/launch/'.$id)}}" class="btn btn-success btn-lg float-right
-				@if ($quecount < $event->quedisplay)
-				disabled @endif" role="button" aria-pressed="true">Launch event</a>@else
-				 <a href="{{url('teacher/event/launch/'.$id)}}" id ="launch" class="btn btn-success btn-lg btn-block 
-            	@if ($quecount < $event->quedisplay)
-            	disabled @endif" role="button" aria-pressed="true">View Requests</a>@endif
-            	@else <a href="{{url('teacher/event/'.$id.'/result')}}" id ="viewresult" class="btn btn-success btn-lg btn-block" role="button" aria-pressed="true">View Result</a>
-            	@endif
-				</div>
-			</div>
+					<a href="{{url('teacher/event/edit/'.$id)}}" class="btn btn-primary btn-lg float-left" role="button" aria-pressed="true"><i class="fa fa-edit"></i> Edit Event</a>
+					<a href="{{url('teacher/event/launch/'.$id)}}" class="btn btn-success btn-lg float-right
+					@if ($quecount < $event->quedisplay)
+						disabled
+					@endif
+					" role="button" aria-pressed="true">Launch event</a>
+				@else
+					<a href="{{url('teacher/event/launch/'.$id)}}" id ="launch" class="btn btn-success btn-lg btn-block 
+		        	@if ($quecount < $event->quedisplay)
+		        		disabled
+		        	@endif
+		        	" role="button" aria-pressed="true">View Requests</a>
+	        	@endif
+	        @else
+	        	<a href="{{url('teacher/event/'.$id.'/result')}}" id ="viewresult" class="btn btn-success btn-lg btn-block" role="button" aria-pressed="true">View Result</a>
+        	@endif
+		</div>
 	</div>
 </div>
 @stop

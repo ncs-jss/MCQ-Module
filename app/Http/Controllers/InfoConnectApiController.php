@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Event;
 
 class InfoConnectApiController extends Controller
 {
@@ -87,6 +88,8 @@ class InfoConnectApiController extends Controller
 	    	}
 	    	else
 	    	{
+	    		$event = Event::select('id')->where('creator',$user->id)->get()->toArray();
+	    		session(['TeacherEvent' => array_column($event,'id')]);
 	    		session(['UserType' => 'teacher']);
 	    		return redirect('teacher');
 	    	}

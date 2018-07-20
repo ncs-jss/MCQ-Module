@@ -30,8 +30,11 @@
 		      			<table class="table table-striped table-bordered shadow">
 		      				<tbody>
 			      				<tr>
-			      					<td>Duration: </td><td> {{ sprintf("%02d",intdiv($event->duration, 60)).':'. sprintf("%02d",($event->duration % 60)) }}</td>
+			      					<td>Duration (HH:MM): </td><td> {{ sprintf("%02d",intdiv($event->duration, 60)).':'. sprintf("%02d",($event->duration % 60)) }}</td>
 			      				</tr>
+                    <tr>
+                      <td>Questions: </td><td> {{ $event->quedisplay }}</td>
+                    </tr>
 			      				<tr>
 			      					<td>Marks on correct answer: </td><td> {{ $event->correctmark }}</td>
 			      				</tr>
@@ -43,6 +46,7 @@
       				</div>
       				<br>
 					<center id="data">
+          @if (Auth::check())
 						@if (empty($req))
                 <form action="{{ url('student/event/'.$id.'/req') }}" method="POST">
       						{{ csrf_field() }}
@@ -101,7 +105,10 @@
                   </h5>
                 </div>
       			@endif
-      				</center>
+          @else
+            <a href="{{ url('/'.$id) }}" class="btn btn-success btn-lg btn-block">Logon and access this Event</a>
+          @endif
+      		</center>
 				</div>
 			</div>
   	</div>

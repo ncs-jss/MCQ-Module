@@ -25,6 +25,9 @@
 		<div class="card-body">
       @if($events->isEmpty())
       <h1 class="text-gray-dark text-center">No Quiz to show</h1>
+        <blockquote class="blockquote text-center">
+          <p class="mb-0">There are no quiz created by you. Click on "Create New Quiz" to add new quiz.</p>
+        </blockquote>
       @endif
 			<?php $i = 0 ?>
 			@foreach ($events as $event)
@@ -48,7 +51,7 @@
           @else bg-danger
           @endif @else bg-dark" @endif  id="cardbg">
   				<a href="{{url('teacher/event/view/'.$event->id)}}" class="card-header text-capitalize" style="text-decoration: none;">
-      			<h3 class="text-center text-capitalize">{{ $event->name }}</h3>
+      			<h3 class="text-center text-capitalize text-white"><u>{{ $event->name }}</u></h3>
       		</a>
       		<div class="card-body">
       			<table class="table table-borderless table-sm">
@@ -57,13 +60,13 @@
       						<td>Start: </td><td> {{ date('d M Y, g:i a',strtotime($event->start)) }}</td>
       					</tr>
                 <tr>
-                  <td>display: </td><td>{{$event->quedisplay}}</td>
+                  <td>Close: </td><td> {{ date('d M Y, g:i a',strtotime($event->end)) }}</td>
                 </tr>
                 <tr>
-      						<td>Close: </td><td> {{ date('d M Y, g:i a',strtotime($event->end)) }}</td>
-      					</tr>
+                  <td>Que Display: </td><td>{{$event->quedisplay}}</td>
+                </tr>
                 <tr>
-                  <td>Questions</td><td>{{$count}}</td>
+                  <td>Que Added: </td><td>{{$count}}</td>
                 </tr>
       					<tr>
       						<td>Duration: </td><td> {{ sprintf("%02d",intdiv($event->duration, 60)).':'. sprintf("%02d",($event->duration % 60)) }}</td>
@@ -73,18 +76,27 @@
     			</div>
           <div class="card-footer">
             @if($event->end > date("Y-m-d H:i:s"))
-            @if ($event->isactive == 0)
-            <a href="{{url('teacher/event/'.$event->id)}}" class="btn btn-primary float-left" role="button" aria-pressed="true"><i class="fa fa-plus"></i> Add Questions</a><a href="{{url('teacher/event/launch/'.$event->id)}}" id ="launch" class="btn btn-primary float-right 
-            @if ($count < $event->quedisplay)
-            disabled"@endif role="button" aria-pressed="true">Launch Event</a> @else <a href="{{url('teacher/event/launch/'.$event->id)}}" id ="launch" class="btn btn-warning btn-block btn-lg 
-            @if ($count < $event->quedisplay)
-            disabled"@endif role="button" aria-pressed="true">View Requests</a>@endif
-            @else <a href="{{url('teacher/event/'.$event->id.'/result')}}" class="btn btn-success btn-lg btn-block" role="button" aria-pressed="true">View Result</a> @endif
+              @if ($event->isactive == 0)
+                <a href="{{url('teacher/event/'.$event->id)}}" class="btn btn-primary float-left" role="button" aria-pressed="true"><i class="fa fa-plus"></i> Add Questions</a><a href="{{url('teacher/event/launch/'.$event->id)}}" id ="launch" class="btn btn-primary float-right 
+                @if ($count < $event->quedisplay)
+                  disabled"
+                @endif
+                role="button" aria-pressed="true">Launch Event</a>
+              @else
+                <a href="{{url('teacher/event/launch/'.$event->id)}}" id ="launch" class="btn btn-warning btn-block btn-lg 
+                  @if ($count < $event->quedisplay)
+                    disabled"
+                  @endif
+                role="button" aria-pressed="true">View Requests</a>
+              @endif
+            @else
+              <a href="{{url('teacher/event/'.$event->id.'/result')}}" class="btn btn-success btn-lg btn-block" role="button" aria-pressed="true">View Result</a>
+            @endif
           </div>
   			</div>
-      				@if ($i==3 || $i==6 || $i==9)
-			</div>
-				<br>
+      	@if ($i==3 || $i==6 || $i==9)
+    			</div>
+    			<br>
 				@endif
 			@endforeach
 			@if( $events->count()%3 != 0)
