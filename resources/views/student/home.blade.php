@@ -44,6 +44,9 @@
       							<tr>
       								<td>Duration: </td><td> {{ sprintf("%02d",intdiv($event->duration, 60)).':'. sprintf("%02d",($event->duration % 60)) }}</td>
       							</tr>
+                    <tr>
+                      <td>Questions: </td><td> {{ $event->quedisplay }}</td>
+                    </tr>
                   </tbody>
       						</table>
     					</div>

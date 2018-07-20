@@ -14,26 +14,26 @@ class AddForegionKey extends Migration
     public function up()
     {
         Schema::table('event', function (Blueprint $table) {
-            $table->foreign('creator')->references('id')->on('user');
-            $table->foreign('subid')->references('id')->on('subject');
+            $table->foreign('creator')->references('id')->on('user')->onDelete('cascade');
+            $table->foreign('subid')->references('id')->on('subject')->onDelete('cascade');
         });
 
         Schema::table('option', function (Blueprint $table) {
-            $table->foreign('queid')->references('id')->on('queans');
+            $table->foreign('queid')->references('id')->on('queans')->onDelete('cascade');
         });
 
         Schema::table('queans', function (Blueprint $table) {
-            $table->foreign('eventid')->references('id')->on('event');
+            $table->foreign('eventid')->references('id')->on('event')->onDelete('cascade');
         });
 
         Schema::table('req', function (Blueprint $table) {
-            $table->foreign('userid')->references('id')->on('user');
-            $table->foreign('eventid')->references('id')->on('event');
+            $table->foreign('userid')->references('id')->on('user')->onDelete('cascade');
+            $table->foreign('eventid')->references('id')->on('event')->onDelete('cascade');
         });
 
         Schema::table('response', function (Blueprint $table) {
-            $table->foreign('userid')->references('id')->on('user');
-            $table->foreign('queid')->references('id')->on('queans');
+            $table->foreign('userid')->references('id')->on('user')->onDelete('cascade');
+            $table->foreign('queid')->references('id')->on('queans')->onDelete('cascade');
         });
         
     }
