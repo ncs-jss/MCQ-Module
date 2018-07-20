@@ -35,7 +35,7 @@ class EventController extends Controller
 			    $task = new Event;
 			    $task->name = $request->name;
 			    $task->description = $request->description;
-			    if($request->newsubject != "subject"){
+			    if(!is_null($request->newsubject)){
 			    	//Add new Subject to subject table
 			    	$subject = new Subject;
 			    	$subject->name = $request->newsubject;
@@ -64,26 +64,19 @@ class EventController extends Controller
 
 			    $task->save();
 
-			    return redirect('teacher/event/'.$task->id);
+			    return redirect('teacher/event/'.$task->id)->with('Event','Event added successfully');
 			}
 	public function add(Request $request, $id) {
 				$this -> validate($request, [
 					'question' => 'required|not_in:<br>',
-					'quetype' => 'required',
+					'quetype' => 'required|digits_between:0,1',
 					'opt1' => 'required|not_in:<br>',
 					'opt2' => 'required|not_in:<br>',
-					'opt3' => 'sometimes|not_in:<br>',
-					'opt4' => 'sometimes|not_in:<br>',
-					'opt5' => 'sometimes|not_in:<br>',
-					// 'option' => 'required|array|min:1'
+					]
+					,[
+					'not_in' => 'The :attribute field is required.',
 				]);
 				
-				$addque = new Queans;
-				$addque->que = $request->question;
-				$addque->eventid = $id;
-				$addque->quetype = $request->quetype;
-				$addque->save();
-
 				$count = $request->count;
 				$flag=0;
 				for($y=1;$y <= $count; $y++){
@@ -94,19 +87,28 @@ class EventController extends Controller
 					}
 				}
 				if($flag==0)
-					return back()->with('Option', 'Please select atleast 1 correct answer');
+					return back()->with('Option', 'Please select atleast 1 correct answer')->withInput($request->all);
 				if($flag==0)
-					return back()->with('Option', 'Please select atleast 1 correct answer');
+					return back()->with('Option', 'Please select atleast 1 correct answer')->withInput($request->all);
+				
+				$addque = new Queans;
+				$addque->que = $request->question;
+				$addque->eventid = $id;
+				$addque->quetype = $request->quetype;
+				$addque->save();
 				
 				for($x=1; $x<=$count; $x++){
 					$option = new Option;
 					$option->queid = $addque->id;
-					$option->ans = $request->input('opt'.$x);
-					$opt = $request->input('option'.$x);
-					if(is_null($opt))
-						$option->iscorrect = 0;
-					else $option->iscorrect = 1;
-					$option->save();
+					$optans = $request->input('opt'.$x);
+					if(!is_null($optans) && $optans != "<br>"){
+						$option->ans = $optans;
+						$opt = $request->input('option'.$x);
+						if(is_null($opt))
+							$option->iscorrect = 0;
+						else $option->iscorrect = 1;
+						$option->save();
+					}
 				}
 				return back()->with('success','Question added successfully.');
 	}
@@ -123,6 +125,9 @@ class EventController extends Controller
 			        'correct_mark' => 'required|numeric|not_in:0',
 			        'wrong_mark' => 'required|numeric',
 			        'display_ques' => 'required|numeric|not_in:0',
+			    ]
+			    ,[
+					'not_in' => 'The :attribute field is required.'
 					
 				]);
 				$event->name = $request->name;
@@ -145,14 +150,23 @@ class EventController extends Controller
 		$editque = Queans::findOrFail($qid);
 		$this -> validate($request, [
 					'question' => 'required|not_in:<br>',
-					'quetype' => 'required',
-					// 'opt1' => 'required|not_in:<br>',
-					// 'opt2' => 'required|not_in:<br>',
-					// 'opt3' => 'sometimes|not_in:<br>',
-					// 'opt4' => 'sometimes|not_in:<br>',
-					// 'opt5' => 'sometimes|not_in:<br>',
+					'quetype' => 'required|digits_between:0,1',
+					]
+					,[
+					'not_in' => 'The :attribute field is required.'
 				]);
 		$count = $request->count;
+		$counter =0;
+		for($z=1;$z <= $count; $z++){
+			$optin = $request->input('opt'.$z);
+			if(!is_null($optin) && $optin != "br")
+				$counter++;
+			if($counter == 2)
+				break;
+		}
+		if($counter!=2)
+			return back()->with('Options', 'Please add atleast two options')->withInput($request->all);
+
 				$flag=0;
 				for($y=1;$y <= $count; $y++){
 					$opti = $request->input('option'.$y);
@@ -162,7 +176,7 @@ class EventController extends Controller
 					}
 				}
 				if($flag==0)
-					return back()->with('Option', 'Please select atleast 1 correct answer');
+					return back()->with('Option', 'Please select atleast 1 correct answer')->withInput($request->all);
 
 		$editque->que = $request->question;
 		$editque->quetype = $request->quetype;
@@ -175,7 +189,7 @@ class EventController extends Controller
 					$option = new Option;
 					$option->queid = $qid;
 					$optans = $request->input('opt'.$x);
-					if(!is_null($optans) && $optans){
+					if(!is_null($optans) && $optans != "br"){
 						$option->ans = $optans;
 						$opt = $request->input('option'.$x);
 						if(is_null($opt))
@@ -205,3 +219,4 @@ class EventController extends Controller
 		return back(); 
 	}
 }
+

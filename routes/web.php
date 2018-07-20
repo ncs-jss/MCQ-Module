@@ -69,11 +69,12 @@ Route::group(['middleware' => ['web']], function ()
 			Route::post('event/ques', 'EventController@create');
 			Route::get('event/view/{id}', function($id)
 			{
+				$quecount = Queans::where('eventid' , $id)->get()->count();
 				$event = Event::select('name','description','subid','img','start','end','duration','correctmark','wrongmark','quedisplay','isactive','creator')->where('id', $id)->first();
 				$authe =Auth::id();
 				$subject = Subject::select('*')->orderBy('name', 'asc')->get()->toArray();
 				if($authe == $event->creator)
-					return view('teacher.view-event',['event' =>$event, 'id'=>$id, 'subject'=>$subject]);
+					return view('teacher.view-event',['event' =>$event, 'id'=>$id, 'subject'=>$subject, 'quecount'=>$quecount]);
 			});
 			Route::get('event/edit/{id}', function($id)
 			{
@@ -118,7 +119,7 @@ Route::group(['middleware' => ['web']], function ()
 			Route::post('event/{id}/delete/que/{qid}', 'EventController@deleteQue');
 			Route::post('event/{id}', 'EventController@add');
 			Route::post('/ajax/event/req', 'AjaxController@event_reqs');
-			Route::get('result/{id}', 'ResultController@view');
+			Route::get('event/{id}/result', 'ResultController@view');
 		});
 
 		Route::group(['prefix' => '/society', 'middleware' => 'UserType:society'], function()

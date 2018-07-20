@@ -68,7 +68,7 @@
                             @endforeach
                             <option value="other">Other..</option>
                         </select>
-                        <input type="text" name="newsubject" id="newsubject" class="form-control" value="subject" placeholder="Subject" disabled>
+                        <input type="text" name="newsubject" id="newsubject" class="form-control" placeholder="Subject" disabled>
                         <script>
                             function myFunction(){
                             var subject = document.getElementById('subject');
@@ -92,7 +92,7 @@
                             </div>
                         @endif
                         <input type="file" class="form-control-file {{ $errors->has('quizimage') ? ' is-invalid' : '' }}" accept="image/*" id="quizimage" aria-describedby="fileHelp" name="quizimage" @if(isset($id)) value="{{$event->img}}" @endif>
-                    <small id="fileHelp" class="form-text text-muted">Choose a quiz-image to upload otherwise leave it. </small>
+                        <small id="fileHelp" class="form-text text-muted">Choose a quiz-image to upload otherwise leave it. </small>
                     </div>
 
                     <div class="form-group">
