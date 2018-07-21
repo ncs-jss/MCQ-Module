@@ -4,70 +4,74 @@
 @stop
 @section('content')
 <div class="container">
-	<div class="card animated fadeInUp">
-		<div class="card-header text-white bg-purple shadow">
-			<h2>{{ $event->name }}</h2>
-		</div>
-		<div class="card-body">
+  <div class="card animated fadeInUp">
+    <div class="card-header text-white bg-purple shadow">
+      <h2>{{ $event->name }}</h2>
+    </div>
+    <div class="card-body">
       @if (session('msg'))
         <div class="alert alert-success">
             {{ session('msg') }}
           </div>
       @endif
-			<div class="row">
-				<div class="col-sm-3">
-					<center>
-						<img class="rounded border border-dark shadow" src="{{ url($event->img) }}" width="200px">
+      <div class="row">
+        <div class="col-sm-3">
+          <center>
+            <img class="rounded border border-dark shadow" src="{{ url($event->img) }}" width="200px">
             <br>
             <br>
-					</center>
-				</div>
-				<div class="col-sm-9">
-					{!! $event->description !!}
-					<br>
-					<br>
-					<div class="table-responsive">
-		      			<table class="table table-striped table-bordered shadow">
-		      				<tbody>
-			      				<tr>
-			      					<td>Duration: </td><td> {{ sprintf("%02d",intdiv($event->duration, 60)).':'. sprintf("%02d",($event->duration % 60)) }}</td>
-			      				</tr>
-			      				<tr>
-			      					<td>Marks on correct answer: </td><td> {{ $event->correctmark }}</td>
-			      				</tr>
-			      				<tr>
-			      					<td>Marks on wrong answer: </td><td> {{ $event->wrongmark }}</td>
-		      					</tr>
-	      					</tbody>
-	      				</table>
-      				</div>
-      				<br>
-					<center id="data">
-						@if (empty($req))
+          </center>
+        </div>
+        <div class="col-sm-9">
+          {!! $event->description !!}
+          <br>
+          <br>
+          <div class="table-responsive">
+                <table class="table table-striped table-bordered shadow">
+                  <tbody>
+                    <tr>
+                      <td>Duration (HH:MM): </td><td> {{ sprintf("%02d",intdiv($event->duration, 60)).':'. sprintf("%02d",($event->duration % 60)) }}</td>
+                    </tr>
+                    <tr>
+                      <td>Questions: </td><td> {{ $event->quedisplay }}</td>
+                    </tr>
+                    <tr>
+                      <td>Marks on correct answer: </td><td> {{ $event->correctmark }}</td>
+                    </tr>
+                    <tr>
+                      <td>Marks on wrong answer: </td><td> {{ $event->wrongmark }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <br>
+          <center id="data">
+          @if (Auth::check())
+            @if (empty($req))
                 <form action="{{ url('student/event/'.$id.'/req') }}" method="POST">
-      						{{ csrf_field() }}
-      						<input type="hidden" value="{{ $id }}" name="id" required>
-      						<button type="submit" class="btn btn-danger btn-lg btn-block">Request to join this Event</button>
-      					</form>
-      			@elseif ($req->status == 0)
+                  {{ csrf_field() }}
+                  <input type="hidden" value="{{ $id }}" name="id" required>
+                  <button type="submit" class="btn btn-danger btn-lg btn-block">Request to join this Event</button>
+                </form>
+            @elseif ($req->status == 0)
                 <div class="alert alert-primary" role="alert" id="Alert">
-        					<h5>
-        							Your request to join this event is pending for approval.
-        							<br>This status of your request will be again check in <font color="red" id="count">15</font> seconds.
-        					</h5>
+                  <h5>
+                      Your request to join this event is pending for approval.
+                      <br>This status of your request will be again check in <font color="red" id="count">15</font> seconds.
+                  </h5>
                 </div>
 
-      					<script>
-      						window.onload = function()
-      						{
-      							var i = 15;
-      							var check = setInterval(test,1000);
+                <script>
+                  window.onload = function()
+                  {
+                    var i = 15;
+                    var check = setInterval(test,1000);
                     function test()
-      							{
-      								i--;
-      								if(i>0)
-      									document.getElementById("count").innerHTML = i;
-      								else
+                    {
+                      i--;
+                      if(i>0)
+                        document.getElementById("count").innerHTML = i;
+                      else
                       {
                           $.post("{{ url('student/ajax/event/req') }}",
                           {
@@ -88,11 +92,11 @@
                               }
                           });
                       }
-      							}
-      						};
-      					</script>
+                    }
+                  };
+                </script>
                   <button type="button" class="btn btn-success btn-lg btn-block" style="display:none" id="Joinbutton" data-toggle="modal" data-target="#EventJoin" data-whatever="@fat">Start this Event</button>
-      			@elseif ($req->status == 1)
+            @elseif ($req->status == 1)
                   <button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#EventJoin" data-whatever="@fat">Start this Event</button>
             @elseif ($req->status == 2)
                 <div class="alert alert-success" role="alert">
@@ -100,12 +104,15 @@
                       Your had successfully played this event.
                   </h5>
                 </div>
-      			@endif
-      				</center>
-				</div>
-			</div>
-  	</div>
-	</div>
+            @endif
+          @else
+            <a href="{{ url('/'.$id) }}" class="btn btn-success btn-lg btn-block">Logon and access this Event</a>
+          @endif
+          </center>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 @if (!empty($req))
 <div class="modal fade shadow" id="EventJoin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
