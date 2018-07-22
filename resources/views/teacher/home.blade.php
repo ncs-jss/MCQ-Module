@@ -4,18 +4,7 @@
 @stop
 @section('content')
 <div class="container">
-
-@if (session('edit'))
-  <div class="alert alert-success">
-    {{ session('edit') }}
-  </div>
-@endif
-
-@if (session('delete'))
-  <div class="alert alert-success">
-    {{ session('delete') }}
-  </div>
-@endif
+    @include('includes.msg')
 
   <div class="card">
     <div class="card-header  text-white bg-purple shadow">

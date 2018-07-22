@@ -6,33 +6,12 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-sm-8 col-xs-12 ">
-            @if (session('Event'))
-                <div class="alert alert-success">
-                    {{ session('Event') }}
-                </div>
-            @endif
+            @include('includes.msg')
             <div class="card">
                 <div class="card-header text-white bg-purple shadow">
                     <h5>Add Question</h5>
                 </div>
                 <div class="card-body">
-
-                    <!-- New Add-Question Form -->
-                    <form action="{{$id}}" method="POST">
-
-                        {{ csrf_field() }}
-                        @if (session('success'))
-                                <div class="alert alert-success">
-                                    {{ session('success') }}
-                                </div>
-                        @endif
-                        @if (session('Option'))
-                                <div class="alert alert-danger">
-                                    {{ session('Option') }}
-                                </div>
-                        @endif
-                        
-
                         <div class="float-right"><font color="red"><i>* = Required</i></font></div>
                         <br><br>
                         <!-- Question -->
@@ -172,8 +151,8 @@
                         </div>
 
                         <script>
-                        	var count = 5;
-                        	$(document).ready(function() {
+                            var count = 5;
+                            $(document).ready(function() {
                                 $(".add").click(function() {
                                     count++;
                                     $('<div class="form-group custom-control custom-checkbox mb-3"><input type="hidden" name="count" value="'+count+'"><input class="custom-control-input" type="checkbox" value="1" id="option'+count+'" name="option'+count+'"><label class="custom-control-label" for="option'+count+'">Option.</label> <textarea class="form-control col-sm-7" name="opt'+count+'" id="opt'+count+'" rows="5"></textarea><span class="rem" ><a href="javascript:void(0);" class="anchor btn-outline-danger" ><i class="fa fa-trash"></i>Delete option</span></div>').appendTo(".contents");

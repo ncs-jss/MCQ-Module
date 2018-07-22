@@ -16,7 +16,7 @@ class EventController extends Controller
     public function create(Request $request)
     {
         $this -> validate($request,
-                [
+            [
                 'name' => 'required|max:100',
                 'description' => 'required|not_in:<br>',
                 'subject' => 'required|not_in:0',
@@ -48,10 +48,10 @@ class EventController extends Controller
         else
         {
             $sub = Subject::select('id')->where('id',$request->subject)->first();
-            if ($sub->count()) {
+            if ($sub->count())
                 $task->subid = $request->subject;
             else
-                return back()->with('SubErr', 'The subject you are trying to add is invalid')->withInput($request->all)
+                return back()->with(['msg' => 'The subject you are trying to add is invalid', 'class' => 'alert-danger'])->withInput($request->all);
         }
         if($request->hasFile('quizimage'))
         {
@@ -76,7 +76,7 @@ class EventController extends Controller
         array_push($eventIDs,$task->id);
         session(['TeacherEvent' => $eventIDs]);
 
-        return redirect('teacher/event/'.$task->id)->with('Event','Event added successfully');
+        return redirect('teacher/event/'.$task->id)->with(['msg' =>'Event added successfully', 'class' => 'alert-success']);
     }
 
     public function add(Request $request, $id)
@@ -103,9 +103,7 @@ class EventController extends Controller
             }
         }
         if($flag==0)
-            return back()->with('Option', 'Please select atleast 1 correct answer')->withInput($request->all);
-        if($flag==0)
-            return back()->with('Option', 'Please select atleast 1 correct answer')->withInput($request->all);
+            return back()->with(['msg' => 'Please select atleast 1 correct answer', 'class' => 'alert-danger'])->withInput($request->all);
         
         $addque = new Queans;
         $addque->que = $request->question;
@@ -117,21 +115,27 @@ class EventController extends Controller
             $option = new Option;
             $option->queid = $addque->id;
             $optans = $request->input('opt'.$x);
-            if(!is_null($optans) && $optans != "<br>"){
+            if(!is_null($optans) && $optans != "<br>")
+            {
                 $option->ans = $optans;
                 $opt = $request->input('option'.$x);
                 if(is_null($opt))
                     $option->iscorrect = 0;
-                else $option->iscorrect = 1;
+                else
+                    $option->iscorrect = 1;
                 $option->save();
             }
         }
-        return back()->with('success','Question added successfully.');
+        return back()->with(['msg' =>'Question added successfully.', 'class' => 'alert-success']);
     }
 
-    public function editEvent(Request $request, $id){
-        $event = Event::findOrFail($id);
-            $this -> validate($request, [
+    public function editEvent(Request $request, $id)
+    {
+        $event = Event::find($id);
+        if($event->count() == 0)
+            return back()->with(['msg' => 'The Event you are trying to edit does not exist.', 'class' => 'alert-danger'])->withInput($request->all);
+            $this -> validate($request,
+                [
                     'name' => 'required|max:100',
                     'description' => 'required|not_in:<br>',
                     'subject' => 'required|not_in:0',
@@ -161,10 +165,12 @@ class EventController extends Controller
                 $event->quedisplay = $request->display_ques;
 
                 $event->save();
-                return redirect('teacher')->with('edit','Event Edited Successfully');
+                return redirect('teacher')->with(['msg' =>'Event Edited Successfully', 'class' => 'alert-success']);
     }
     public function editQue(Request $request, $id, $qid){
-        $editque = Queans::findOrFail($qid);
+        $editque = Queans::find($qid);
+        if($editque->count() == 0)
+            return back()->with(['msg' => 'The question you are trying to edit does not exist.', 'class' => 'alert-danger'])->withInput($request->all);
         $this -> validate($request, [
                     'question' => 'required|not_in:<br>',
                     'quetype' => 'required|digits_between:0,1',
@@ -182,7 +188,7 @@ class EventController extends Controller
                 break;
         }
         if($counter!=2)
-            return back()->with('Options', 'Please add atleast two options')->withInput($request->all);
+            return back()->with(['msg' => 'Please add atleast two options', 'class' => 'alert-danger'])->withInput($request->all);
 
                 $flag=0;
                 for($y=1;$y <= $count; $y++){
@@ -193,7 +199,7 @@ class EventController extends Controller
                     }
                 }
                 if($flag==0)
-                    return back()->with('Option', 'Please select atleast 1 correct answer')->withInput($request->all);
+                    return back()->with(['msg' => 'Please select atleast 1 correct answer', 'class' => 'alert-danger'])->withInput($request->all);
 
         $editque->que = $request->question;
         $editque->quetype = $request->quetype;
@@ -215,19 +221,23 @@ class EventController extends Controller
                         $option->save();
                     }
                 }
-                return back()->with('success','Question edited successfuly');
+                return back()->with(['msg' =>'Question edited successfuly', 'class' => 'alert-success']);
 
     }
     public function deleteQue(Request $request, $id, $qid){
-        $deleteque = Queans::findOrFail($qid)->delete();
+        $deleteque = Queans::find($qid)->delete();
+        if($deleteque->count() == 0)
+            return back()->with(['msg' => 'The question you are trying to delete does not exist.', 'class' => 'alert-danger'])->withInput($request->all);
         $options = Option::where('queid', $qid)->delete();
 
         return back();
     }
     public function deleteEvent(Request $request, $id){
-        $event = Event::findOrFail($id);
+        $event = Event::find($id);
+        if($event->count() == 0)
+            return back()->with(['msg' => 'The Event you are trying to delete does not exist.', 'class' => 'alert-danger'])->withInput($request->all);
         $event->delete();
-        return redirect('teacher')->with('delete','Event Deleted Successfully');
+        return redirect('teacher')->with(['msg' =>'Event Deleted Successfully', 'class' => 'alert-success']);
     }
     public function accessEvent(Request $request){
         $allowaccess = $request->input('access');
