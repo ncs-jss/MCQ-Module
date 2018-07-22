@@ -22,10 +22,10 @@ class EventController extends Controller
 			        'quizimage' => 'image|max:1000',
 			        'start_time' => 'required|after:Current_Date_Time',
 			        'end_time' => 'required|after:start_time',
-			        'duration' => 'required|numeric|not_in:0',
-			        'correct_mark' => 'required|numeric|not_in:0',
-			        'wrong_mark' => 'required|numeric',
-			        'display_ques' => 'required|numeric|not_in:0',
+			        'duration' => 'required|numeric|min:1',
+			        'correct_mark' => 'required|numeric|min:0',
+			        'wrong_mark' => 'required|numeric|max:0',
+			        'display_ques' => 'required|numeric|min:1',
 			        'newsubject' => 'sometimes|not_in:subject',
 			    ]
 				,[

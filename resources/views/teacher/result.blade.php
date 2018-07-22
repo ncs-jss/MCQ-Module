@@ -38,7 +38,7 @@
 									@endphp
 								</td>
 								<td>{{ $r['name'] }}<td>{{ $r['admno'] }}</td><td>{{ $r['rollno'] }}</td>
-								<td>{{ $r['correct']+$r['wrong'] }}</td><td>{{ $r['wrong'] }}</td><td>{{ $r['correct'] }}</td>
+								<td>{{ $r['correct']+$r['wrong'] }}</td><td>{{ $r['correct'] }}</td><td>{{ $r['wrong'] }}</td>
 								<td>{{ $r['marks'] }}</td>
 							</tr>
 						@endforeach

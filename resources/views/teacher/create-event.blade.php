@@ -6,7 +6,7 @@
 <div class="container">
     @if($errors->any())
         <div class="alert alert-danger">
-        <strong>There is/are errors in {{ implode(', ', $errors->keys()) }} feilds</strong>
+        <strong>There is/are errors in {{ implode(', ', $errors->keys()) }} fields</strong>
         </div>
     @endif
   <div class="card">
@@ -56,9 +56,11 @@
 
                     <div class="form-group">
                         <label for="subject" class="control-label">Subject <font color="red">*</font></label>
-                        @if ($errors->has('subject'))
+                        @if ($errors->has('correct_mark'))
                             <div class="alert alert-danger">
-                                {{ $errors->first('subject') }}
+                                @foreach ($errors->get('subject') as $sub)
+                                    <li>{{$sub}}</li>
+                                @endforeach
                             </div>
                         @endif
                         <select name="subject" id="subject" onchange="myFunction()" class="custom-select mb-3 {{ $errors->has('subject') ? ' is-invalid' : '' }}" required>
@@ -116,45 +118,63 @@
                             @endforeach
                         </div>
                         @endif
-                        <input class="form-control {{ $errors->has('end_time') ? ' is-invalid' : '' }}" type="datetime-local" value="@if(isset($id)){{date('Y-m-d\TH:i', strtotime($event->end)).':00'}}@else{{old('end_time',date('Y-m-d', strtotime("+1 day")).'T'.date('H:i', strtotime('+1 hour')).':00')}}@endif" id="end_time" name="end_time" required>
+                        <input class="form-control {{ $errors->has('end_time') ? ' is-invalid' : '' }}" type="date" value="@if(isset($id)){{date('Y-m-d\TH:i', strtotime($event->end)).':00'}}@else{{old('end_time',date('Y-m-d', strtotime("+1 day")).'T'.date('H:i', strtotime('+1 hour')).':00')}}@endif" id="end_time" name="end_time" required>
                     </div>
+                    <script>
+                        $(function(){           
+                            if (!Modernizr.inputtypes['datetime-local']) {
+                                $('input[type=date]').datetimepicker({
+                                      dateFormat : 'yy-mm-dd'
+                                    }
+                                 );
+                            }
+                        });
+                    </script>
 
                     <div class="form-group">
                         <label for="duration" class="control-label">Duration <font color="red">*</font> (Number of minutes)</label>
                         @if ($errors->has('duration'))
                             <div class="alert alert-danger">
-                                {{ $errors->first('duration') }}
-                        </div>
+                                @foreach ($errors->get('durarion') as $dur)
+                                    <li>{{$dur}}</li>
+                                @endforeach
+                            </div>
                         @endif
-                        <input class="form-control {{ $errors->has('duration') ? ' is-invalid' : '' }}" type="number" @if(isset($id)) value="{{$event->duration}}" @else value=30 @endif id="duration" name="duration" required>
+                        <input class="form-control {{ $errors->has('duration') ? ' is-invalid' : '' }}" type="number" @if(isset($id)) value="{{$event->duration}}" @else value=30 @endif id="duration" name="duration" min="1" required>
                     </div>
 
                     <div class="form-group">
                         <label for="correct_mark" class="control-label">Correct Mark <font color="red">*</font></label>
-                        @if ($errors->has('correctmark'))
+                        @if ($errors->has('correct_mark'))
                             <div class="alert alert-danger">
-                            {{ $errors->first('correctmark') }}
+                                @foreach ($errors->get('correct_mark') as $corrmark)
+                                    <li>{{$corrmark}}</li>
+                                @endforeach
                             </div>
                         @endif
-                        <input class="form-control {{ $errors->has('correctmark') ? ' is-invalid' : '' }}" type="number" @if(isset($id)) value="{{$event->correctmark}}" @else value={{old('correctmark','5')}} @endif id="correct_mark" name="correct_mark" required>
+                        <input class="form-control {{ $errors->has('correctmark') ? ' is-invalid' : '' }}" type="number" @if(isset($id)) value="{{$event->correctmark}}" @else value={{old('correctmark','5')}} @endif id="correct_mark" name="correct_mark" min="0" required>
                     </div>
                     <div class="form-group">
                         <label for="wrong_mark" class="control-label">Wrong Mark <font color="red">*</font> (Number less then or equal to 0)</label>
-                        @if ($errors->has('wrongmark'))
+                        @if ($errors->has('wrong_mark'))
                             <div class="alert alert-danger">
-                                {{ $errors->first('wrongmark') }}
+                                @foreach ($errors->get('wrong_mark') as $wrongmark)
+                                    <li>{{$wrongmark}}</li>
+                                @endforeach
                             </div>
                         @endif
-                        <input class="form-control {{ $errors->has('wrongmark') ? ' is-invalid' : '' }}" type="number" @if(isset($id)) value="{{$event->wrongmark}}" @else value={{old('wrongmark','-1')}} @endif id="wrong_mark" name="wrong_mark" required>
+                        <input class="form-control {{ $errors->has('wrongmark') ? ' is-invalid' : '' }}" type="number" @if(isset($id)) value="{{$event->wrongmark}}" @else value={{old('wrongmark','-1')}} @endif id="wrong_mark" name="wrong_mark" max="0" required>
                     </div>
                     <div class="form-group">
                         <label for="display_ques" class="control-label">No. of Questions <font color="red">*</font></label>
-                        @if ($errors->has('quedisplay'))
+                       @if ($errors->has('display_ques'))
                             <div class="alert alert-danger">
-                                {{ $errors->first('quedisplay') }}
+                                @foreach ($errors->get('display_ques') as $quedisp)
+                                    <li>{{$quedisp}}</li>
+                                @endforeach
                             </div>
                         @endif
-                        <input class="form-control {{ $errors->has('quedisplay') ? ' is-invalid' : '' }}" type="number" @if(isset($id)) value="{{$event->quedisplay}}" @else value={{old('quedisplay','30')}} @endif id="display_ques" name="display_ques" required>
+                        <input class="form-control {{ $errors->has('quedisplay') ? ' is-invalid' : '' }}" type="number" @if(isset($id)) value="{{$event->quedisplay}}" @else value={{old('quedisplay','30')}} @endif id="display_ques" name="display_ques" min="1" required>
                     </div>
 
                     <input type="hidden" name="Current_Date_Time" id="Current_Date_Time" value="{{date("Y-m-d H:i:s")}}">
