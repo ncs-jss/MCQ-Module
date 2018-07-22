@@ -12,6 +12,9 @@
                     <h5>Add Question</h5>
                 </div>
                 <div class="card-body">
+                    <!-- New Add-Question Form -->   
+                    <form action="{{$id}}" method="POST">  
+                        {{ csrf_field() }}
                         <div class="float-right"><font color="red"><i>* = Required</i></font></div>
                         <br><br>
                         <!-- Question -->
