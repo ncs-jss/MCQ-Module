@@ -12,13 +12,6 @@ before_script:
   - cp .env.travis .env
   - composer require "squizlabs/php_codesniffer=*"
   - phpenv rehash
-  - nvm install 7.7.1
-  - npm install npm@latest -g
-  - npm install -g jshint
-  - npm install
 script:
-  - phpcs --ignore=app/Http/Controllers
   - php vendor/bin/phpcs --standard=ruleset.xml app
-  - npm run production
-  - jshint resources/assets/js/components/*
   
