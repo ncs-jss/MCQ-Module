@@ -9,6 +9,11 @@
         <strong>There is/are errors in {{ implode(', ', $errors->keys()) }} feilds</strong>
         </div>
     @endif
+    @if (session('SubErr'))
+        <div class="alert alert-danger">
+            {{ session('SubErr') }}
+        </div>
+    @endif
   <div class="card">
     <div class="card-header text-white bg-purple shadow">
       <h2>
