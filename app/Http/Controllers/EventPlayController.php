@@ -18,13 +18,13 @@ class EventPlayController extends Controller
         $req = Req::select('status')->where('userid', Auth::id())->where('eventid', $request->input('id'))->first();
         if(empty($req))
         {
-    		$req = new Req;
-    		$req->userid = Auth::id();
-    		$req->eventid = $request->input('id');
-    		$req->status = '0';
-    		$req->save();
-    		return back()->with('msg','You had successfully requested to join this event.');
-    	}
+            $req = new Req;
+            $req->userid = Auth::id();
+            $req->eventid = $request->input('id');
+            $req->status = '0';
+            $req->save();
+            return back()->with('msg','You had successfully requested to join this event.');
+        }
         else
         {
             return back();

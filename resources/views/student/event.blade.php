@@ -4,16 +4,12 @@
 @stop
 @section('content')
 <div class="container">
+  @include('includes.msg')
   <div class="card animated fadeInUp">
     <div class="card-header text-white bg-purple shadow">
       <h2>{{ $event->name }}</h2>
     </div>
     <div class="card-body">
-      @if (session('msg'))
-        <div class="alert alert-success">
-            {{ session('msg') }}
-          </div>
-      @endif
       <div class="row">
         <div class="col-sm-3">
           <center>
@@ -47,66 +43,78 @@
               <br>
           <center id="data">
           @if (Auth::check())
-            @if (empty($req))
-                <form action="{{ url('student/event/'.$id.'/req') }}" method="POST">
-                  {{ csrf_field() }}
-                  <input type="hidden" value="{{ $id }}" name="id" required>
-                  <button type="submit" class="btn btn-danger btn-lg btn-block">Request to join this Event</button>
-                </form>
-            @elseif ($req->status == 0)
-                <div class="alert alert-primary" role="alert" id="Alert">
-                  <h5>
-                      Your request to join this event is pending for approval.
-                      <br>This status of your request will be again check in <font color="red" id="count">15</font> seconds.
-                  </h5>
-                </div>
+              @if($event->start <= date('Y-m-d H:i:s') && $event->end >= date('Y-m-d H:i:s'))
+                @if (empty($req))
+                    <form action="{{ url('student/event/'.$id.'/req') }}" method="POST">
+                      {{ csrf_field() }}
+                      <input type="hidden" value="{{ $id }}" name="id" required>
+                      <button type="submit" class="btn btn-danger btn-lg btn-block">Request to join this Event</button>
+                    </form>
+                @elseif ($req->status == 0)
+                    <div class="alert alert-primary" role="alert" id="Alert">
+                      <h5>
+                          Your request to join this event is pending for approval.
+                          <br>This status of your request will be again check in <font color="red" id="count">15</font> seconds.
+                      </h5>
+                    </div>
 
-                <script>
-                  window.onload = function()
-                  {
-                    var i = 15;
-                    var check = setInterval(test,1000);
-                    function test()
-                    {
-                      i--;
-                      if(i>0)
-                        document.getElementById("count").innerHTML = i;
-                      else
+                    <script>
+                      window.onload = function()
                       {
-                          $.post("{{ url('student/ajax/event/req') }}",
+                        var i = 15;
+                        var check = setInterval(test,1000);
+                        function test()
+                        {
+                          i--;
+                          if(i>0)
+                            document.getElementById("count").innerHTML = i;
+                          else
                           {
-                              "id": "{{ $id }}",
-                              "_token": "{{ csrf_token() }}"
-                          },
-                          function(data, status){
-                            data = jQuery.parseJSON(data);
-                              if(data.status == 1)
+                              $.post("{{ url('student/ajax/event/req') }}",
                               {
-                                $("#Alert").hide();
-                                $("#Joinbutton").show();
-                                clearInterval(check);
-                              }
-                              else
-                              {
-                                i = 15;
-                              }
-                          });
-                      }
-                    }
-                  };
-                </script>
-                  <button type="button" class="btn btn-success btn-lg btn-block" style="display:none" id="Joinbutton" data-toggle="modal" data-target="#EventJoin" data-whatever="@fat">Start this Event</button>
-            @elseif ($req->status == 1)
-                  <button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#EventJoin" data-whatever="@fat">Start this Event</button>
-            @elseif ($req->status == 2)
-                <div class="alert alert-success" role="alert">
-                  <h5>
-                      Your had successfully played this event.
-                  </h5>
-                </div>
-            @endif
+                                  "id": "{{ $id }}",
+                                  "_token": "{{ csrf_token() }}"
+                              },
+                              function(data, status){
+                                data = jQuery.parseJSON(data);
+                                  if(data.status == 1)
+                                  {
+                                    $("#Alert").hide();
+                                    $("#Joinbutton").show();
+                                    clearInterval(check);
+                                  }
+                                  else
+                                  {
+                                    i = 15;
+                                  }
+                              });
+                          }
+                        }
+                      };
+                    </script>
+                      <button type="button" class="btn btn-success btn-lg btn-block" style="display:none" id="Joinbutton" data-toggle="modal" data-target="#EventJoin" data-whatever="@fat">Start this Event</button>
+                @elseif ($req->status == 1)
+                      <button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#EventJoin" data-whatever="@fat">Start this Event</button>
+                @elseif ($req->status == 2)
+                    <div class="alert alert-success" role="alert">
+                      <h5>
+                          Your had successfully played this event.
+                      </h5>
+                    </div>
+                @endif
+              @else
+                @if($event->end >= date('Y-m-d H:i:s'))
+                  <button type="button" class="btn btn-warning btn-lg btn-block" disabled>Comming Soon</button>
+                @else
+                  <div class="alert alert-danger" role="alert">
+                        <h5>
+                            This event has been closed.
+                        </h5>
+                  </div>
+                @endif
+              @endif
           @else
-            <a href="{{ url('/'.$id) }}" class="btn btn-success btn-lg btn-block">Logon and access this Event</a>
+            <button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#Login" data-whatever="@fat">Login and access this event</button>
           @endif
           </center>
         </div>
@@ -129,6 +137,17 @@
                 </form>
         </center>
       </div>
+    </div>
+  </div>
+</div>
+@endif
+@if (!Auth::check())
+<div class="modal fade shadow" id="Login" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <form action="{{ route('LoginUrl') }}/{{ $id }}" class="form-control form-control-file form-container" method="post">
+            @include('includes.login_form')
+        </form>
     </div>
   </div>
 </div>
