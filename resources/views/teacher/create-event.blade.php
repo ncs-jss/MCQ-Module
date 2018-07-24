@@ -9,6 +9,7 @@
         <strong>There is/are errors in {{ implode(', ', $errors->keys()) }} fields</strong>
         </div>
     @endif
+    @include('includes.msg')
   <div class="card">
     <div class="card-header text-white bg-purple shadow">
       <h2>

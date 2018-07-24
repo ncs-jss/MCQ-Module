@@ -10,11 +10,8 @@ before_script:
   - composer self-update
   - composer install --no-interaction
   - cp .env.travis .env
-  - composer global require "squizlabs/php_codesniffer=*"
+  - composer require "squizlabs/php_codesniffer=*"
   - phpenv rehash
-  
 script:
-  - phpcs --ignore=app/Http/Controllers
-  - jshint resources/assets/js/components/*
-  - php vendor/bin/phpcbf --standard=ruleset.xml app
   - php vendor/bin/phpcs --standard=ruleset.xml app
+  

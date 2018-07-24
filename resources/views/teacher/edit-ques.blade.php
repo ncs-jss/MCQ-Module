@@ -4,6 +4,7 @@
 @stop
 @section('content')
 <div class="container">
+    @include('includes.msg')
     <div class="card">
         <div class="card-header text-white bg-purple shadow">
             <h2>Edit Question</h2>
@@ -12,21 +13,6 @@
         <!-- New Edit-Question Form -->
              <form action="{{url('teacher/event/'.$id.'/edit/que/'.$qid)}}" method="POST">
             {{ csrf_field() }}
-            @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-            @endif
-            @if (session('Option'))
-                    <div class="alert alert-danger">
-                        {{ session('Option') }}
-                    </div>
-            @endif
-            @if (session('Options'))
-                    <div class="alert alert-danger">
-                        {{ session('Options') }}
-                    </div>
-            @endif
             <!-- Question -->
             <div class="form-group">
                 <label for="question" class="col-sm-3 control-label">Question <font color="red">*</font></label>

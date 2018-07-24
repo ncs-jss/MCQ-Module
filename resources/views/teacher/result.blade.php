@@ -4,6 +4,7 @@
 @stop
 @section('content')
 <div class="container">
+  @include('includes.msg')
 	<div class="card animated fadeInUp">
 		<div class="card-header text-white bg-purple shadow text-capitalize text-center">
 			<h2>{{ $name }} - Result</h2>

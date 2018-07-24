@@ -61,5 +61,6 @@ class Kernel extends HttpKernel
         'EventAccess' => \App\Http\Middleware\EventAccess::class,
         'EventPlay' => \App\Http\Middleware\EventPlay::class,
         'ProfileUpdate' => \App\Http\Middleware\ProfileUpdate::class,
+        'EventOwner' => \App\Http\Middleware\EventOwner::class,
     ];
 }
