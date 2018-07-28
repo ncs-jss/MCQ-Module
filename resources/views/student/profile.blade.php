@@ -4,16 +4,12 @@
 @stop
 @section('content')
 <div class="container">
+  @include('includes.msg')
   <div class="card animated fadeInUp">
     <div class="card-header text-white bg-purple shadow">
       <h2>Profile</h2>
     </div>
-		<div class="card-body">
-  @if (session('msg'))
-    <div class="alert {{ session('class') }}">
-      {{ session('msg') }}
-    </div>
-  @endif
+    <div class="card-body">
         <form action="{{ url('student/profile') }}" method="POST">
           {{ csrf_field() }}
           @php
@@ -81,7 +77,7 @@
             </div>
             <button type="submit" class="btn btn-success btn-lg btn-block">Save</button>
         </form>
-  	</div>
-	</div>
+    </div>
+  </div>
 </div>
 @stop

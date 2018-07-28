@@ -22,7 +22,7 @@ class EventAccess
             if($event->isactive == 1 && $event->start <= date('Y-m-d H:i:s') && $event->end >= date('Y-m-d H:i:s'))
                 return $next($request);
             else
-                return back();
+                return back()->with(['msg' => 'The event you are trying to access is invalid', 'class' => 'alert-danger']);
         }
     }
 }

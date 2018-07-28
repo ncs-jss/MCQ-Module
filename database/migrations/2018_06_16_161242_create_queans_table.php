@@ -16,7 +16,6 @@ class CreateQueansTable extends Migration
         Schema::create('queans', function (Blueprint $table) {
             $table->increments('id');
             $table->text('que');
-            $table->string('img', 50)->nullable();
             $table->integer('eventid')->unsigned();
             $table->boolean('quetype');
         });
