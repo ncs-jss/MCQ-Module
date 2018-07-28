@@ -4,11 +4,7 @@
 @stop
 @section('content')
 <div class="container">
-  @if (session('msg'))
-    <div class="alert {{ session('class') }}">
-      {{ session('msg') }}
-    </div>
-  @endif
+  @include('includes.msg')
   <div class="card">
     <div class="card-header text-white bg-purple shadow">
       <h2>Quiz</h2>

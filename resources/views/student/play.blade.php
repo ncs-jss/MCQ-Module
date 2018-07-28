@@ -7,6 +7,7 @@
   {{ csrf_field() }}
   <input type="hidden" value="{{ $queid }}" name="curid">
 <div class="container">
+@include('includes.msg')
 <div class="row p-3">
 <div class="col-sm-3">
   <div class="card shadow">

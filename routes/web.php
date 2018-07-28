@@ -13,15 +13,20 @@ Route::group(['middleware' => ['web']], function ()
         return view('pages.home');
     })->middleware('RedirectIfAuthenticated')->name('login');
 
-    Route::post('login', 'InfoConnectApiController@login')->name('LoginUrl');
+    Route::post('login/{eventid?}', 'InfoConnectApiController@login')->middleware(['RedirectIfAuthenticated'])->name('LoginUrl');
 
     Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
     Route::get('/event/{id}', function ($id)
     {
-        $event = Event::select('name','description','img','duration','correctmark','wrongmark','quedisplay')->where('id', $id)->first();
-        return view('student.event', ['event' => $event, 'id' => $id]);
-    })->middleware(['RedirectIfAuthenticated','EventAccess']);
+        $event = Event::select('isactive', 'name','description','img','duration','correctmark','wrongmark','quedisplay')->where('id', $id)->first();
+        if($event->count() == 0)
+            return back()->with(['msg' => 'The event you are trying to visit does not exist', 'class' => 'alert-danger']);
+        if($event->isactive == 1)
+            return view('student.event', ['event' => $event, 'id' => $id]);
+        else
+            return back()->with(['msg' => 'The event you are trying to access is invalid', 'class' => 'alert-danger']);
+    })->middleware(['RedirectIfAuthenticated']);
 
     Route::group(['middleware' => ['auth']], function ()
     {
@@ -39,14 +44,19 @@ Route::group(['middleware' => ['web']], function ()
                     $events = Event::select('id','name','start','end','duration','quedisplay')->where('isactive', '1')->orderBy('id', 'desc')->paginate(9);
                     return view('student.home', ['events' => $events]);
                 });
+                Route::get('/event/{id}', function ($id)
+                {
+                    $event = Event::select('isactive', 'start', 'end', 'name','description','img','duration','correctmark','wrongmark','quedisplay')->where('id', $id)->first();
+                    if($event->count() == 0)
+                        return back()->with(['msg' => 'The event you are trying to visit does not exist', 'class' => 'alert-danger']);
+                    $req = Req::select('status')->where('userid', Auth::id())->where('eventid', $id)->first();
+                    if($event->isactive == 1)
+                        return view('student.event', ['event' => $event, 'id' => $id, 'req' => $req]);
+                    else
+                        return back()->with(['msg' => 'The event you are trying to access is invalid', 'class' => 'alert-danger']);
+                });
                 Route::group(['middleware' => ['EventAccess']], function ()
                 {
-                    Route::get('/event/{id}', function ($id)
-                    {
-                        $event = Event::select('name','description','img','duration','correctmark','wrongmark','quedisplay')->where('id', $id)->first();
-                        $req = Req::select('status')->where('userid', Auth::id())->where('eventid', $id)->first();
-                        return view('student.event', ['event' => $event, 'id' => $id, 'req' => $req]);
-                    });
                     Route::post('event/{id}/req', 'EventPlayController@req');
                     Route::post('event/{id}/join', 'EventPlayController@join');
                 });

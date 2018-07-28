@@ -30,6 +30,8 @@ Generate the Application key
 php artisan key:generate
 ```
 
+Set DB credentials, InfoConnect API URL and App Name in `.env`
+
 Migrate the database.
 
 ```php
@@ -41,8 +43,6 @@ Seed the database
 ```php
 php artisan db:seed
 ```
-
-Set db credentials and InfoConnect API URL in `.env` and run the project.
 
 ### Local Development Server
 
@@ -80,7 +80,7 @@ php artisan serve --help
 |--|--|
 |0|Pending for approval|
 |1|Approved|
-|2|completed the event|
+|2|Completed the event|
 ### Event Play
 |Value|Represent|
 |--|--|
@@ -101,4 +101,4 @@ php artisan serve --help
 
 ## License
 
-This project is licensed under the MIT License - see the  [LICENSE.md](https://github.com/ncs-jss/Proj_mx02/LICENSE.md)  file for details
+This project is licensed under the MIT License - see the  [LICENSE.md](https://github.com/ncs-jss/Proj_mx02/blob/master/LICENSE.md)  file for details

@@ -10,7 +10,7 @@ use App\Event;
 
 class InfoConnectApiController extends Controller
 {
-    public function login(Request $request)
+    public function login(Request $request, $eventid = NULL)
     {
         $this->validate($request, [
             'username' => 'required',
@@ -34,7 +34,6 @@ class InfoConnectApiController extends Controller
             CURLOPT_POSTFIELDS => $postData
         ));
         
-
         //Ignore SSL certificate verification
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
@@ -77,21 +76,46 @@ class InfoConnectApiController extends Controller
             {
                 session(['UserType' => 'student']);
                 if($newUser == 1)
+                {
                     return redirect('student/profile/new')->with(['msg' => 'You are first time user hence please update your details.', 'class' => 'alert-primary']);
+                }
                 else
-                    return redirect('student');
+                {
+                    if($eventid == NULL)
+                        return redirect('student');
+                    else
+                        return redirect('student/event/'.$eventid);
+                }
             }
             else if($arr['group']=="others")
             {
+                $event = Event::select('id')->where('creator',$user->id)->get()->toArray();
+                session(['SocietyEvent' => array_column($event,'id')]);
                 session(['UserType' => 'society']);
-                return redirect('society');
+                if($eventid == NULL)
+                    return redirect('society');
+                else
+                {
+                    if(in_array($eventid, $event))
+                        return redirect('society/event/view/'.$eventid);
+                    else
+                        return redirect('society')->with(['msg' => 'The event you are trying to access does not belongs to you.', 'class' => 'alert-danger']);
+                }
             }
             else
             {
                 $event = Event::select('id')->where('creator',$user->id)->get()->toArray();
                 session(['TeacherEvent' => array_column($event,'id')]);
                 session(['UserType' => 'teacher']);
-                return redirect('teacher');
+                if($eventid == NULL)
+                    return redirect('teacher');
+                else
+                {
+                    if(in_array($eventid, $event))
+                        return redirect('teacher/event/view/'.$eventid);
+                    else
+                        return redirect('teacher')->with(['msg' => 'The event you are trying to access does not belongs to you.', 'class' => 'alert-danger']);
+                }
             }
         }
         else
