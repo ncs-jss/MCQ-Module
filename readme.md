@@ -1,5 +1,7 @@
 # MCQ Module
 
+[![Build Status](https://travis-ci.org/shahroznawaz/php-notifications.svg?branch=master)](https://travis -ci.org/ shahroznawaz/php-notifications)
+
 This is the MCQ Module create by NCS for conducting various quiz type events that are held in the college.
 
 # Getting Started
