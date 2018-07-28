@@ -32,7 +32,7 @@
             @endif
         
             {{ csrf_field() }}
-          <div class="float-right"><font color="red"><i>* = Required</i></font></div>
+          <div class="float-right"><font color="red"><i>* Required</i></font></div>
           <br><br>
             <!-- Event Name -->
                     <div class="form-group">
@@ -55,9 +55,11 @@
                         <textarea class="form-control {{ $errors->has('description') ? ' is-invalid' : '' }}" rows="5" id="description" name="description">@if(isset($id)){{$event->description}}@else{{ old('description') }}@endif</textarea>
                     </div>
 
+
                     <div class="form-group">
                         <label for="subject" class="control-label">Subject <font color="red">*</font></label>
-                        @if ($errors->has('correct_mark'))
+                        
+                        @if ($errors->has('subject'))
                             <div class="alert alert-danger">
                                 @foreach ($errors->get('subject') as $sub)
                                     <li>{{$sub}}</li>
@@ -71,17 +73,26 @@
                             @endforeach
                             <option value="other">Other..</option>
                         </select>
-                        <input type="text" name="newsubject" id="newsubject" class="form-control" placeholder="Subject" disabled>
+                         @if ($errors->has('othersubject'))
+                            <div class="alert alert-danger">
+                                @foreach ($errors->get('othersubject') as $osub)
+                                    <li>{{$osub}}</li>
+                                @endforeach
+                            </div>
+                        @endif
+                        <input type="text" name="othersubject" id="othersubject" class="form-control" disabled>
                         <script>
+
                             function myFunction(){
                             var subject = document.getElementById('subject');
                             var selectedSubject = subject.options[subject.selectedIndex].value;
                             if(selectedSubject == "other"){
-                                document.getElementById('newsubject').disabled = false;
+                                document.getElementById('othersubject').disabled = false;
                             }
                             else
-                                document.getElementById('newsubject').disabled = true;
+                                document.getElementById('othersubject').disabled = true;
                         }
+                        $('#description').summernote({height: 100});
                         </script>
                     </div>
 
@@ -98,7 +109,7 @@
                         <small id="fileHelp" class="form-text text-muted">Choose a quiz-image to upload otherwise leave it. </small>
                     </div>
 
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="start_time" class="control-label">Start Date and time <font color="red">*</font> (DD-MM-YYYY HH:MM AM/PM)</label>
                         @if ($errors->has('start_time'))
                             <div class="alert alert-danger">
@@ -108,30 +119,48 @@
                             </div>
                         @endif
                         <input class="form-control {{ $errors->has('start_time') ? ' is-invalid' : '' }}" type="datetime-local" value="@if(isset($id)){{date('Y-m-d\TH:i', strtotime($event->start)).':00'}}@else{{old('start_time',date('Y-m-d').'T'.date('H:i', strtotime('+1 hour')).':00')}}@endif" id="start_time" name="start_time" required>
-                    </div>
+                    </div> --}}
 
                     <div class="form-group">
-                        <label for="end_time" class="control-label">End Date and time <font color="red">*</font> (DD-MM-YYYY HH:MM AM/PM)</label>
+                        <label for="start_time" class="control-label">Start Date and time <font color="red">*</font></label>
+                        @if ($errors->has('start_time'))
+                            <div class="alert alert-danger">
+                                @foreach ($errors->get('start_time') as $st)
+                                    <li>{{$st}}</li>
+                                @endforeach
+                            </div>
+                            @endif
+                        <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"
+                            name="start_time" id="start_time" value="@if(isset($id)){{date('Y/m/d H:i:s', strtotime($event->start))}} @endif" required />
+                            <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="start_time" class="control-label">End Date and time <font color="red">*</font></label>
                         @if ($errors->has('end_time'))
                             <div class="alert alert-danger">
-                            @foreach ($errors->get('end_time') as $et)
-                                <li>{{$et}}</li>
-                            @endforeach
+                                @foreach ($errors->get('end_time') as $et)
+                                    <li>{{$et}}</li>
+                                @endforeach
+                            </div>
+                            @endif
+                    <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2"
+                            name="end_time" id="end_time" value="@if(isset($id)){{date('Y/m/d H:i:s', strtotime($event->end))}} @endif" required />
+                            <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
                         </div>
-                        @endif
-                        <input class="form-control {{ $errors->has('end_time') ? ' is-invalid' : '' }}" type="date" value="@if(isset($id)){{date('Y-m-d\TH:i', strtotime($event->end)).':00'}}@else{{old('end_time',date('Y-m-d', strtotime("+1 day")).'T'.date('H:i', strtotime('+1 hour')).':00')}}@endif" id="end_time" name="end_time" required>
                     </div>
                     <script>
-                        $(function(){           
-                            if (!Modernizr.inputtypes['datetime-local']) {
-                                $('input[type=date]').datetimepicker({
-                                      dateFormat : 'yy-mm-dd'
-                                    }
-                                 );
-                            }
-                        });
+                        $('#datetimepicker1').datetimepicker({icons: {
+                    time: "fa fa-clock"}});
+                        $('#datetimepicker2').datetimepicker({icons: {
+                    time: "fa fa-clock"}});
                     </script>
-
                     <div class="form-group">
                         <label for="duration" class="control-label">Duration <font color="red">*</font> (Number of minutes)</label>
                         @if ($errors->has('duration'))
