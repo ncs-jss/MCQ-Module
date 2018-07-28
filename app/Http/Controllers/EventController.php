@@ -15,10 +15,12 @@ class EventController extends Controller
 {
     public function create(Request $request)
     {
+        $request->start_time = date('Y-m-d h:i:s', strtotime($request->start_time));
+        $request->end_time = date('Y-m-d h:i:s', strtotime($request->end_time));
                 $this -> validate($request, [
                     'name' => 'required|max:100',
                     'description' => 'required|not_in:<br>',
-                    'subject' => 'required|not_in:0',
+                    'subject' => 'required|not_in:null',
                     'quizimage' => 'image|max:1000',
                     'start_time' => 'required|after:Current_Date_Time',
                     'end_time' => 'required|after:start_time',
@@ -26,7 +28,7 @@ class EventController extends Controller
                     'correct_mark' => 'required|numeric|min:0',
                     'wrong_mark' => 'required|numeric|max:0',
                     'display_ques' => 'required|numeric|min:1',
-                    'newsubject' => 'sometimes|not_in:subject',
+                    'othersubject' => 'sometimes|required',
                 ], [
                     'not_in' => 'The :attribute field is required.'
                 ]);
@@ -34,10 +36,10 @@ class EventController extends Controller
         $task = new Event;
         $task->name = $request->name;
         $task->description = $request->description;
-        if (!is_null($request->newsubject)) {
+        if (!is_null($request->othersubject)) {
             //Add new Subject to subject table
             $subject = new Subject;
-            $subject->name = $request->newsubject;
+            $subject->name = $request->othersubject;
             $subject->save();
             $task->subid = $subject->id;
         } else {
@@ -131,31 +133,45 @@ class EventController extends Controller
         if ($event->count() == 0) {
             return back()->with(['msg' => 'The Event you are trying to edit does not exist.', 'class' => 'alert-danger'])->withInput($request->all);
         }
-            $this -> validate(
-                $request,
-                [
+        $request->start_time = date('Y-m-d h:i:s', strtotime($request->start_time));
+        $request->end_time = date('Y-m-d h:i:s', strtotime($request->end_time));
+                $this -> validate($request, [
                     'name' => 'required|max:100',
                     'description' => 'required|not_in:<br>',
-                    'subject' => 'required|not_in:0',
+                    'subject' => 'required|not_in:null',
                     'quizimage' => 'image|max:1000',
                     'start_time' => 'required|after:Current_Date_Time',
                     'end_time' => 'required|after:start_time',
-                    'duration' => 'required|numeric|not_in:0',
-                    'correct_mark' => 'required|numeric|not_in:0',
-                    'wrong_mark' => 'required|numeric',
-                    'display_ques' => 'required|numeric|not_in:0',
-                ],
-                [
+                    'duration' => 'required|numeric|min:1',
+                    'correct_mark' => 'required|numeric|min:0',
+                    'wrong_mark' => 'required|numeric|max:0',
+                    'display_ques' => 'required|numeric|min:1',
+                    'othersubject' => 'sometimes|required',
+                ], [
                     'not_in' => 'The :attribute field is required.'
-                    
-                ]
-            );
+                ]);
                 $event->name = $request->name;
                 $event->description = $request->description;
+        if (!is_null($request->othersubject)) {
+            //Add new Subject to subject table
+            $subject = new Subject;
+            $subject->name = $request->othersubject;
+            $subject->save();
+            $event->subid = $subject->id;
+        } else {
+            $sub = Subject::select('id')->where('id', $request->subject)->first();
+            if ($sub->count()) {
                 $event->subid = $request->subject;
-                $img = $request->quizimage;
-        if (!is_null($img)) {
-            $event->img = $img;
+            } else {
+                return back()->with(['msg' => 'The subject you are trying to add is invalid', 'class' => 'alert-danger'])->withInput($request->all);
+            }
+        }
+        if ($request->hasFile('quizimage')) {
+            $img = $request->file('quizimage');
+            $path_parts = pathinfo($_FILES["quizimage"]["name"]);
+            $image_path = $path_parts['filename'].'_'.time().'.'.$path_parts['extension'];
+            $request->quizimage->move(public_path('img'), $image_path);
+            $event->img = 'img/'.$image_path;
         }
                 $event->start = $request->start_time;
                 $event->end = $request->end_time;

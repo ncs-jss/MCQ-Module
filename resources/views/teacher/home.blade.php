@@ -40,7 +40,7 @@
           @else bg-danger
           @endif @else bg-dark" @endif  id="cardbg">
           <a href="{{url('teacher/event/view/'.$event->id)}}" class="card-header text-capitalize" style="text-decoration: none;">
-            <h3 class="text-center text-capitalize text-white"><u>{{ $event->name }}</u></h3>
+            <h3 class="text-center text-capitalize text-white">{{ $event->name }}</h3>
           </a>
           <div class="card-body">
             <table class="table table-borderless table-sm">

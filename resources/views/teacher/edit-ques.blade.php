@@ -34,6 +34,9 @@
                     @endif
                 <div>
                     <textarea class="form-control" rows="5" id="question" name="question">{{old('question',$que->que)}}</textarea>
+                    <script>
+                        $('#question').summernote({height:200});
+                    </script>
                 </div>
             </div>
             <?php $i =0?>
@@ -53,7 +56,11 @@
                         @endif
                         <div>
                             <textarea class="form-control col-sm-7" rows="5" id="opt{{$i}}" name="opt{{$i}}">{{$option['ans']}}</textarea>
+                            <script>
+                                $('#opt{{$i}}').summernote({height:200});
+                            </script>
                         </div>
+
                         <span class="rem" ><a href="javascript:void(0);" class="anchor btn-outline-danger"><i class="fa fa-trash"></i>Delete option</a></span>
                     </div>
                 </div>
@@ -74,11 +81,15 @@
                         @endif
                         <div>
                             <textarea class="form-control col-sm-7" rows="5" id="opt{{$i}}" name="opt{{$i}}">{{old('opt'.$i)}}</textarea>
+                            <script>
+                                $(document).ready(function() {
+                                    $('#opt{{$i}}').summernote();
+                                });
+                            </script>
                         </div>
                         <span class="rem" ><a href="javascript:void(0);" class="anchor btn-outline-danger"><i class="fa fa-trash"></i>Delete option</a></span>
                     </div>
                 </div>
-
                     @endif
                 @endfor
             @endif
@@ -97,7 +108,7 @@
                 $(".add").click(function() {
                     count++;
                     $('<div class="form-group custom-control custom-checkbox mb-3"><input type="hidden" name="count" value="'+count+'"><input class="custom-control-input" type="checkbox" value="1" id="option'+count+'" name="option'+count+'"><label class="custom-control-label" for="option'+count+'">Option.</label> <textarea class="form-control col-sm-7" name="opt'+count+'" id="opt'+count+'" rows="5"></textarea><span class="rem" ><a href="javascript:void(0);" class="anchor btn-outline-danger" ><i class="fa fa-trash"></i>Delete option</span></div>').appendTo(".contents");
-                    var te =  new nicEditor({fullPanel : true}).panelInstance('opt'+count);
+                    $('#opt'+count).summernote({height:200});
                 });
                 $('.contents').on('click', '.rem', function() {
                     $(this).parent("div").remove();
