@@ -27,7 +27,7 @@ class EventPlayController extends Controller
         }
         else
         {
-            return back();
+            return back()->with(['msg' => 'You had already requested to join this event.', 'class' => 'alert-danger']);
         }
     }
 
@@ -83,17 +83,17 @@ class EventPlayController extends Controller
                 }
                 else
                 {
-                    return back();
+                    return back()->with(['msg' => 'You need to join this event to access its questions.', 'class' => 'alert-danger']);
                 }
             }
             else
             {
-                return back();
+                return back()->with(['msg' => 'Your request to join this event is pending for approval.', 'class' => 'alert-danger']);
             }
         }
         else
         {
-            return back();
+            return back()->with(['msg' => 'First request to join this event.', 'class' => 'alert-danger']);
         }
     }
 
@@ -107,12 +107,12 @@ class EventPlayController extends Controller
             }
             else
             {
-                return back();
+                return back()->with(['msg' => 'This question does not exist.', 'class' => 'alert-danger']);
             }
         }
         else
         {
-            return back();
+            return back()->with(['msg' => 'You need to join this event to access its questions.', 'class' => 'alert-danger']);
         }
     }
 
