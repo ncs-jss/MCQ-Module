@@ -49,7 +49,20 @@
                   @if ($event->start <= date('Y-m-d H:i:s') && $event->end > date('Y-m-d H:i:s'))
                     <a href="student/event/{{ $event->id }}"><div class="bg-primary card-footer"><center><strong class="text-white">Start Quiz</strong></center></div></a>
                   @elseif ($event->start > date('Y-m-d H:i:s'))
-                    <div class="bg-danger card-footer"><center><strong class="text-white">Comming Soon</strong></center></div>
+                  @php
+                    $start = $event->start;
+                    $start = str_replace('-','',$start);
+                    $start = str_replace(':','',$start);
+                    $start = str_replace(' ','T',$start);
+                    $start = $start.'Z';
+
+                    $end = $event->end;
+                    $end = str_replace('-','',$end);
+                    $end = str_replace(':','',$end);
+                    $end = str_replace(' ','T',$end);
+                    $end = $end.'Z';
+                  @endphp
+                    <a href="{{ make_google_calendar_link($event->name, $start, $end, url('event/'.$event->id), '') }}" target="_blank"><div class="bg-danger card-footer"><center><strong class="text-white">Comming Soon<br>Add to Google Calendar</strong></center></div></a>
                   @else
                     <div class="card-footer"><center><strong class="text-white">Closed</strong></center></div>
                   @endif
