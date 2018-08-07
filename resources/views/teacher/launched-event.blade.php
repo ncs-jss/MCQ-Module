@@ -8,7 +8,7 @@ $count = count($req);
 ?>
 <div class="container">
     @include('includes.msg')
-    <form action="{{url('teacher/event/allowaccess')}}" method="POST">
+    <form action="{{url('teacher/event/allowaccess/'.$event->id)}}" method="POST">
          {{ csrf_field() }}
     <div class="table-responsive">
         <table class="table table-bordered shadow text-center bg-primary table-dark" style="margin: 2rem 0 2rem 0;">
