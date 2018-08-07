@@ -248,13 +248,13 @@ class EventController extends Controller
     }
     public function deleteQue(Request $request, $id, $qid)
     {
-        $deleteque = Queans::find($qid)->delete();
-        if ($deleteque->count() == 0) {
-            return back()->with(['msg' => 'The question you are trying to delete does not exist.', 'class' => 'alert-danger'])->withInput($request->all);
-        }
+        $deleteque = Queans::findorFail($qid)->delete();
+        // if ($deleteque->count() == 0) {
+        //     return back()->with(['msg' => 'The question you are trying to delete does not exist.', 'class' => 'alert-danger'])->withInput($request->all);
+        // }
         $options = Option::where('queid', $qid)->delete();
 
-        return back();
+        return back()->with('success', 'Question deleted Successfully');
     }
     public function deleteEvent(Request $request, $id)
     {
@@ -265,11 +265,11 @@ class EventController extends Controller
         $event->delete();
         return redirect('teacher')->with(['msg' =>'Event Deleted Successfully', 'class' => 'alert-success']);
     }
-    public function accessEvent(Request $request)
+    public function accessEvent(Request $request, $id)
     {
         $allowaccess = $request->input('access');
         if (!is_null($allowaccess)) {
-            $req = Req::whereIn('userid', $allowaccess)->update(['status' => 1]);
+            $req = Req::whereIn('userid', $allowaccess)->where('eventid', $id)->update(['status' => 1]);
         }
         return back();
     }

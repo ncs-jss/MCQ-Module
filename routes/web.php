@@ -6,10 +6,8 @@ use App\Queans;
 use App\Subject;
 use App\Option;
 
-Route::group(['middleware' => ['web']], function ()
-{
-    Route::get('/', function ()
-    {
+Route::group(['middleware' => ['web']], function () {
+    Route::get('/', function () {
         return view('pages.home');
     })->middleware('RedirectIfAuthenticated')->name('login');
 
@@ -17,46 +15,43 @@ Route::group(['middleware' => ['web']], function ()
 
     Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
-    Route::get('/event/{id}', function ($id)
-    {
-        $event = Event::select('isactive', 'name','description','img','duration','correctmark','wrongmark','quedisplay')->where('id', $id)->first();
-        if($event->count() == 0)
+    Route::get('/event/{id}', function ($id) {
+        $event = Event::select('isactive', 'name', 'description', 'img', 'duration', 'correctmark', 'wrongmark', 'quedisplay')->where('id', $id)->first();
+        if ($event->count() == 0) {
             return back()->with(['msg' => 'The event you are trying to visit does not exist', 'class' => 'alert-danger']);
-        if($event->isactive == 1)
+        }
+        if ($event->isactive == 1) {
             return view('student.event', ['event' => $event, 'id' => $id]);
-        else
+        } else {
             return back()->with(['msg' => 'The event you are trying to access is invalid', 'class' => 'alert-danger']);
+        }
     })->middleware(['RedirectIfAuthenticated']);
 
-    Route::group(['middleware' => ['auth']], function ()
-    {
+    Route::group(['middleware' => ['auth']], function () {
 
-        Route::group(['prefix' => '/student', 'middleware' => 'UserType:student'], function()
-        {
-            Route::get('profile/{val?}',function($val = NULL){
+        Route::group(['prefix' => '/student', 'middleware' => 'UserType:student'], function () {
+            Route::get('profile/{val?}', function ($val = null) {
                 return view('student.profile', ['val' => $val]);
             });
-            Route::post('profile','ProfileController@edit');
-            Route::group(['middleware' => ['EventPlay','ProfileUpdate']], function ()
-            {
-                Route::get('/', function ()
-                {
-                    $events = Event::select('id','name','start','end','duration','quedisplay')->where('isactive', '1')->orderBy('id', 'desc')->paginate(9);
+            Route::post('profile', 'ProfileController@edit');
+            Route::group(['middleware' => ['EventPlay','ProfileUpdate']], function () {
+                Route::get('/', function () {
+                    $events = Event::select('id', 'name', 'start', 'end', 'duration', 'quedisplay')->where('isactive', '1')->orderBy('id', 'desc')->paginate(9);
                     return view('student.home', ['events' => $events]);
                 });
-                Route::get('/event/{id}', function ($id)
-                {
-                    $event = Event::select('isactive', 'start', 'end', 'name','description','img','duration','correctmark','wrongmark','quedisplay')->where('id', $id)->first();
-                    if($event->count() == 0)
+                Route::get('/event/{id}', function ($id) {
+                    $event = Event::select('isactive', 'start', 'end', 'name', 'description', 'img', 'duration', 'correctmark', 'wrongmark', 'quedisplay')->where('id', $id)->first();
+                    if ($event->count() == 0) {
                         return back()->with(['msg' => 'The event you are trying to visit does not exist', 'class' => 'alert-danger']);
+                    }
                     $req = Req::select('status')->where('userid', Auth::id())->where('eventid', $id)->first();
-                    if($event->isactive == 1)
+                    if ($event->isactive == 1) {
                         return view('student.event', ['event' => $event, 'id' => $id, 'req' => $req]);
-                    else
+                    } else {
                         return back()->with(['msg' => 'The event you are trying to access is invalid', 'class' => 'alert-danger']);
+                    }
                 });
-                Route::group(['middleware' => ['EventAccess']], function ()
-                {
+                Route::group(['middleware' => ['EventAccess']], function () {
                     Route::post('event/{id}/req', 'EventPlayController@req');
                     Route::post('event/{id}/join', 'EventPlayController@join');
                 });
@@ -67,64 +62,54 @@ Route::group(['middleware' => ['web']], function ()
             Route::post('/event/submit/{val?}', 'EventPlayController@submit');
         });
 
-        Route::group(['prefix' => '/teacher', 'middleware' => 'UserType:teacher'], function()
-        {
+        Route::group(['prefix' => '/teacher', 'middleware' => 'UserType:teacher'], function () {
             Route::post('event/ques', 'EventController@create');
-            Route::get('/', function ()
-            {
-                $events = Event::select('id','name','start','end','duration','quedisplay','isactive')->where('creator', Auth::id())->orderBy('id', 'desc');
+            Route::get('/', function () {
+                $events = Event::select('id', 'name', 'start', 'end', 'duration', 'quedisplay', 'isactive')->where('creator', Auth::id())->orderBy('id', 'desc');
                 $eventarrey = $events->get()->toArray();
                 $events = $events->paginate(9);
-                $quecount = Queans::select('eventid',DB::raw('count(id) as total'))->whereIn('eventid',array_column($eventarrey, 'id'))->groupBy('eventid')->get()->toArray();
+                $quecount = Queans::select('eventid', DB::raw('count(id) as total'))->whereIn('eventid', array_column($eventarrey, 'id'))->groupBy('eventid')->get()->toArray();
                 return view('teacher.home', ['events' => $events, 'quecount' => $quecount]);
             });
-            Route::get('/event/create', function ()
-            {
-                $subject = Subject::select('*')->orderBy('name' , 'asc')->get()->toArray();
-                return view('teacher.create-event')->with('subject',$subject);
+            Route::get('/event/create', function () {
+                $subject = Subject::select('*')->orderBy('name', 'asc')->get()->toArray();
+                return view('teacher.create-event')->with('subject', $subject);
             })->name('teacherCreateEvent');
             
             Route::post('/ajax/event/req', 'AjaxController@event_reqs');
-            Route::post('event/allowaccess', 'EventController@accessEvent');
+            Route::post('event/allowaccess/{id}', 'EventController@accessEvent');
 
-            Route::group(['middleware' => ['EventOwner']], function ()
-            {
+            Route::group(['middleware' => ['EventOwner']], function () {
 
-                Route::get('event/view/{id}', function($id)
-                {
-                    $quecount = Queans::where('eventid' , $id)->get()->count();
-                    $event = Event::select('name','description','subid','img','start','end','duration','correctmark','wrongmark','quedisplay','isactive')->where('id', $id)->first();
+                Route::get('event/view/{id}', function ($id) {
+                    $quecount = Queans::where('eventid', $id)->get()->count();
+                    $event = Event::select('name', 'description', 'subid', 'img', 'start', 'end', 'duration', 'correctmark', 'wrongmark', 'quedisplay', 'isactive')->where('id', $id)->first();
                     $subject = Subject::select('name')->where('id', $event->subid)->first();
-                    return view('teacher.view-event',['event' =>$event, 'id'=>$id, 'subject'=>$subject->name, 'quecount'=>$quecount]);
+                    return view('teacher.view-event', ['event' =>$event, 'id'=>$id, 'subject'=>$subject->name, 'quecount'=>$quecount]);
                 });
-                Route::get('event/edit/{id}', function($id)
-                {
+                Route::get('event/edit/{id}', function ($id) {
                     $event = Event::findOrFail($id);
                     $subject = Subject::select('*')->get()->toArray();
-                    return view('teacher.create-event',['event' =>$event, 'id'=>$id, 'subject'=>$subject]);
+                    return view('teacher.create-event', ['event' =>$event, 'id'=>$id, 'subject'=>$subject]);
                 });
                 Route::post('event/edit/{id}', 'EventController@editEvent');
-                Route::get('event/launch/{id}', function($id)
-                {
-                    $quecount = Queans::where('eventid' , $id)->get()->count();
+                Route::get('event/launch/{id}', function ($id) {
+                    $quecount = Queans::where('eventid', $id)->get()->count();
                     $event = Event::select('quedisplay', 'isactive', 'id', 'name')->findOrFail($id);
-                    $req = Req::join('user', 'req.userid', '=', 'user.id')->select('userid', 'name',  'admno' ,  'rollno', 'status') ->where('eventid', $id)->get()->toArray();
-                    if($quecount >= $event->quedisplay)
-                    {
+                    $req = Req::join('user', 'req.userid', '=', 'user.id')->select('userid', 'name', 'admno', 'rollno', 'status') ->where('eventid', $id)->get()->toArray();
+                    if ($quecount >= $event->quedisplay) {
                         $event->isactive = 1;
                         $event->save();
                         return view('teacher.launched-event', ['req' => $req, 'event' => $event]);
-                    }
-                    else
+                    } else {
                         return back();
+                    }
                 });
-                Route::get('event/{id}', function($id)
-                {
-                    $queans = Queans::select('id','que')->where('eventid', $id)->get()->toArray();
+                Route::get('event/{id}', function ($id) {
+                    $queans = Queans::select('id', 'que')->where('eventid', $id)->get()->toArray();
                     return view('teacher.add-ques', ['id'=>$id, 'queans'=>$queans]);
                 });
-                Route::get('event/{id}/que/{qid}', function($id, $qid)
-                {
+                Route::get('event/{id}/que/{qid}', function ($id, $qid) {
                     $que = Queans::findOrFail($qid);
                     $options = Option::select('id', 'ans', 'iscorrect')->where('queid', $qid)->get()->toArray();
                     return view('teacher.edit-ques', ['id'=>$id ,'options' => $options, 'qid' => $qid, 'que' => $que]);
@@ -135,13 +120,10 @@ Route::group(['middleware' => ['web']], function ()
                 Route::post('event/{id}', 'EventController@add');
                 Route::get('event/{id}/result', 'ResultController@view');
             });
-            
         });
 
-        Route::group(['prefix' => '/society', 'middleware' => 'UserType:society'], function()
-        {
-            Route::get('/', function ()
-            {
+        Route::group(['prefix' => '/society', 'middleware' => 'UserType:society'], function () {
+            Route::get('/', function () {
                 return view('society.home');
             });
         });
