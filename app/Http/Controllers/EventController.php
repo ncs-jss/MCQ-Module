@@ -79,7 +79,7 @@ class EventController extends Controller
 
     public function add(Request $request, $id)
     {
-        $event = Event::select('isactive')->where('id',$id);
+        $event = Event::select('isactive')->where('id',$id)->first();
         if($event->isactive == 1) {
             return back()->with(['msg' => 'You can not add question to an active (launched) event.', 'class' => 'alert-danger'])->withInput($request->all);
         }
@@ -202,7 +202,7 @@ class EventController extends Controller
         if ($editque->count() == 0) {
             return back()->with(['msg' => 'The question you are trying to edit does not exist.', 'class' => 'alert-danger'])->withInput($request->all);
         }
-        $event = Event::select('isactive')->where('id',$id);
+        $event = Event::select('isactive')->where('id',$id)->first();
         if($event->isactive == 1) {
             return back()->with(['msg' => 'You can not edit question of an active (launched) event.', 'class' => 'alert-danger'])->withInput($request->all);
         }
@@ -270,7 +270,7 @@ class EventController extends Controller
         if ($deleteque->count() == 0) {
             return back()->with(['msg' => 'The question you are trying to delete does not exist.', 'class' => 'alert-danger'])->withInput($request->all);
         }
-        $event = Event::select('isactive')->where('id',$id);
+        $event = Event::select('isactive')->where('id',$id)->first();
         if($event->isactive == 1) {
             return back()->with(['msg' => 'You can not delete question of an active (launched) event.', 'class' => 'alert-danger'])->withInput($request->all);
         }

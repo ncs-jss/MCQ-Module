@@ -198,7 +198,7 @@
                         </thead>
                         <tbody>
                             @foreach($queans as $row)
-                                <tr><td>{!! $row['que'] !!}</td><td><a href="{{ url('teacher/event/'.$id.'/que/'.$row['id']) }}" class="btn btn-primary btn-sm">Edit</a><form method="POST" action="{{ url('teacher/event/'.$id.'/delete/que/'.$row['id']) }}"> {{ csrf_field() }} <button class="btn btn-danger btn-sm" type="submit">Delete</button> </form></td></tr>
+                                <tr><td>{!! $row['que'] !!}</td><td><a href="{{ url('teacher/event/'.$id.'/que/'.$row['id']) }}" class="btn btn-primary btn-sm">Edit</a><form method="POST" action="{{ url('teacher/event/'.$id.'/delete/que/'.$row['id']) }}"> {{ csrf_field() }} <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Are you sure to delete?')">Delete</button> </form></td></tr>
                             @endforeach
                         </tbody>
                     </table>
