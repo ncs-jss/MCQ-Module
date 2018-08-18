@@ -46,6 +46,9 @@
                                       <td>Dispaly Questions: </td><td> {{ $event->quedisplay }}</td>
                                   </tr>
                                   <tr>
+                                      <td>Questions Added: </td><td> {{ $quecount }}</td>
+                                  </tr>
+                                  <tr>
                                       <td>Marks on correct answer: </td><td> {{ $event->correctmark }}</td>
                                   </tr>
                                   <tr>
@@ -61,15 +64,9 @@
             @if($event->end > date("Y-m-d H:i:s"))
                 @if($event->isactive == 0)
                     <a href="{{url('teacher/event/edit/'.$id)}}" class="btn btn-primary btn-lg float-left" role="button" aria-pressed="true"><i class="fa fa-edit"></i> Edit Event</a>
-                    
-                    @if ($quecount >= $event->quedisplay)
-                        <a href="{{url('teacher/event/launch/'.$id)}}" class="btn btn-success btn-lg float-right" role="button" aria-pressed="true">Launch event</a>
-                    @else
-                        <button type="button" class="btn btn-success btn-lg float-right" data-toggle="modal" data-target="#eventLaunchModal">
+                    <button type="button" class="btn btn-success btn-lg float-right" data-toggle="modal" data-target="#eventLaunchModal">
                           Launch event
                         </button>
-                    @endif
-                    
                 @else
                     <a href="{{url('teacher/event/launch/'.$id)}}" id ="launch" class="btn btn-success btn-lg btn-block 
                     @if ($quecount < $event->quedisplay)
@@ -84,7 +81,29 @@
     </div>
 </div>
 
-
+@if ($quecount >= $event->quedisplay)
+<!-- Modal -->
+<div class="modal fade" id="eventLaunchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-white bg-danger">
+        <h5 class="modal-title" id="exampleModalLabel">Warning</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Once you launch the event then you will not able to edit it, nor you can you add, edit or delete question.<br>
+        <strong>Are you sure that you really want to launch this event ?</strong> 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <a href="{{url('teacher/event/launch/'.$id)}}" class="btn btn-success">Yes, Launch</a>
+      </div>
+    </div>
+  </div>
+</div>
+@else
 <!-- Modal -->
 <div class="modal fade" id="eventLaunchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -105,4 +124,5 @@
     </div>
   </div>
 </div>
+@endif
 @stop
