@@ -79,8 +79,8 @@ Route::group(['middleware' => ['web']], function () {
             Route::post('/ajax/event/req', 'AjaxController@event_reqs');
             Route::post('event/allowaccess/{id}', 'EventController@accessEvent');
 
-            Route::group(['middleware' => ['EventOwner']], function () {
-
+            Route::group(['middleware' => ['EventOwner']], function ()
+            {
                 Route::get('event/view/{id}', function ($id) {
                     $quecount = Queans::where('eventid', $id)->get()->count();
                     $event = Event::select('name', 'description', 'subid', 'img', 'start', 'end', 'duration', 'correctmark', 'wrongmark', 'quedisplay', 'isactive')->where('id', $id)->first();
