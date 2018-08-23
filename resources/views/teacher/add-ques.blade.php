@@ -4,9 +4,9 @@
 @stop
 @section('content')
 <div class="container">
+    @include('includes.msg')
     <div class="row">
         <div class="col-md-8 col-sm-8 col-xs-12 ">
-            @include('includes.msg')
             <div class="card">
                 <div class="card-header text-white bg-purple shadow">
                     <h5>Add Question</h5>
@@ -176,17 +176,9 @@
 
                         </script>
 
-                        <!-- Add Question Button -->
-                        <div class="form-group">
-                            <div class="col-sm-offset-3 col-sm-6">
-                                <button type="submit" class="btn btn-success">
-                                    <i class="fa fa-plus"></i> Add Question
-                                </button>
-                            </div>
-                        </div>
-                        <center>
-                            <a class="btn btn-success " href="{{url('/')}}" id="btn2" style="text-decoration: none;"> Submit </a>
-                        </center>
+                        <button type="submit" class="btn btn-success btn-lg btn-block">
+                            <i class="fa fa-plus"></i> Add Question
+                        </button>
 
                     </form>
                 </div>
@@ -206,7 +198,7 @@
                         </thead>
                         <tbody>
                             @foreach($queans as $row)
-                                <tr><td>{!! $row['que'] !!}</td><td><a href="{{ url('teacher/event/'.$id.'/que/'.$row['id']) }}" class="btn btn-primary btn-sm">Edit</a><form method="POST" action="{{ url('teacher/event/'.$id.'/delete/que/'.$row['id']) }}"> {{ csrf_field() }} <button class="btn btn-danger btn-sm" type="submit">Delete</button> </form></td></tr>
+                                <tr><td>{!! $row['que'] !!}</td><td><a href="{{ url('teacher/event/'.$id.'/que/'.$row['id']) }}" class="btn btn-primary btn-sm">Edit</a><form method="POST" action="{{ url('teacher/event/'.$id.'/delete/que/'.$row['id']) }}"> {{ csrf_field() }} <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Are you sure to delete?')">Delete</button> </form></td></tr>
                             @endforeach
                         </tbody>
                     </table>

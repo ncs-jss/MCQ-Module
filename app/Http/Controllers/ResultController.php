@@ -15,7 +15,9 @@ class ResultController extends Controller
 {
     public function view($id)
     {
-		$event = Event::select('name','correctmark','wrongmark')->where('id', $id)->first()->toArray();
+		$event = Event::select('name','correctmark','wrongmark','isactive')->where('id', $id)->first()->toArray();
+		if($event['isactive'] == 0)
+			return back()->with(['msg' => 'You can view result of launched event only.', 'class' => 'alert-danger'])
 		$que = Queans::select('id')->where('eventid', $id)->get()->toArray();
 		$que = array_column($que, 'id');
 

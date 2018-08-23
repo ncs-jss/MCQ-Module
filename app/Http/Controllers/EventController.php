@@ -17,21 +17,23 @@ class EventController extends Controller
     {
         $request->start_time = date('Y-m-d h:i:s', strtotime($request->start_time));
         $request->end_time = date('Y-m-d h:i:s', strtotime($request->end_time));
-                $this -> validate($request, [
-                    'name' => 'required|max:100',
-                    'description' => 'required|not_in:<br>',
-                    'subject' => 'required|not_in:null',
-                    'quizimage' => 'image|max:1000',
-                    'start_time' => 'required|after:Current_Date_Time',
-                    'end_time' => 'required|after:start_time',
-                    'duration' => 'required|numeric|min:1',
-                    'correct_mark' => 'required|numeric|min:0',
-                    'wrong_mark' => 'required|numeric|max:0',
-                    'display_ques' => 'required|numeric|min:1',
-                    'othersubject' => 'sometimes|required',
-                ], [
-                    'not_in' => 'The :attribute field is required.'
-                ]);
+        $this -> validate($request, [
+                'name' => 'required|max:100',
+                'description' => 'required|not_in:<br>',
+                'subject' => 'required|not_in:null',
+                'quizimage' => 'image|max:1000',
+                'start_time' => 'required|after:Current_Date_Time',
+                'end_time' => 'required|after:start_time',
+                'duration' => 'required|numeric|min:1',
+                'correct_mark' => 'required|numeric|min:0',
+                'wrong_mark' => 'required|numeric|max:0',
+                'display_ques' => 'required|numeric|min:1',
+                'othersubject' => 'sometimes|required',
+            ],
+            [
+                'not_in' => 'The :attribute field is required.'
+            ]
+        );
 
         $task = new Event;
         $task->name = $request->name;
@@ -77,6 +79,11 @@ class EventController extends Controller
 
     public function add(Request $request, $id)
     {
+        $event = Event::select('isactive')->where('id',$id)->first();
+        if($event->isactive == 1) {
+            return back()->with(['msg' => 'You can not add question to an active (launched) event.', 'class' => 'alert-danger'])->withInput($request->all);
+        }
+
         $this -> validate(
             $request,
             [
@@ -133,25 +140,30 @@ class EventController extends Controller
         if ($event->count() == 0) {
             return back()->with(['msg' => 'The Event you are trying to edit does not exist.', 'class' => 'alert-danger'])->withInput($request->all);
         }
+        if($event->isactive == 1) {
+            return back()->with(['msg' => 'You can not edit an active (launched) event.', 'class' => 'alert-danger'])->withInput($request->all);
+        }
         $request->start_time = date('Y-m-d h:i:s', strtotime($request->start_time));
         $request->end_time = date('Y-m-d h:i:s', strtotime($request->end_time));
-                $this -> validate($request, [
-                    'name' => 'required|max:100',
-                    'description' => 'required|not_in:<br>',
-                    'subject' => 'required|not_in:null',
-                    'quizimage' => 'image|max:1000',
-                    'start_time' => 'required|after:Current_Date_Time',
-                    'end_time' => 'required|after:start_time',
-                    'duration' => 'required|numeric|min:1',
-                    'correct_mark' => 'required|numeric|min:0',
-                    'wrong_mark' => 'required|numeric|max:0',
-                    'display_ques' => 'required|numeric|min:1',
-                    'othersubject' => 'sometimes|required',
-                ], [
-                    'not_in' => 'The :attribute field is required.'
-                ]);
-                $event->name = $request->name;
-                $event->description = $request->description;
+        $this -> validate($request, [
+                'name' => 'required|max:100',
+                'description' => 'required|not_in:<br>',
+                'subject' => 'required|not_in:null',
+                'quizimage' => 'image|max:1000',
+                'start_time' => 'required|after:Current_Date_Time',
+                'end_time' => 'required|after:start_time',
+                'duration' => 'required|numeric|min:1',
+                'correct_mark' => 'required|numeric|min:0',
+                'wrong_mark' => 'required|numeric|max:0',
+                'display_ques' => 'required|numeric|min:1',
+                'othersubject' => 'sometimes|required',
+            ],
+            [
+                'not_in' => 'The :attribute field is required.'
+            ]
+        );
+        $event->name = $request->name;
+        $event->description = $request->description;
         if (!is_null($request->othersubject)) {
             //Add new Subject to subject table
             $subject = new Subject;
@@ -173,28 +185,35 @@ class EventController extends Controller
             $request->quizimage->move(public_path('img'), $image_path);
             $event->img = 'img/'.$image_path;
         }
-                $event->start = $request->start_time;
-                $event->end = $request->end_time;
-                $event->duration = $request->duration;
-                $event->correctmark = $request->correct_mark;
-                $event->wrongmark = $request->wrong_mark;
-                $event->quedisplay = $request->display_ques;
+        $event->start = $request->start_time;
+        $event->end = $request->end_time;
+        $event->duration = $request->duration;
+        $event->correctmark = $request->correct_mark;
+        $event->wrongmark = $request->wrong_mark;
+        $event->quedisplay = $request->display_ques;
 
-                $event->save();
-                return redirect('teacher')->with(['msg' =>'Event Edited Successfully.', 'class' => 'alert-success']);
+        $event->save();
+        return redirect('teacher')->with(['msg' =>'Event Edited Successfully.', 'class' => 'alert-success']);
     }
+
     public function editQue(Request $request, $id, $qid)
     {
         $editque = Queans::find($qid);
         if ($editque->count() == 0) {
             return back()->with(['msg' => 'The question you are trying to edit does not exist.', 'class' => 'alert-danger'])->withInput($request->all);
         }
+        $event = Event::select('isactive')->where('id',$id)->first();
+        if($event->isactive == 1) {
+            return back()->with(['msg' => 'You can not edit question of an active (launched) event.', 'class' => 'alert-danger'])->withInput($request->all);
+        }
         $this -> validate($request, [
-                    'question' => 'required|not_in:<br>',
-                    'quetype' => 'required|digits_between:0,1',
-                    ], [
-                    'not_in' => 'The :attribute field is required.'
-                    ]);
+            'question' => 'required|not_in:<br>',
+            'quetype' => 'required|digits_between:0,1',
+            ],
+            [
+            'not_in' => 'The :attribute field is required.'
+            ]
+        );
         $count = $request->count;
         $counter =0;
         for ($z=1; $z <= $count; $z++) {
@@ -210,7 +229,7 @@ class EventController extends Controller
             return back()->with(['msg' => 'Please add atleast two options.', 'class' => 'alert-danger'])->withInput($request->all);
         }
 
-                $flag=0;
+        $flag=0;
         for ($y=1; $y <= $count; $y++) {
             $opti = $request->input('option'.$y);
             if (!is_null($opti)) {
@@ -242,27 +261,38 @@ class EventController extends Controller
                 $option->save();
             }
         }
-                return back()->with(['msg' =>'Question edited successfuly.', 'class' => 'alert-success']);
+        return back()->with(['msg' =>'Question edited successfuly.', 'class' => 'alert-success']);
     }
+
     public function deleteQue(Request $request, $id, $qid)
     {
-        $deleteque = Queans::findorFail($qid)->delete();
-        // if ($deleteque->count() == 0) {
-        //     return back()->with(['msg' => 'The question you are trying to delete does not exist.', 'class' => 'alert-danger'])->withInput($request->all);
-        // }
+        $deleteque = Queans::find($qid);
+        if ($deleteque->count() == 0) {
+            return back()->with(['msg' => 'The question you are trying to delete does not exist.', 'class' => 'alert-danger'])->withInput($request->all);
+        }
+        $event = Event::select('isactive')->where('id',$id)->first();
+        if($event->isactive == 1) {
+            return back()->with(['msg' => 'You can not delete question of an active (launched) event.', 'class' => 'alert-danger'])->withInput($request->all);
+        }
         $options = Option::where('queid', $qid)->delete();
+        $deleteque->delete();
 
-        return back()->with('success', 'Question deleted Successfully');
+        return back()->with(['msg' => 'Question deleted Successfully', 'class' => 'alert-success']);
     }
+
     public function deleteEvent(Request $request, $id)
     {
         $event = Event::find($id);
         if ($event->count() == 0) {
             return back()->with(['msg' => 'The Event you are trying to delete does not exist.', 'class' => 'alert-danger'])->withInput($request->all);
         }
+        if($event->isactive == 1) {
+            return back()->with(['msg' => 'You can not delete an active (launched) event.', 'class' => 'alert-danger'])->withInput($request->all);
+        }
         $event->delete();
         return redirect('teacher')->with(['msg' =>'Event Deleted Successfully.', 'class' => 'alert-success']);
     }
+
     public function accessEvent(Request $request, $id)
     {
         $allowaccess = $request->input('access');
