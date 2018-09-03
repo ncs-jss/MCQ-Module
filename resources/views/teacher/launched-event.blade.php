@@ -8,7 +8,7 @@ $count = count($req);
 ?>
 <div class="container">
     @include('includes.msg')
-    <form action="{{url('teacher/event/allowaccess/'.$event->id)}}" method="POST">
+    <form action="{{url('teacher/event/allowaccess/'.$event->id)}}" method="POST" >
          {{ csrf_field() }}
     <div class="table-responsive">
         <table class="table table-bordered shadow text-center bg-primary table-dark" style="margin: 2rem 0 2rem 0;">
@@ -19,7 +19,7 @@ $count = count($req);
             <h4 class="text-center">Interested Students for the Event</h4>
                 <thead>
                     <tr>
-                        <td><b>Allow Access</b></td><td><b>Name of Student</b></td><td><b>Admission No.</b></td><td><b>Roll No.</b></td>
+                        <td><div><b>Select All</b></div><input type="checkbox" id="select-all"></td><td><b>Name of Student</b></td><td><b>Admission No.</b></td><td><b>Roll No.</b></td>
                     </tr>
                 </thead>
                 
@@ -89,7 +89,19 @@ $count = count($req);
                     });
                 }
             }
-        };            
+        };
+        $('#select-all').click(function(event) {   
+            if(this.checked) {
+                // Iterate each checkbox
+                $(':checkbox').each(function() {
+                    this.checked = true;                        
+                });
+            } else {
+                $(':checkbox').each(function() {
+                    this.checked = false;                       
+                });
+            }
+        });            
 </script>
 <div class="table-responsive">
         <table class="table table-bordered shadow text-center bg-success table-dark" style="margin: 2rem 0 2rem 0;">
