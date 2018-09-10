@@ -18,4 +18,5 @@ return array(
     'f0906e6318348a765ffb6eb24e0d0938' => $vendorDir . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
     '58571171fd5812e6e447dce228f52f4d' => $vendorDir . '/laravel/framework/src/Illuminate/Support/helpers.php',
     'dcb01149ecfd30ccf77f425f2bf8b3da' => $baseDir . '/app/Helpers/GoogleCalendar.php',
+    '11008da94ea1e6dc84db1a7ee70792db' => $baseDir . '/app/Helpers/custom_url.php',
 );
