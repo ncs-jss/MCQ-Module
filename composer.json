@@ -22,7 +22,8 @@
             "App\\": "app/"
         },
         "files": [
-            "app/Helpers/GoogleCalendar.php"
+            "app/Helpers/GoogleCalendar.php",
+            "app/Helpers/custom_url.php"
         ]
     },
     "autoload-dev": {
