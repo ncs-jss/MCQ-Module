@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/panel.css') }}">
 @stop
 @section('content')
-<form id="myForm" action="{{ url('student/event/submit') }}" method="POST">
+<form id="myForm" action="{{ custom_url('student/event/submit') }}" method="POST">
   {{ csrf_field() }}
   <input type="hidden" value="{{ $queid }}" name="curid">
 <div class="container">
@@ -20,7 +20,7 @@
     <div class="card-body">
       <center>
       @for ($i=1; $i<=count(session('que')); $i++)
-        <button type="submit" formaction="{{ url('student/event/play/'.$i) }}" class="btn
+        <button type="submit" formaction="{{ custom_url('student/event/play/'.$i) }}" class="btn
         @if (session('submit')[$i-1]  == 0)
           @if ($i == $queid)
            btn-outline-secondary
@@ -95,7 +95,7 @@
           else
             $i = $queid + 1;
         @endphp
-        <button type="submit" class="btn btn-success btn-lg active" formaction="{{ url('student/event/play/'.$i) }}">Save & Next Question</button>
+        <button type="submit" class="btn btn-success btn-lg active" formaction="{{ custom_url('student/event/play/'.$i) }}">Save & Next Question</button>
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#EventSubmit" data-whatever="@fat">Submit & Exit Quiz</button>
       </center>
     </li>
@@ -123,7 +123,7 @@
       <div class="modal-body">
         <center>
           <h5>Please note that this action is irreversible.<br>Are you confirm that you really want submit your response and logout ? </h5>
-        <button type="submit" class="btn btn-success" formaction="{{ url('student/event/submit/logout') }}">Yes, Save & Logout</button>
+        <button type="submit" class="btn btn-success" formaction="{{ custom_url('student/event/submit/logout') }}">Yes, Save & Logout</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
         </center>
       </div>

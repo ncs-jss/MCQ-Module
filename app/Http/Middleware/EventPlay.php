@@ -22,7 +22,7 @@ class EventPlay
     {
         if(session()->has('event'))
         {
-            return redirect(url('student/event/play/1'));
+            return redirect(custom_url('student/event/play/1'));
         }
         else
         {
@@ -61,7 +61,7 @@ class EventPlay
                             ]
                         );
                         session(['eventcheck' => 1]);
-                        return redirect(url('student/event/play/1'));
+                        return redirect(custom_url('student/event/play/1'));
                     }
                     else   
                     {  

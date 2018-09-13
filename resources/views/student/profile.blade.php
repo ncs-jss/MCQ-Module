@@ -10,7 +10,7 @@
       <h2>Profile</h2>
     </div>
     <div class="card-body">
-        <form action="{{ url('student/profile') }}" method="POST">
+        <form action="{{ custom_url('student/profile') }}" method="POST">
           {{ csrf_field() }}
           @php
             $newuser = 0;

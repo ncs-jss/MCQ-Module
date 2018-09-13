@@ -39,7 +39,7 @@
           bg-success 
           @else bg-danger
           @endif @else bg-dark" @endif  id="cardbg">
-          <a href="{{url('teacher/event/view/'.$event->id)}}" class="card-header text-capitalize" style="text-decoration: none;">
+          <a href="{{custom_url('teacher/event/view/'.$event->id)}}" class="card-header text-capitalize" style="text-decoration: none;">
             <h3 class="text-center text-capitalize text-white">{{ $event->name }}</h3>
           </a>
           <div class="card-body">
@@ -66,20 +66,20 @@
           <div class="card-footer">
             @if($event->end > date("Y-m-d H:i:s"))
               @if ($event->isactive == 0)
-                <a href="{{url('teacher/event/'.$event->id)}}" class="btn btn-primary float-left" role="button" aria-pressed="true"><i class="fa fa-plus"></i> Add Questions</a><a href="{{url('teacher/event/launch/'.$event->id)}}" id ="launch" class="btn btn-primary float-right 
+                <a href="{{custom_url('teacher/event/'.$event->id)}}" class="btn btn-primary float-left" role="button" aria-pressed="true"><i class="fa fa-plus"></i> Add Questions</a><a href="{{custom_url('teacher/event/launch/'.$event->id)}}" id ="launch" class="btn btn-primary float-right 
                 @if ($count < $event->quedisplay)
                   disabled"
                 @endif
                 role="button" aria-pressed="true">Launch Event</a>
               @else
-                <a href="{{url('teacher/event/launch/'.$event->id)}}" id ="launch" class="btn btn-warning btn-block btn-lg 
+                <a href="{{custom_url('teacher/event/launch/'.$event->id)}}" id ="launch" class="btn btn-warning btn-block btn-lg 
                   @if ($count < $event->quedisplay)
                     disabled"
                   @endif
                 role="button" aria-pressed="true">View Requests</a>
               @endif
             @else
-              <a href="{{url('teacher/event/'.$event->id.'/result')}}" class="btn btn-success btn-lg btn-block" role="button" aria-pressed="true">View Result</a>
+              <a href="{{custom_url('teacher/event/'.$event->id.'/result')}}" class="btn btn-success btn-lg btn-block" role="button" aria-pressed="true">View Result</a>
             @endif
           </div>
         </div>
