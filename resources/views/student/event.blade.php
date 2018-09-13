@@ -13,7 +13,7 @@
       <div class="row">
         <div class="col-sm-3">
           <center>
-            <img class="rounded border border-dark shadow" src="{{ url($event->img) }}" width="200px">
+            <img class="rounded border border-dark shadow" src="{{ custom_url($event->img) }}" width="200px">
             <br>
             <br>
           </center>
@@ -45,7 +45,7 @@
           @if (Auth::check())
               @if($event->start <= date('Y-m-d H:i:s') && $event->end >= date('Y-m-d H:i:s'))
                 @if (empty($req))
-                    <form action="{{ url('student/event/'.$id.'/req') }}" method="POST">
+                    <form action="{{ custom_url('student/event/'.$id.'/req') }}" method="POST">
                       {{ csrf_field() }}
                       <input type="hidden" value="{{ $id }}" name="id" required>
                       <button type="submit" class="btn btn-danger btn-lg btn-block">Request to join this Event</button>
@@ -70,7 +70,7 @@
                             document.getElementById("count").innerHTML = i;
                           else
                           {
-                              $.post("{{ url('student/ajax/event/req') }}",
+                              $.post("{{ custom_url('student/ajax/event/req') }}",
                               {
                                   "id": "{{ $id }}",
                                   "_token": "{{ csrf_token() }}"
@@ -117,7 +117,7 @@
                     $end = str_replace(' ','T',$end);
                     $end = $end.'Z';
                   @endphp
-                  <a href="{{ make_google_calendar_link($event->name, $start, $end, url('event/'.$id), '') }}" target="_blank" class="btn btn-primary btn-lg btn-block">Comming Soon, Add to Google Calendar</a>
+                  <a href="{{ make_google_calendar_link($event->name, $start, $end, custom_url('event/'.$id), '') }}" target="_blank" class="btn btn-primary btn-lg btn-block">Comming Soon, Add to Google Calendar</a>
                 @else
                   <div class="alert alert-danger" role="alert">
                         <h5>
@@ -142,7 +142,7 @@
       <div class="modal-body">
         <center>
           <h5>Please note that this action is irreversible and timer once start can not be reset.<br>Are you confirm that you really want to start this event ? </h5>
-                <form action="{{ url('student/event/'.$id.'/join') }}" method="POST">
+                <form action="{{ custom_url('student/event/'.$id.'/join') }}" method="POST">
                   {{ csrf_field() }}
                   <input type="hidden" value="{{ $id }}" name="id" required>
         <button type="submit" class="btn btn-success">Yes, start event</button>

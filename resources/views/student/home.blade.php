@@ -62,7 +62,7 @@
                     $end = str_replace(' ','T',$end);
                     $end = $end.'Z';
                   @endphp
-                    <a href="{{ make_google_calendar_link($event->name, $start, $end, url('event/'.$event->id), '') }}" target="_blank"><div class="bg-danger card-footer"><center><strong class="text-white">Comming Soon<br>Add to Google Calendar</strong></center></div></a>
+                    <a href="{{ make_google_calendar_link($event->name, $start, $end, custom_url('event/'.$event->id), '') }}" target="_blank"><div class="bg-danger card-footer"><center><strong class="text-white">Comming Soon<br>Add to Google Calendar</strong></center></div></a>
                   @else
                     <div class="card-footer"><center><strong class="text-white">Closed</strong></center></div>
                   @endif

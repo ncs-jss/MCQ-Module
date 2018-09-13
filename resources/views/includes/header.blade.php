@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark shadow">
-    <a class="navbar-brand" href="{{ url('/') }}">
+    <a class="navbar-brand" href="{{ custom_url('/') }}">
         {{ config('app.name', 'MCQ Module') }}
     </a>
 		<!-- Toggler/collapsibe Button -->
@@ -9,7 +9,7 @@
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
 		<ul class="navbar-nav mr-auto">
     		<li class="nav-item active">
-      			<a class="nav-link" href="{{ url('/') }}">Home</a>
+      			<a class="nav-link" href="{{ custom_url('/') }}">Home</a>
     		</li>
     		<li class="nav-item">
       			<a class="nav-link" href="#">About</a>
@@ -26,7 +26,7 @@
       @if (session()->has('event'))
         <button class="btn btn-danger my-2 my-sm-0" type="button" data-toggle="modal" data-target="#EventLogout" data-whatever="@fat">Logout</button>
       @else
-        <a href="{{ route('logout') }}"><button class="btn btn-danger my-2 my-sm-0" type="submit">Logout</button></a>
+        <a href="{{ custom_url('logout') }}"><button class="btn btn-danger my-2 my-sm-0" type="submit">Logout</button></a>
       @endif
     @endif
 </nav>

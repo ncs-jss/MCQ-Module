@@ -11,7 +11,7 @@
         </div>
         <div class="card-body">
         <!-- New Edit-Question Form -->
-             <form action="{{url('teacher/event/'.$id.'/edit/que/'.$qid)}}" method="POST">
+             <form action="{{custom_url('teacher/event/'.$id.'/edit/que/'.$qid)}}" method="POST">
             {{ csrf_field() }}
             <!-- Question -->
             <div class="form-group">
@@ -130,7 +130,7 @@
         </form>
        <div>
         <center>
-                    <a class="btn btn-primary " href="{{url('teacher/event/'.$id)}}" id="btn2" style="text-decoration: none;"><i class ="fa fa-plus"></i> Add More Questions </a>
+                    <a class="btn btn-primary " href="{{custom_url('teacher/event/'.$id)}}" id="btn2" style="text-decoration: none;"><i class ="fa fa-plus"></i> Add More Questions </a>
                 </center>
         </div>
     </div>

@@ -79,7 +79,7 @@ class EventPlayController extends Controller
                         ]
                     );
 
-                    return redirect(url('student/event/play/1'));
+                    return redirect(custom_url('student/event/play/1'));
                 }
                 else
                 {
@@ -199,7 +199,7 @@ class EventPlayController extends Controller
             session()->forget('response');
 
             if(empty($val))
-                return redirect(url('student/event/'.$eventid));
+                return redirect(custom_url('student/event/'.$eventid));
             else
                 return redirect(route('logout'));
         }
