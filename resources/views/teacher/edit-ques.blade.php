@@ -6,7 +6,7 @@
 <div class="container">
     @include('includes.msg')
     <div class="card">
-        <div class="card-header text-white bg-purple shadow">
+        <div class="card-header text-white shadow bg-purple">
             <h2>Edit Question</h2>
         </div>
         <div class="card-body">

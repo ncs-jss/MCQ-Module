@@ -7,8 +7,8 @@
     @include('includes.msg')
 
   <div class="card">
-    <div class="card-header  text-white bg-purple shadow">
-      <h2 class="float-left">Quiz</h2>
+    <div class="card-header text-white shadow bg-purple">
+      <h2 class="float-left">Quizzes</h2>
       <a class="anchor btn-success btn-lg float-right" href="{{ route('teacherCreateEvent') }}" style="text-decoration: none;"> <i class="fa fa-plus"></i> Create New Quiz</a>
     </div>
     <div class="card-body">
@@ -38,7 +38,7 @@
           @elseif($count >= $event->quedisplay && $event->isactive == 1)
           bg-success 
           @else bg-danger
-          @endif @else bg-dark" @endif  id="cardbg">
+          @endif @else bg-secondary" @endif  id="cardbg">
           <a href="{{custom_url('teacher/event/view/'.$event->id)}}" class="card-header text-capitalize" style="text-decoration: none;">
             <h3 class="text-center text-capitalize text-white">{{ $event->name }}</h3>
           </a>
