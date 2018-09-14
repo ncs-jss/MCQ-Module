@@ -8,14 +8,39 @@
     background-color: rgb(0,0,0,0.6);
 	background-position: center;
 }
+.text-bd{
+    color: #bdbdbd!important;
+}
+.btn-lg{
+    padding: 0!important;
+}
+
+.bg-launch {
+    background-color: #4CAF50;
+    color: #f5f5f5;
+}
+
+.bg-active {
+    background-color: #1E88E5;
+    color: #f5f5f5;
+}
+
+.bg-incomplete {
+    background-color: #f44336;
+    color: #f5f5f5;
+}
+
 .form-container{
 	margin-top: 8rem;
 	background-color: #C0C0C0;
+    padding: 20rem;
 }
 .hidden{
 	display: none;
 }
-
+h1{
+    font-family: arial;
+}
 /* The container */
 .lbl {
     display: block;

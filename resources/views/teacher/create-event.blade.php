@@ -11,7 +11,7 @@
     @endif
     @include('includes.msg')
   <div class="card">
-    <div class="card-header text-white bg-purple shadow">
+    <div class="card-header text-white shadow bg-purple">
       <h2>
             @if(isset($id))
                 Edit Event

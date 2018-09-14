@@ -9,16 +9,13 @@
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
 		<ul class="navbar-nav mr-auto">
     		<li class="nav-item active">
-      			<a class="nav-link" href="{{ custom_url('/') }}">Home</a>
+      			<a class="nav-link" href="{{ custom_url('') }}">Home</a>
     		</li>
     		<li class="nav-item">
       			<a class="nav-link" href="#">About</a>
     		</li>
     		<li class="nav-item">
       			<a class="nav-link" href="#">NCS</a>
-    		</li>
-    		<li class="nav-item">
-      			<a class="nav-link disabled" href="#">Disabled</a>
     		</li>
   	</ul>
     </div>

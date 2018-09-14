@@ -3,10 +3,14 @@ body {
   padding-bottom: 3rem;
   background-color: #e9ecef;
 }
-.bg-purple {
-    background-color: #6f42c1;
+.btn-lg{
+  font-size: 18px!important;
+  margin-top: 6px;
+  padding: 3px 10px!important;
 }
-
+.bg-purple{
+  background-color: #4d4d4d;
+}
 /* The container */
 .lbl {
     display: block;

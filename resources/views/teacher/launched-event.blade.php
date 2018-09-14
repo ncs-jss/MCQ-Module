@@ -12,7 +12,7 @@ $count = count($req);
          {{ csrf_field() }}
     <div class="table-responsive">
         <table class="table table-bordered shadow text-center bg-primary table-dark" style="margin: 2rem 0 2rem 0;">
-            <div class="card-header text-white bg-purple shadow text-capitalize text-center">
+            <div class="card-header text-white shadow text-capitalize text-center bg-purple">
                 <h2>{{$event->name}}</h2>
             </div>
             <br>
@@ -54,7 +54,7 @@ $count = count($req);
                 document.getElementById("counts").innerHTML = i;
             else
                 {
-                    $.post("{{ custom_url('teacher/ajax/event/req/') }}",
+                    $.post("{{ custom_url('teacher/ajax/event/req') }}",
                     {
                         "id": "{{ $event->id }}",
                         "_token": "{{ csrf_token() }}"

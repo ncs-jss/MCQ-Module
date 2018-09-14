@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-md-8 col-sm-8 col-xs-12 ">
             <div class="card">
-                <div class="card-header text-white bg-purple shadow">
+                <div class="card-header text-white shadow bg-purple">
                     <h5>Add Question</h5>
                 </div>
                 <div class="card-body">
@@ -186,7 +186,7 @@
         </div>
         <div class="col-md-4 col-sm-4 col-xs-12 ">
             <div class="card">
-                <div class="card-header text-white bg-purple shadow text-center">
+                <div class="card-header text-white shadow text-center" style="background-color: #4d4d4d">
                     <h5>Questions</h5>
                 </div>
                 <div class="card-body table-responsive">
