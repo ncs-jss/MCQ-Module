@@ -46,19 +46,19 @@
             <table class="table table-borderless table-sm">
               <tbody>
                 <tr>
-                  <td>Start: </td><td> {{ date('d M Y, g:i a',strtotime($event->start)) }}</td>
+                  <td><b>Start:</b> </td><td> {{ date('d M Y, g:i a',strtotime($event->start)) }}</td>
                 </tr>
                 <tr>
-                  <td>Close: </td><td> {{ date('d M Y, g:i a',strtotime($event->end)) }}</td>
+                  <td><b>Close:</b> </td><td> {{ date('d M Y, g:i a',strtotime($event->end)) }}</td>
                 </tr>
                 <tr>
-                  <td>Que Display: </td><td>{{$event->quedisplay}}</td>
+                  <td><b>Que Display:</b> </td><td>{{$event->quedisplay}}</td>
                 </tr>
                 <tr>
-                  <td>Que Added: </td><td>{{$count}}</td>
+                  <td><b>Que Added:</b> </td><td>{{$count}}</td>
                 </tr>
                 <tr>
-                  <td>Duration: </td><td> {{ sprintf("%02d",intdiv($event->duration, 60)).':'. sprintf("%02d",($event->duration % 60)) }}</td>
+                  <td><b>Duration:</b> </td><td> {{ sprintf("%02d",intdiv($event->duration, 60)).':'. sprintf("%02d",($event->duration % 60)) }}</td>
                 </tr>
               </tbody>
             </table>
@@ -68,7 +68,7 @@
               @if ($event->isactive == 0)
                 <a href="{{custom_url('teacher/event/'.$event->id)}}" class="btn btn-primary float-left" role="button" aria-pressed="true"><i class="fa fa-plus"></i> Add Questions</a><a href="{{custom_url('teacher/event/launch/'.$event->id)}}" id ="launch" class="btn btn-primary float-right 
                 @if ($count < $event->quedisplay)
-                  disabled"
+                  disabled btn-secondary"
                 @endif
                 role="button" aria-pressed="true">Launch Event</a>
               @else
