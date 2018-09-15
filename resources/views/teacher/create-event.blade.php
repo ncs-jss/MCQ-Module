@@ -61,8 +61,8 @@
                         
                         @if ($errors->has('subject'))
                             <div class="alert alert-danger">
-                                @foreach ($errors->get('subject') as $sub)
-                                    <li>{{$sub}}</li>
+                                @foreach ($errors->get('subject') as $suberr)
+                                    <li>{{$suberr}}</li>
                                 @endforeach
                             </div>
                         @endif
