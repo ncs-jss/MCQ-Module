@@ -1,6 +1,6 @@
 @extends('layouts.default')
 @section('css')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ custom_url('assets/css/style.css') }}">
 @stop
 @section('content')
 <div class="container">

@@ -1,6 +1,6 @@
 @extends('layouts.default')
 @section('css')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/panel.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ custom_url('assets/css/panel.css') }}">
 @stop
 @section('content')
 <form id="myForm" action="{{ custom_url('student/event/submit') }}" method="POST">
