@@ -15,8 +15,11 @@
       			<a class="nav-link" href="#">About</a>
     		</li>
     		<li class="nav-item">
-      			<a class="nav-link" href="#">NCS</a>
+      			<a class="nav-link" href="hackncs.com">NCS</a>
     		</li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('teacherAllQues') }}">Questions</a>
+        </li>
   	</ul>
     </div>
     @if (Auth::check())

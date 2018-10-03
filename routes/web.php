@@ -71,6 +71,11 @@ Route::group(['middleware' => ['web']], function () {
                 $quecount = Queans::select('eventid', DB::raw('count(id) as total'))->whereIn('eventid', array_column($eventarrey, 'id'))->groupBy('eventid')->get()->toArray();
                 return view('teacher.home', ['events' => $events, 'quecount' => $quecount]);
             });
+            Route::get('/allques', function () {
+                $ques = DB::table('event')->join('queans', 'event.id', '=', 'queans.eventid')->select('queans.que')->where('creator',Auth::id())->get()->toArray();
+                return view('teacher.allques',['ques' => $ques]);
+            })->name('teacherAllQues');
+
             Route::get('/event/create', function () {
                 $subject = Subject::select('*')->orderBy('name', 'asc')->get()->toArray();
                 return view('teacher.create-event')->with('subject', $subject);
