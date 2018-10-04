@@ -36,6 +36,6 @@ class ProfileController extends Controller
         if($request->input('newuser') == 0)
         	return back()->with(['msg' => 'You profile has been successfully updated.', 'class' => 'alert-success']);
         else
-        	return redirect(custom_url('student'))->with(['msg' => 'You profile has been successfully updated.', 'class' => 'alert-success']);
+        	return redirect('student')->with(['msg' => 'You profile has been successfully updated.', 'class' => 'alert-success']);
     }
 }
