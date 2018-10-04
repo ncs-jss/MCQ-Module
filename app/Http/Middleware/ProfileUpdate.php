@@ -22,7 +22,7 @@ class ProfileUpdate
             $cur_yr = date("Y") - 2000;
             if($cur_yr > $adm_yr && Auth::user()->rollno == NULL)
             {
-                return redirect(custom_url('student/profile/new'))->with(['msg' => 'You need to mention your universty roll number.', 'class' => 'alert-primary']);
+                return redirect('student/profile/new')->with(['msg' => 'You need to mention your universty roll number.', 'class' => 'alert-primary']);
             }
             else
             {

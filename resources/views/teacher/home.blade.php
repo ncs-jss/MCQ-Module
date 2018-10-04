@@ -9,7 +9,7 @@
   <div class="card">
     <div class="card-header text-white shadow bg-purple">
       <h2 class="float-left">Quizzes</h2>
-      <a class="anchor btn-success btn-lg float-right" href="{{ route('teacherCreateEvent') }}" style="text-decoration: none;"> <i class="fa fa-plus"></i> Create New Quiz</a>
+      <a class="anchor btn-success btn-lg float-right" href="{{ custom_url('teacher/event/create') }}" style="text-decoration: none;"> <i class="fa fa-plus"></i> Create New Quiz</a>
     </div>
     <div class="card-body">
       @if($events->isEmpty())
