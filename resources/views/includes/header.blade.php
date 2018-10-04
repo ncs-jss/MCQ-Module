@@ -12,14 +12,16 @@
       			<a class="nav-link" href="{{ custom_url('') }}">Home</a>
     		</li>
     		<li class="nav-item">
-      			<a class="nav-link" href="#">About</a>
+      			<a class="nav-link" href="{{ custom_url('about')}}">About</a>
     		</li>
     		<li class="nav-item">
-      			<a class="nav-link" href="hackncs.com">NCS</a>
+      			<a class="nav-link" href="//hackncs.com" target="_blank">NCS</a>
     		</li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('teacherAllQues') }}">Questions</a>
-        </li>
+        @if(session('UserType') == 'teacher')
+            <li class="nav-item">
+                <a class="nav-link" href="{{ custom_url('teacher/allques') }}">Questions</a>
+            </li>
+        @endif
   	</ul>
     </div>
     @if (Auth::check())

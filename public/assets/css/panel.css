@@ -87,3 +87,7 @@ body {
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
 }
+.about-card>ul>li{
+  padding: 12px;
+  color: #555;
+}

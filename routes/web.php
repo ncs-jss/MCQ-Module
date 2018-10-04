@@ -11,6 +11,10 @@ Route::group(['middleware' => ['web']], function () {
         return view('pages.home');
     })->middleware('RedirectIfAuthenticated')->name('login');
 
+    Route::get('/about', function () {
+        return view('pages.about');
+    });
+
     Route::post('login/{eventid?}', 'InfoConnectApiController@login')->middleware(['RedirectIfAuthenticated'])->name('LoginUrl');
 
     Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
