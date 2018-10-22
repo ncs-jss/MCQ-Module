@@ -301,4 +301,37 @@ class EventController extends Controller
         }
         return back();
     }
+    public function launch(Request $request, $id)
+    {
+        $event = Event::where('id',$id);
+        if($event->count() == 1)
+        {
+            $quecount = Queans::where('eventid', $id)->get()->count();
+
+            if ($quecount >= $event->first()->quedisplay)
+            {
+                if($request->has('auto_access'))
+                {
+                    Event::where('id',$id)->update([
+                        'auto_access' => '1',
+                        'isactive' => '1'
+                    ]);
+                    return redirect('teacher/event/launch/'.$id);
+                }
+                else
+                {
+                    Event::where('id',$id)->update([
+                        'auto_access' => '0',
+                        'isactive' => '1'
+                    ]);
+                    return redirect('teacher')->with(['msg' => 'Event successfully launched.', 'class' => 'alert-success']);
+                }
+            }
+            else {
+                    return back();
+            }
+        }
+        else
+            return back();
+    }
 }

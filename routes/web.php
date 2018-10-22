@@ -114,6 +114,8 @@ Route::group(['middleware' => ['web']], function () {
                         return back();
                     }
                 });
+                Route::post('event/launch/{id}', 'EventController@launch');
+
                 Route::get('event/{id}', function ($id) {
                     $queans = Queans::select('id', 'que')->where('eventid', $id)->get()->toArray();
                     return view('teacher.add-ques', ['id'=>$id, 'queans'=>$queans]);

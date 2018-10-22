@@ -27,6 +27,7 @@ class CreateEventTable extends Migration
             $table->integer('wrongmark');
             $table->integer('quedisplay');
             $table->boolean('isactive');
+            $table->boolean('access')->default(0);
         });
     }
 

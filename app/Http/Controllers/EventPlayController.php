@@ -21,7 +21,7 @@ class EventPlayController extends Controller
             $req = new Req;
             $req->userid = Auth::id();
             $req->eventid = $request->input('id');
-            $req->status = '0';
+            $req->status = Event::select('auto_access')->where('id',$request->input('id'))->first()->auto_access;
             $req->save();
             return back()->with('msg','You had successfully requested to join this event.');
         }
