@@ -86,6 +86,7 @@
 <div class="modal fade" id="eventLaunchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
+        <form action="{{ custom_url('teacher/event/launch/'.$id) }}" method="post">
       <div class="modal-header text-white bg-danger">
         <h5 class="modal-title" id="exampleModalLabel">Warning</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -93,13 +94,21 @@
         </button>
       </div>
       <div class="modal-body">
-        Once you launch the event then you will not able to edit it, nor you can you add, edit or delete question.<br>
+        Do you want to autoallow participants to join the quiz event?
+        <br>
+          {{ csrf_field() }}
+        <div class="form-group custom-control custom-checkbox mb-3">
+            <input class="custom-control-input" type="checkbox" value="1" id="auto_access" name="auto_access">
+            <label class="custom-control-label" for="auto_access">Yes</label>
+          </div>
+        Once you launch the event then you will not able to edit it, nor you can you add, edit or delete questions.<br>
         <strong>Are you sure that you really want to launch this event ?</strong> 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <a href="{{custom_url('teacher/event/launch/'.$id)}}" class="btn btn-success">Yes, Launch</a>
+        <button type="submit" class="btn btn-success">Yes, Launch</button>
       </div>
+       </form>
     </div>
   </div>
 </div>
@@ -115,7 +124,7 @@
         </button>
       </div>
       <div class="modal-body">
-        You had set <strong>{{ $event->quedisplay }}</strong> question to display for this event but added <strong>{{ $quecount }}</strong> questions only, to launch rthis event add more questions or edit this event to reset the value for question to display.
+        You had set <strong>{{ $event->quedisplay }}</strong> question to display for this event but added <strong>{{ $quecount }}</strong> questions only, to launch this event add more questions or edit this event to reset the value for question to display.
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

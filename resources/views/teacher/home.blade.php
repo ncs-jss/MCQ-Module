@@ -66,11 +66,13 @@
           <div class="card-footer">
             @if($event->end > date("Y-m-d H:i:s"))
               @if ($event->isactive == 0)
-                <a href="{{custom_url('teacher/event/'.$event->id)}}" class="btn btn-primary float-left" role="button" aria-pressed="true"><i class="fa fa-plus"></i> Add Questions</a><a href="{{custom_url('teacher/event/launch/'.$event->id)}}" id ="launch" class="btn btn-primary float-right 
+                
                 @if ($count < $event->quedisplay)
-                  disabled btn-secondary"
+                  <a href="{{custom_url('teacher/event/'.$event->id)}}" class="btn btn-primary float-left" role="button" aria-pressed="true"><i class="fa fa-plus"></i> Add Questions</a><a href="{{custom_url('teacher/event/launch/'.$event->id)}}" id ="launch" class="btn btn-primary float-right disabled btn-secondary"role="button" aria-pressed="true">Launch Event</a>
+                @else
+                  <a href="{{custom_url('teacher/event/'.$event->id)}}" class="btn btn-primary btn-block btn-lg " role="button" aria-pressed="true"><i class="fa fa-plus"></i> Add Questions</a>
                 @endif
-                role="button" aria-pressed="true">Launch Event</a>
+                
               @else
                 <a href="{{custom_url('teacher/event/launch/'.$event->id)}}" id ="launch" class="btn btn-warning btn-block btn-lg 
                   @if ($count < $event->quedisplay)

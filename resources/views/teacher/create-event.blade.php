@@ -26,7 +26,7 @@
             @endphp
     
             @if(isset($id))
-                <form action="{{url('teacher/event/edit/'.$id)}}" method="POST" enctype="multipart/form-data">
+                <form action="{{custom_url('teacher/event/edit/'.$id)}}" method="POST" enctype="multipart/form-data">
             @else
                 <form action="ques" method="POST" enctype="multipart/form-data">
             @endif
