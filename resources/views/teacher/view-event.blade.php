@@ -73,6 +73,7 @@
                         disabled
                     @endif
                     " role="button" aria-pressed="true">View Requests</a>
+                    <a href="{{custom_url('teacher/event/'.$id.'/score')}}" id ="launch" class="btn btn-warning btn-lg btn-block " role="button" aria-pressed="true">View Score</a>
                 @endif
             @else
                 <a href="{{custom_url('teacher/event/'.$id.'/result')}}" id ="viewresult" class="btn btn-success btn-lg btn-block" role="button" aria-pressed="true">View Result</a>
