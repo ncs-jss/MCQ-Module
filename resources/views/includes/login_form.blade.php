@@ -32,10 +32,9 @@
             Remember me
         </label>
     </div>
-    <button type="submit" class="btn btn-success btn-block">Submit</button>
-    <br>
+    <button type="submit" class="btn btn-success btn-block">Submit</button> 
+    <div style="margin-top: 10px;">
     <center>
-        <i>
-            <a href="http://210.212.85.155/accounts/password/reset/" target="_blank">Forget Password ?</a>
-        </i>
+            <a href="http://210.212.85.155/accounts/password/reset/" target="_blank" style="text-decoration: none;">Forgot Password ?</a>
     </center>
+</div>

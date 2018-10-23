@@ -41,7 +41,7 @@
           @endif
         @endif
         ">{{ $i }}</button> 
-        @if ($i%5==0)
+        @if ($i%4==0)
           <br>
         @endif
       @endfor
