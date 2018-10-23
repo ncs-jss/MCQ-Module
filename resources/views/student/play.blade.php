@@ -96,7 +96,7 @@
             $i = $queid + 1;
         @endphp
         <button type="submit" class="btn btn-success btn-lg active" formaction="{{ custom_url('student/event/play/'.$i) }}">Save & Next Question</button>
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#EventSubmit" data-whatever="@fat">Submit & Exit Quiz</button>
+        <button type="button" class="btn btn-warning btn-lg active" data-toggle="modal" data-target="#EventSubmit" data-whatever="@fat">Submit & Exit Quiz</button>
       </center>
     </li>
   </ul>
@@ -143,7 +143,7 @@ var countDownDate = new Date("{{ $end }}").getTime();
 window.onload = function()
 {
   // Get todays date and time
-  var now = new Date().getTime();
+  var now = new Date("{{ date('Y-m-d H:i:s') }}").getTime();
 
   // Find the distance between now an the count down date
   var distance = countDownDate - now;
@@ -161,9 +161,9 @@ window.onload = function()
 
 // Update the count down every 1 second
 var x = setInterval(function() {
-
+  
   // Get todays date and time
-  var now = new Date().getTime();
+  var now = new Date("{{ date('Y-m-d H:i:s') }}").getTime();
 
   // Find the distance between now an the count down date
   var distance = countDownDate - now;

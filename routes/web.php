@@ -48,7 +48,7 @@ Route::group(['middleware' => ['web']], function () {
                     if ($event->count() == 0) {
                         return back()->with(['msg' => 'The event you are trying to visit does not exist', 'class' => 'alert-danger']);
                     }
-                    $req = Req::select('status')->where('userid', Auth::id())->where('eventid', $id)->first();
+                    $req = Req::select('status','start')->where('userid', Auth::id())->where('eventid', $id)->first();
                     if ($event->isactive == 1) {
                         return view('student.event', ['event' => $event, 'id' => $id, 'req' => $req]);
                     } else {

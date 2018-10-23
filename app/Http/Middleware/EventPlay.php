@@ -36,32 +36,35 @@ class EventPlay
                     $key = array_search($req['eventid'],array_column($events,'id'));
                     if($events[$key]['isactive'] == 1 && $events[$key]['start'] <= date('Y-m-d H:i:s') && $events[$key]['end'] >= date('Y-m-d H:i:s'))
                     {
-                        $queid = explode(',', $req['que']);
-                        $que = Queans::select('id','que','quetype')->whereIn('id',$queid)->get()->toArray();
+                        if(strtotime($req['start']." + ".$events[$key]['duration']." minute") > strtotime(date('Y-m-d H:i:s')))
+                        {
+                            $queid = explode(',', $req['que']);
+                            $que = Queans::select('id','que','quetype')->whereIn('id',$queid)->get()->toArray();
 
-                        $options = Option::select('id','ans','queid')->whereIn('queid',array_column($que,'id'))->get()->toArray();
+                            $options = Option::select('id','ans','queid')->whereIn('queid',array_column($que,'id'))->get()->toArray();
 
-                        $submit = [];
-                        for($i=0; $i<count($que); $i++)
-                            $submit[$i] = 0;
+                            $submit = [];
+                            for($i=0; $i<count($que); $i++)
+                                $submit[$i] = 0;
 
-                        $response = [];
-                        for($i=0; $i<count($que); $i++)
-                            $response[$i] = "";
+                            $response = [];
+                            for($i=0; $i<count($que); $i++)
+                                $response[$i] = "";
 
-                        session(
-                            [
-                                'event' => $events[$key],
-                                'que' => $que,
-                                'submit' => $submit,
-                                'duration' => $events[$key]['duration'],
-                                'start' => $req['start'],
-                                'options' => $options,
-                                'response' => $response,
-                            ]
-                        );
-                        session(['eventcheck' => 1]);
-                        return redirect(custom_url('student/event/play/1'));
+                            session(
+                                [
+                                    'event' => $events[$key],
+                                    'que' => $que,
+                                    'submit' => $submit,
+                                    'duration' => $events[$key]['duration'],
+                                    'start' => $req['start'],
+                                    'options' => $options,
+                                    'response' => $response,
+                                ]
+                            );
+                            session(['eventcheck' => 1]);
+                            return redirect('student/event/play/1');
+                        }
                     }
                     else   
                     {  
