@@ -9,7 +9,7 @@
     {{ csrf_field() }}
     <div class="form-group">
         <label for="username">Username</label>
-        <input type="text" class="form-control {{ $errors->has('username') ? ' is-invalid' : '' }}" id="username" required name="username" autocomplete="off">
+        <input type="text" class="form-control {{ $errors->has('username') ? ' is-invalid' : '' }}" id="username" required name="username" autocomplete="off" placeholder="Username">
         @if ($errors->has('username'))
             <p class="text-danger">
                 {{ $errors->first('username') }}
@@ -18,7 +18,7 @@
     </div>
     <div class="form-group">
         <label for="pwd">Password</label>
-        <input type="password" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" id="pwd" name="password" required>
+        <input type="password" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" id="pwd" name="password" required placeholder="Password">
         @if ($errors->has('password'))
             <p class="text-danger">
                 {{ $errors->first('password') }}
@@ -33,3 +33,9 @@
         </label>
     </div>
     <button type="submit" class="btn btn-success btn-block">Submit</button>
+    <br>
+    <center>
+        <i>
+            <a href="http://210.212.85.155/accounts/password/reset/" target="_blank">Forget Password ?</a>
+        </i>
+    </center>

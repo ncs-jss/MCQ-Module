@@ -94,7 +94,15 @@
                     </script>
                       <button type="button" class="btn btn-success btn-lg btn-block" style="display:none" id="Joinbutton" data-toggle="modal" data-target="#EventJoin" data-whatever="@fat">Start this Event</button>
                 @elseif ($req->status == 1)
-                      <button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#EventJoin" data-whatever="@fat">Start this Event</button>
+                      @if(is_null($req->start))
+                          <button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#EventJoin" data-whatever="@fat">Start this Event</button>
+                      @else
+                          <div class="alert alert-success" role="alert">
+                            <h5>
+                                Sorry, your alloted time is up and your answers are not submitted.
+                            </h5>
+                          </div>
+                      @endif
                 @elseif ($req->status == 2)
                     <div class="alert alert-success" role="alert">
                       <h5>
