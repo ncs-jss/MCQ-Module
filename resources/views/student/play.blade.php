@@ -20,7 +20,7 @@
     <div class="card-body">
       <center>
       @for ($i=1; $i<=count(session('que')); $i++)
-        <button type="submit" formaction="{{ custom_url('student/event/play/'.$i) }}" class="btn
+        <button style="width: 40px;" type="submit" formaction="{{ custom_url('student/event/play/'.$i) }}" class="btn
         @if (session('submit')[$i-1]  == 0)
           @if ($i == $queid)
            btn-outline-secondary
@@ -42,6 +42,7 @@
         @endif
         ">{{ $i }}</button> 
         @if ($i%4==0)
+          <br>
           <br>
         @endif
       @endfor
