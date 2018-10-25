@@ -9,7 +9,7 @@
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
 		<ul class="navbar-nav mr-auto">
     		<li class="nav-item active">
-      			<a class="nav-link" href="{{ custom_url('') }}">Home</a>
+      			<a class="nav-link" href="@if(session('UserType') == 'teacher'){{ custom_url('teacher') }} @elseif(session('UserType') == 'student') {{custom_url('student')}} @endif">Home</a>
     		</li>
     		<li class="nav-item">
       			<a class="nav-link" href="{{ custom_url('about')}}">About</a>
@@ -17,6 +17,11 @@
     		<li class="nav-item">
       			<a class="nav-link" href="//hackncs.com" target="_blank">NCS</a>
     		</li>
+        @if(session('UserType') == 'teacher')
+            <li class="nav-item">
+                <a class="nav-link" href="{{ custom_url('teacher/allques') }}">Questions</a>
+            </li>
+        @endif
         @if(session('UserType') == 'teacher')
             <li class="nav-item">
                 <a class="nav-link" href="{{ custom_url('teacher/allques') }}">Questions</a>
