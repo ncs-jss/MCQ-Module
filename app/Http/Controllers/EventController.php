@@ -316,7 +316,8 @@ class EventController extends Controller
                         'auto_access' => '1',
                         'isactive' => '1'
                     ]);
-                    return redirect('teacher/event/launch/'.$id);
+                    return redirect('teacher')->with(['msg' => 'Event successfully launched.', 'class' => 'alert-success']);
+                    
                 }
                 else
                 {
@@ -324,7 +325,7 @@ class EventController extends Controller
                         'auto_access' => '0',
                         'isactive' => '1'
                     ]);
-                    return redirect('teacher')->with(['msg' => 'Event successfully launched.', 'class' => 'alert-success']);
+                    return redirect('teacher/event/launch/'.$id);
                 }
             }
             else {

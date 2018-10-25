@@ -130,6 +130,7 @@ Route::group(['middleware' => ['web']], function () {
                 Route::post('event/{id}/delete/que/{qid}', 'EventController@deleteQue');
                 Route::post('event/{id}', 'EventController@add');
                 Route::get('event/{id}/result', 'ResultController@view');
+                Route::get('event/{id}/score', 'ResultController@score');
             });
         });
 
