@@ -18,6 +18,12 @@ This is the MCQ Module create by NCS for conducting various quiz type events tha
 
 Clone this repo or download it on your local system.
 
+Open composer and run this given command.
+
+```shell
+composer install
+```
+
 Rename the file `.env.example` to `.env`.
 
 ```shell
@@ -43,6 +49,9 @@ Seed the database
 ```php
 php artisan db:seed
 ```
+
+Set project URL in app/Helpers/custom_url.php
+The default value has been already set as "http://localhost/Proj_mx02/public/"
 
 ### Local Development Server
 
