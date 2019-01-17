@@ -12,7 +12,7 @@ class AjaxController extends Controller
     public function event_req(Request $request)
     {
         $req = Req::select('status')->where('userid', Auth::id())->where('eventid', $request->id)->first();
-        return json_encode(array('status'=> $req->status));
+        return json_encode(['status'=> $req->status]);
     }
 
     public function event_reqs(Request $request)

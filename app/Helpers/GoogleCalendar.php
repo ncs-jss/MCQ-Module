@@ -1,7 +1,7 @@
 <?php
 function make_google_calendar_link($name, $begin, $end, $location, $details)
 {
-    $params = array('&dates=', '/', '&details=', '&location=', '&sf=true&output=xml');
+    $params = ['&dates=', '/', '&details=', '&location=', '&sf=true&output=xml'];
     $url = 'https://www.google.com/calendar/render?action=TEMPLATE&text=';
     $arg_list = func_get_args();
     for ($i = 0; $i < count($arg_list); $i++) {
