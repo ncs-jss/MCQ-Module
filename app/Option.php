@@ -11,6 +11,6 @@ class Option extends Model
 
     public function queans()
     {
-    	return $this->belongsTo('App\Queans', 'queid');
+        return $this->belongsTo('App\Queans', 'queid');
     }
 }

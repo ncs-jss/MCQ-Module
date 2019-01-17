@@ -11,16 +11,16 @@ class Queans extends Model
 
     public function option()
     {
-    	return $this->hasMany('App\Option', 'queid');
+        return $this->hasMany('App\Option', 'queid');
     }
 
     public function userResponse()
     {
-    	return $this->belongsToMany('App\User', 'response', 'queid', 'userid')->withPivot('ans');
+        return $this->belongsToMany('App\User', 'response', 'queid', 'userid')->withPivot('ans');
     }
 
     public function event()
     {
-    	return $this->belongsTo('App\Event', 'eventid');
+        return $this->belongsTo('App\Event', 'eventid');
     }
 }

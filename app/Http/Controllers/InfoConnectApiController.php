@@ -10,12 +10,14 @@ use App\Event;
 
 class InfoConnectApiController extends Controller
 {
-    public function login(Request $request, $eventid = NULL)
+    public function login(Request $request, $eventid = null)
     {
-        $this->validate($request, [
+        $this->validate(
+            $request, [
             'username' => 'required',
             'password' => 'required',
-        ]);
+            ]
+        );
 
         $postData = array(
             'username' => $request->input('username'),
@@ -27,12 +29,14 @@ class InfoConnectApiController extends Controller
         
         // init the resource
         $ch = curl_init();
-        curl_setopt_array($ch, array(
+        curl_setopt_array(
+            $ch, array(
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => $postData
-        ));
+            )
+        );
         
         //Ignore SSL certificate verification
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
@@ -42,8 +46,7 @@ class InfoConnectApiController extends Controller
         $output = curl_exec($ch);
         
         //Print error if any
-        if(curl_errno($ch))
-        {
+        if(curl_errno($ch)) {
             echo 'error:' . curl_error($ch);
         }
         
@@ -51,76 +54,75 @@ class InfoConnectApiController extends Controller
         
         $arr = json_decode($output, true);
 
-        if (array_key_exists('username',$arr))
-        {
+        if (array_key_exists('username', $arr)) {
             $newUser = 0; // Not a new user
             $user = User::select('id')->where('admno', '=', $arr['username'])->first();
-            if (empty($user))
-            {
+            if (empty($user)) {
                 $user = new User;
                 $user->name = $arr['first_name'];
                 $user->admno = $arr['username'];
-                if($arr['group']=="student")
+                if($arr['group']=="student") {
                     $user->type = 0; // Student
-                else if($arr['group']=="others")
+                } else if($arr['group']=="others") {
                     $user->type = 1; // Society
-                else
+                } else {
                     $user->type = 2; // Teacher, HOD, Adminitration
+                }
                 $user->save();
 
                 $newUser = 1; // New user
             }
 
             Auth::loginUsingId($user->id, ($request->has('remember')) ? true : false);
-            if($arr['group']=="student")
-            {
+            if($arr['group']=="student") {
                 session(['UserType' => 'student']);
-                if($newUser == 1)
-                {
+                if($newUser == 1) {
                     return redirect('student/profile/new')->with(['msg' => 'You are first time user hence please update your details.', 'class' => 'alert-primary']);
                 }
                 else
                 {
-                    if($eventid == NULL)
+                    if($eventid == null) {
                         return redirect('student');
-                    else
+                    } else {
                         return redirect('student/event/'.$eventid);
+                    }
                 }
             }
-            else if($arr['group']=="others")
-            {
-                $event = Event::select('id')->where('creator',$user->id)->get()->toArray();
-                session(['SocietyEvent' => array_column($event,'id')]);
+            else if($arr['group']=="others") {
+                $event = Event::select('id')->where('creator', $user->id)->get()->toArray();
+                session(['SocietyEvent' => array_column($event, 'id')]);
                 session(['UserType' => 'society']);
-                if($eventid == NULL)
+                if($eventid == null) {
                     return redirect('society');
-                else
+                } else
                 {
-                    if(in_array($eventid, $event))
+                    if(in_array($eventid, $event)) {
                         return redirect('society/event/view/'.$eventid);
-                    else
+                    } else {
                         return redirect('society')->with(['msg' => 'The event you are trying to access does not belongs to you.', 'class' => 'alert-danger']);
+                    }
                 }
             }
             else
             {
-                $event = Event::select('id')->where('creator',$user->id)->get()->toArray();
-                session(['TeacherEvent' => array_column($event,'id')]);
+                $event = Event::select('id')->where('creator', $user->id)->get()->toArray();
+                session(['TeacherEvent' => array_column($event, 'id')]);
                 session(['UserType' => 'teacher']);
-                if($eventid == NULL)
+                if($eventid == null) {
                     return redirect('teacher');
-                else
+                } else
                 {
-                    if(in_array($eventid, $event))
+                    if(in_array($eventid, $event)) {
                         return redirect('teacher/event/view/'.$eventid);
-                    else
+                    } else {
                         return redirect('teacher')->with(['msg' => 'The event you are trying to access does not belongs to you.', 'class' => 'alert-danger']);
+                    }
                 }
             }
         }
         else
         {
-            return back()->with('msg','The username and/or password you specified are not correct.');
+            return back()->with('msg', 'The username and/or password you specified are not correct.');
         }
     }
 }

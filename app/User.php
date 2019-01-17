@@ -12,21 +12,21 @@ class User extends Authenticatable
 
     public function event()
     {
-    	return $this->hasMany('App\Event', 'creator');
+        return $this->hasMany('App\Event', 'creator');
     }
 
     public function eventRequest()
     {
-    	return $this->belongsToMany('App\Event', 'req', 'userid', 'eventid')->withPivot('status');
+        return $this->belongsToMany('App\Event', 'req', 'userid', 'eventid')->withPivot('status');
     }
 
     public function response()
     {
-    	return $this->hasMany('App\Response', 'userid');
+        return $this->hasMany('App\Response', 'userid');
     }
 
     public function queResponse()
     {
-    	return $this->belongsToMany('App\Queans', 'response', 'userid', 'queid')->withPivot('ans');
+        return $this->belongsToMany('App\Queans', 'response', 'userid', 'queid')->withPivot('ans');
     }
 }

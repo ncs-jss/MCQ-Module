@@ -11,6 +11,6 @@ class Subject extends Model
 
     public function event()
     {
-    	return $this->hasMany('App\Event', 'subid');
+        return $this->hasMany('App\Event', 'subid');
     }
 }

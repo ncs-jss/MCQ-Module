@@ -17,7 +17,8 @@ class EventController extends Controller
     {
         $request->start_time = date('Y-m-d h:i:s', strtotime($request->start_time));
         $request->end_time = date('Y-m-d h:i:s', strtotime($request->end_time));
-        $this -> validate($request, [
+        $this -> validate(
+            $request, [
                 'name' => 'required|max:100',
                 'description' => 'required|not_in:<br>',
                 'subject' => 'required|not_in:null',
@@ -79,7 +80,7 @@ class EventController extends Controller
 
     public function add(Request $request, $id)
     {
-        $event = Event::select('isactive')->where('id',$id)->first();
+        $event = Event::select('isactive')->where('id', $id)->first();
         if($event->isactive == 1) {
             return back()->with(['msg' => 'You can not add question to an active (launched) event.', 'class' => 'alert-danger'])->withInput($request->all);
         }
@@ -145,7 +146,8 @@ class EventController extends Controller
         }
         $request->start_time = date('Y-m-d h:i:s', strtotime($request->start_time));
         $request->end_time = date('Y-m-d h:i:s', strtotime($request->end_time));
-        $this -> validate($request, [
+        $this -> validate(
+            $request, [
                 'name' => 'required|max:100',
                 'description' => 'required|not_in:<br>',
                 'subject' => 'required|not_in:null',
@@ -202,11 +204,12 @@ class EventController extends Controller
         if ($editque->count() == 0) {
             return back()->with(['msg' => 'The question you are trying to edit does not exist.', 'class' => 'alert-danger'])->withInput($request->all);
         }
-        $event = Event::select('isactive')->where('id',$id)->first();
+        $event = Event::select('isactive')->where('id', $id)->first();
         if($event->isactive == 1) {
             return back()->with(['msg' => 'You can not edit question of an active (launched) event.', 'class' => 'alert-danger'])->withInput($request->all);
         }
-        $this -> validate($request, [
+        $this -> validate(
+            $request, [
             'question' => 'required|not_in:<br>',
             'quetype' => 'required|digits_between:0,1',
             ],
@@ -270,7 +273,7 @@ class EventController extends Controller
         if ($deleteque->count() == 0) {
             return back()->with(['msg' => 'The question you are trying to delete does not exist.', 'class' => 'alert-danger'])->withInput($request->all);
         }
-        $event = Event::select('isactive')->where('id',$id)->first();
+        $event = Event::select('isactive')->where('id', $id)->first();
         if($event->isactive == 1) {
             return back()->with(['msg' => 'You can not delete question of an active (launched) event.', 'class' => 'alert-danger'])->withInput($request->all);
         }
@@ -303,28 +306,29 @@ class EventController extends Controller
     }
     public function launch(Request $request, $id)
     {
-        $event = Event::where('id',$id);
-        if($event->count() == 1)
-        {
+        $event = Event::where('id', $id);
+        if($event->count() == 1) {
             $quecount = Queans::where('eventid', $id)->get()->count();
 
-            if ($quecount >= $event->first()->quedisplay)
-            {
-                if($request->has('auto_access'))
-                {
-                    Event::where('id',$id)->update([
+            if ($quecount >= $event->first()->quedisplay) {
+                if($request->has('auto_access')) {
+                    Event::where('id', $id)->update(
+                        [
                         'auto_access' => '1',
                         'isactive' => '1'
-                    ]);
+                        ]
+                    );
                     return redirect('teacher')->with(['msg' => 'Event successfully launched.', 'class' => 'alert-success']);
                     
                 }
                 else
                 {
-                    Event::where('id',$id)->update([
+                    Event::where('id', $id)->update(
+                        [
                         'auto_access' => '0',
                         'isactive' => '1'
-                    ]);
+                        ]
+                    );
                     return redirect('teacher/event/launch/'.$id);
                 }
             }
@@ -332,7 +336,8 @@ class EventController extends Controller
                     return back();
             }
         }
-        else
+        else {
             return back();
+        }
     }
 }
