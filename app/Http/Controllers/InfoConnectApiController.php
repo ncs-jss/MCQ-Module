@@ -62,8 +62,8 @@ class InfoConnectApiController extends Controller
                 $user->admno = $arr['username'];
                 if($arr['group']=="student")
                     $user->type = 0; // Student
-                else if($arr['group']=="others")
-                    $user->type = 1; // Society
+                // else if($arr['group']=="others")
+                //     $user->type = 1; // Society
                 else
                     $user->type = 2; // Teacher, HOD, Adminitration
                 $user->save();
@@ -87,21 +87,21 @@ class InfoConnectApiController extends Controller
                         return redirect('student/event/'.$eventid);
                 }
             }
-            else if($arr['group']=="others")
-            {
-                $event = Event::select('id')->where('creator',$user->id)->get()->toArray();
-                session(['SocietyEvent' => array_column($event,'id')]);
-                session(['UserType' => 'society']);
-                if($eventid == NULL)
-                    return redirect('society');
-                else
-                {
-                    if(in_array($eventid, $event))
-                        return redirect('society/event/view/'.$eventid);
-                    else
-                        return redirect('society')->with(['msg' => 'The event you are trying to access does not belongs to you.', 'class' => 'alert-danger']);
-                }
-            }
+            // else if($arr['group']=="others")
+            // {
+            //     $event = Event::select('id')->where('creator',$user->id)->get()->toArray();
+            //     session(['SocietyEvent' => array_column($event,'id')]);
+            //     session(['UserType' => 'society']);
+            //     if($eventid == NULL)
+            //         return redirect('society');
+            //     else
+            //     {
+            //         if(in_array($eventid, $event))
+            //             return redirect('society/event/view/'.$eventid);
+            //         else
+            //             return redirect('society')->with(['msg' => 'The event you are trying to access does not belongs to you.', 'class' => 'alert-danger']);
+            //     }
+            // }
             else
             {
                 $event = Event::select('id')->where('creator',$user->id)->get()->toArray();

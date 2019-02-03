@@ -15,8 +15,8 @@ class EventController extends Controller
 {
     public function create(Request $request)
     {
-        $request->start_time = date('Y-m-d h:i:s', strtotime($request->start_time));
-        $request->end_time = date('Y-m-d h:i:s', strtotime($request->end_time));
+        $request->start_time = date('Y-m-d H:i:s', strtotime($request->start_time));
+        $request->end_time = date('Y-m-d H:i:s', strtotime($request->end_time));
         $this -> validate($request, [
                 'name' => 'required|max:100',
                 'description' => 'required|not_in:<br>',

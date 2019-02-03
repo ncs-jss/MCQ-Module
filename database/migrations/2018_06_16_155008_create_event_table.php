@@ -16,7 +16,7 @@ class CreateEventTable extends Migration
         Schema::create('event', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 100);
-            $table->text('description');
+            $table->longText('description');
             $table->integer('subid')->unsigned();
             $table->string('img', 50)->default('img/EventIcon.png');
             $table->dateTime('start');
