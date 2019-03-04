@@ -19,7 +19,7 @@
                     {{ csrf_field() }}
                     <div class="form-group">
                         <label for="username">Name</label>
-                        <input type="email" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" id="name" required name="name" autocomplete="off" placeholder="name">
+                        <input type="name" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" id="name" required name="name" autocomplete="off" placeholder="name">
                         @if ($errors->has('name'))
                             <p class="text-danger">
                                 {{ $errors->first('name') }}
