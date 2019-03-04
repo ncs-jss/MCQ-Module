@@ -17,6 +17,11 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::post('login/{eventid?}', 'InfoConnectApiController@login')->middleware(['RedirectIfAuthenticated'])->name('LoginUrl');
 
+    Route::get('register', function () {
+        return view('register');
+    });
+    Route::post('register', 'UserConnectApiController@register')->middleware(['RedirectIfAuthenticated']);
+
     Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
     Route::get('/event/{id}', function ($id) {
@@ -38,7 +43,7 @@ Route::group(['middleware' => ['web']], function () {
                 return view('student.profile', ['val' => $val]);
             });
             Route::post('profile', 'ProfileController@edit');
-            Route::group(['middleware' => ['EventPlay','ProfileUpdate']], function () {
+            Route::group(['middleware' => ['EventPlay']], function () {
                 Route::get('/', function () {
                     $events = Event::select('id', 'name', 'start', 'end', 'duration', 'quedisplay')->where('isactive', '1')->orderBy('id', 'desc')->paginate(9);
                     return view('student.home', ['events' => $events]);
@@ -48,7 +53,7 @@ Route::group(['middleware' => ['web']], function () {
                     if ($event->count() == 0) {
                         return back()->with(['msg' => 'The event you are trying to visit does not exist', 'class' => 'alert-danger']);
                     }
-                    $req = Req::select('status','start')->where('userid', Auth::id())->where('eventid', $id)->first();
+                    $req = Req::select('status', 'start')->where('userid', Auth::id())->where('eventid', $id)->first();
                     if ($event->isactive == 1) {
                         return view('student.event', ['event' => $event, 'id' => $id, 'req' => $req]);
                     } else {
@@ -76,8 +81,8 @@ Route::group(['middleware' => ['web']], function () {
                 return view('teacher.home', ['events' => $events, 'quecount' => $quecount]);
             });
             Route::get('/allques', function () {
-                $ques = DB::table('event')->join('queans', 'event.id', '=', 'queans.eventid')->select('queans.que')->where('creator',Auth::id())->get()->toArray();
-                return view('teacher.allques',['ques' => $ques]);
+                $ques = DB::table('event')->join('queans', 'event.id', '=', 'queans.eventid')->select('queans.que')->where('creator', Auth::id())->get()->toArray();
+                return view('teacher.allques', ['ques' => $ques]);
             })->name('teacherAllQues');
 
             Route::get('/event/create', function () {
@@ -88,8 +93,7 @@ Route::group(['middleware' => ['web']], function () {
             Route::post('/ajax/event/req', 'AjaxController@event_reqs');
             Route::post('event/allowaccess/{id}', 'EventController@accessEvent');
 
-            Route::group(['middleware' => ['EventOwner']], function ()
-            {
+            Route::group(['middleware' => ['EventOwner']], function () {
                 Route::get('event/view/{id}', function ($id) {
                     $quecount = Queans::where('eventid', $id)->get()->count();
                     $event = Event::select('name', 'description', 'subid', 'img', 'start', 'end', 'duration', 'correctmark', 'wrongmark', 'quedisplay', 'isactive')->where('id', $id)->first();

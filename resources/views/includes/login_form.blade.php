@@ -8,8 +8,8 @@
     </div>
     {{ csrf_field() }}
     <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" class="form-control {{ $errors->has('username') ? ' is-invalid' : '' }}" id="username" required name="username" autocomplete="off" placeholder="Username">
+        <label for="username">Email</label>
+        <input type="text" class="form-control {{ $errors->has('username') ? ' is-invalid' : '' }}" id="username" required name="username" autocomplete="off" placeholder="Email">
         @if ($errors->has('username'))
             <p class="text-danger">
                 {{ $errors->first('username') }}
@@ -35,6 +35,6 @@
     <button type="submit" class="btn btn-success btn-block">Submit</button> 
     <div style="margin-top: 10px;">
     <center>
-            <a href="http://210.212.85.155/accounts/password/reset/" target="_blank" style="text-decoration: none;">Forgot Password ?</a>
+            <a href="{{ custom_url('register') }}" target="_blank" style="text-decoration: none;">Create new account</a>
     </center>
 </div>

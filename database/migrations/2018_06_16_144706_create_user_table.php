@@ -18,7 +18,8 @@ class CreateUserTable extends Migration
             $table->string('name', 100);
             $table->string('admno', 40)->unique();
             $table->integer('rollno')->nullable();
-            $table->string('email', 100)->nullable();
+            $table->string('email', 100);
+            $table->string('password');
             $table->boolean('type');
             $table->rememberToken();
         });

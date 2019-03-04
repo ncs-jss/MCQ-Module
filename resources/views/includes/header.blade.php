@@ -14,14 +14,6 @@
     		<li class="nav-item">
       			<a class="nav-link" href="{{ custom_url('about')}}">About</a>
     		</li>
-    		<li class="nav-item">
-      			<a class="nav-link" href="//hackncs.com" target="_blank">NCS</a>
-    		</li>
-        @if(session('UserType') == 'teacher')
-            <li class="nav-item">
-                <a class="nav-link" href="{{ custom_url('teacher/allques') }}">Questions</a>
-            </li>
-        @endif
         @if(session('UserType') == 'teacher')
             <li class="nav-item">
                 <a class="nav-link" href="{{ custom_url('teacher/allques') }}">Questions</a>
