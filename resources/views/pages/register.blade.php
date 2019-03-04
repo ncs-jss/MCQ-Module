@@ -63,7 +63,7 @@
                     <button type="submit" class="btn btn-success btn-block">Submit</button> 
                     <div style="margin-top: 10px;">
                     <center>
-            			<a href="{{ custom_url('/') }}" target="_blank" style="text-decoration: none;">Login an existing account60</a>
+            			<a href="{{ custom_url('/') }}" target="_blank" style="text-decoration: none;">Login using existing account</a>
                     </center>
                 </div>
             </form>

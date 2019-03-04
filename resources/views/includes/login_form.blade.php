@@ -35,6 +35,6 @@
     <button type="submit" class="btn btn-success btn-block">Submit</button> 
     <div style="margin-top: 10px;">
     <center>
-            <a href="{{ custom_url('register') }}" target="_blank" style="text-decoration: none;">Create new account</a>
+            <a href="{{ custom_url('register') }}" target="_blank" style="text-decoration: none;">Register for matrix</a>
     </center>
 </div>
