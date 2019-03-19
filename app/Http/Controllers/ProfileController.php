@@ -17,11 +17,9 @@ class ProfileController extends Controller
         ];
         $adm_yr = substr(Auth::user()->admno, 0, 5);
         $cur_yr = date("Y") - 2000;
-        if($cur_yr > $adm_yr) {
+        if ($cur_yr > $adm_yr) {
             $validation['rollno'] = 'required|numeric|max:9999999999|min:1000000000';
-        }
-        else
-        {
+        } else {
             $validation['rollno'] = 'sometimes|nullable|numeric|max:11|min:11';
         }
         $this -> validate($request, $validation);
@@ -34,10 +32,14 @@ class ProfileController extends Controller
             ]
         );
 
-        if($request->input('newuser') == 0) {
+        if ($request->input('newuser') == 0) {
             return back()->with(['msg' => 'You profile has been successfully updated.', 'class' => 'alert-success']);
         } else {
-            return redirect('student')->with(['msg' => 'You profile has been successfully updated.', 'class' => 'alert-success']);
+            return redirect('student')
+                ->with([
+                    'msg' => 'You profile has been successfully updated.',
+                    'class' => 'alert-success'
+                ]);
         }
     }
 }

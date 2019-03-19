@@ -15,10 +15,11 @@ class EventController extends Controller
 {
     public function create(Request $request)
     {
-        $request->start_time = date('Y-m-d h:i:s', strtotime($request->start_time));
-        $request->end_time = date('Y-m-d h:i:s', strtotime($request->end_time));
+        $request->start_time = date('Y-m-d H:i:s', strtotime($request->start_time));
+        $request->end_time = date('Y-m-d H:i:s', strtotime($request->end_time));
         $this -> validate(
-            $request, [
+            $request,
+            [
                 'name' => 'required|max:100',
                 'description' => 'required|not_in:<br>',
                 'subject' => 'required|not_in:null',
@@ -50,7 +51,9 @@ class EventController extends Controller
             if ($sub->count()) {
                 $task->subid = $request->subject;
             } else {
-                return back()->with(['msg' => 'The subject you are trying to add is invalid.', 'class' => 'alert-danger'])->withInput($request->all);
+                return back()
+                    ->with(['msg' => 'The subject you are trying to add is invalid.', 'class' => 'alert-danger'])
+                    ->withInput($request->all);
             }
         }
         if ($request->hasFile('quizimage')) {
@@ -75,14 +78,17 @@ class EventController extends Controller
         array_push($eventIDs, $task->id);
         session(['TeacherEvent' => $eventIDs]);
 
-        return redirect('teacher/event/'.$task->id)->with(['msg' =>'Event added successfully.', 'class' => 'alert-success']);
+        return redirect('teacher/event/'.$task->id)
+            ->with(['msg' =>'Event added successfully.', 'class' => 'alert-success']);
     }
 
     public function add(Request $request, $id)
     {
         $event = Event::select('isactive')->where('id', $id)->first();
-        if($event->isactive == 1) {
-            return back()->with(['msg' => 'You can not add question to an active (launched) event.', 'class' => 'alert-danger'])->withInput($request->all);
+        if ($event->isactive == 1) {
+            return back()
+                ->with(['msg' => 'You can not add question to an active (launched) event.', 'class' => 'alert-danger'])
+                ->withInput($request->all);
         }
 
         $this -> validate(
@@ -108,7 +114,9 @@ class EventController extends Controller
             }
         }
         if ($flag==0) {
-            return back()->with(['msg' => 'Please select atleast 1 correct answer.', 'class' => 'alert-danger'])->withInput($request->all);
+            return back()
+                ->with(['msg' => 'Please select atleast 1 correct answer.', 'class' => 'alert-danger'])
+                ->withInput($request->all);
         }
         
         $addque = new Queans;
@@ -139,15 +147,20 @@ class EventController extends Controller
     {
         $event = Event::find($id);
         if ($event->count() == 0) {
-            return back()->with(['msg' => 'The Event you are trying to edit does not exist.', 'class' => 'alert-danger'])->withInput($request->all);
+            return back()
+                ->with(['msg' => 'The Event you are trying to edit does not exist.', 'class' => 'alert-danger'])
+                ->withInput($request->all);
         }
-        if($event->isactive == 1) {
-            return back()->with(['msg' => 'You can not edit an active (launched) event.', 'class' => 'alert-danger'])->withInput($request->all);
+        if ($event->isactive == 1) {
+            return back()
+                ->with(['msg' => 'You can not edit an active (launched) event.', 'class' => 'alert-danger'])
+                ->withInput($request->all);
         }
         $request->start_time = date('Y-m-d h:i:s', strtotime($request->start_time));
         $request->end_time = date('Y-m-d h:i:s', strtotime($request->end_time));
         $this -> validate(
-            $request, [
+            $request,
+            [
                 'name' => 'required|max:100',
                 'description' => 'required|not_in:<br>',
                 'subject' => 'required|not_in:null',
@@ -177,7 +190,9 @@ class EventController extends Controller
             if ($sub->count()) {
                 $event->subid = $request->subject;
             } else {
-                return back()->with(['msg' => 'The subject you are trying to add is invalid.', 'class' => 'alert-danger'])->withInput($request->all);
+                return back()
+                    ->with(['msg' => 'The subject you are trying to add is invalid.', 'class' => 'alert-danger'])
+                    ->withInput($request->all);
             }
         }
         if ($request->hasFile('quizimage')) {
@@ -202,14 +217,19 @@ class EventController extends Controller
     {
         $editque = Queans::find($qid);
         if ($editque->count() == 0) {
-            return back()->with(['msg' => 'The question you are trying to edit does not exist.', 'class' => 'alert-danger'])->withInput($request->all);
+            return back()
+                ->with(['msg' => 'The question you are trying to edit does not exist.', 'class' => 'alert-danger'])
+                ->withInput($request->all);
         }
         $event = Event::select('isactive')->where('id', $id)->first();
-        if($event->isactive == 1) {
-            return back()->with(['msg' => 'You can not edit question of an active (launched) event.', 'class' => 'alert-danger'])->withInput($request->all);
+        if ($event->isactive == 1) {
+            return back()
+                ->with(['msg' => 'You can not edit question of an active (launched) event.', 'class' => 'alert-danger'])
+                ->withInput($request->all);
         }
         $this -> validate(
-            $request, [
+            $request,
+            [
             'question' => 'required|not_in:<br>',
             'quetype' => 'required|digits_between:0,1',
             ],
@@ -229,7 +249,9 @@ class EventController extends Controller
             }
         }
         if ($counter!=2) {
-            return back()->with(['msg' => 'Please add atleast two options.', 'class' => 'alert-danger'])->withInput($request->all);
+            return back()
+                ->with(['msg' => 'Please add atleast two options.', 'class' => 'alert-danger'])
+                ->withInput($request->all);
         }
 
         $flag=0;
@@ -241,7 +263,9 @@ class EventController extends Controller
             }
         }
         if ($flag==0) {
-            return back()->with(['msg' => 'Please select atleast 1 correct answer.', 'class' => 'alert-danger'])->withInput($request->all);
+            return back()
+                ->with(['msg' => 'Please select atleast 1 correct answer.', 'class' => 'alert-danger'])
+                ->withInput($request->all);
         }
 
         $editque->que = $request->question;
@@ -271,11 +295,18 @@ class EventController extends Controller
     {
         $deleteque = Queans::find($qid);
         if ($deleteque->count() == 0) {
-            return back()->with(['msg' => 'The question you are trying to delete does not exist.', 'class' => 'alert-danger'])->withInput($request->all);
+            return back()
+                ->with(['msg' => 'The question you are trying to delete does not exist.', 'class' => 'alert-danger'])
+                ->withInput($request->all);
         }
         $event = Event::select('isactive')->where('id', $id)->first();
-        if($event->isactive == 1) {
-            return back()->with(['msg' => 'You can not delete question of an active (launched) event.', 'class' => 'alert-danger'])->withInput($request->all);
+        if ($event->isactive == 1) {
+            return back()
+                ->with([
+                    'msg' => 'You can not delete question of an active (launched) event.',
+                    'class' => 'alert-danger'
+                ])
+                ->withInput($request->all);
         }
         $options = Option::where('queid', $qid)->delete();
         $deleteque->delete();
@@ -287,10 +318,14 @@ class EventController extends Controller
     {
         $event = Event::find($id);
         if ($event->count() == 0) {
-            return back()->with(['msg' => 'The Event you are trying to delete does not exist.', 'class' => 'alert-danger'])->withInput($request->all);
+            return back()
+                ->with(['msg' => 'The Event you are trying to delete does not exist.', 'class' => 'alert-danger'])
+                ->withInput($request->all);
         }
-        if($event->isactive == 1) {
-            return back()->with(['msg' => 'You can not delete an active (launched) event.', 'class' => 'alert-danger'])->withInput($request->all);
+        if ($event->isactive == 1) {
+            return back()
+                ->with(['msg' => 'You can not delete an active (launched) event.', 'class' => 'alert-danger'])
+                ->withInput($request->all);
         }
         $event->delete();
         return redirect('teacher')->with(['msg' =>'Event Deleted Successfully.', 'class' => 'alert-success']);
@@ -307,36 +342,28 @@ class EventController extends Controller
     public function launch(Request $request, $id)
     {
         $event = Event::where('id', $id);
-        if($event->count() == 1) {
+        if ($event->count() == 1) {
             $quecount = Queans::where('eventid', $id)->get()->count();
 
             if ($quecount >= $event->first()->quedisplay) {
-                if($request->has('auto_access')) {
-                    Event::where('id', $id)->update(
-                        [
+                if ($request->has('auto_access')) {
+                    Event::where('id', $id)->update([
                         'auto_access' => '1',
                         'isactive' => '1'
-                        ]
-                    );
-                    return redirect('teacher')->with(['msg' => 'Event successfully launched.', 'class' => 'alert-success']);
-                    
-                }
-                else
-                {
-                    Event::where('id', $id)->update(
-                        [
+                    ]);
+                    return redirect('teacher')
+                        ->with(['msg' => 'Event successfully launched.', 'class' => 'alert-success']);
+                } else {
+                    Event::where('id', $id)->update([
                         'auto_access' => '0',
                         'isactive' => '1'
-                        ]
-                    );
+                    ]);
                     return redirect('teacher/event/launch/'.$id);
                 }
-            }
-            else {
+            } else {
                     return back();
             }
-        }
-        else {
+        } else {
             return back();
         }
     }

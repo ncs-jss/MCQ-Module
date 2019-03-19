@@ -16,10 +16,16 @@ class EventOwner
     public function handle($request, Closure $next)
     {
         $id = $request->route()->parameter('id');
-        if(in_array($id, session('TeacherEvent'))) {
+        if (in_array($id, session('TeacherEvent'))) {
             return $next($request);
         } else {
-            return back()->with(['msg' => 'The event you are trying to access does not belongs to you.', 'class' => 'alert-danger']);
+            return back()
+                ->with(
+                    [
+                        'msg' => 'The event you are trying to access does not belongs to you.',
+                        'class' => 'alert-danger'
+                    ]
+                );
         }
     }
 }

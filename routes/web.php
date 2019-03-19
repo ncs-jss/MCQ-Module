@@ -60,7 +60,7 @@ Route::group(['middleware' => ['web']], function () {
                     Route::post('event/{id}/join', 'EventPlayController@join');
                 });
             });
-            Route::post('/ajax/event/req', 'AjaxController@event_req');
+            Route::post('/ajax/event/req', 'AjaxController@eventReq');
             Route::get('event/play/{queid}', 'EventPlayController@play');
             Route::post('/event/play/{queid}', 'EventPlayController@response');
             Route::post('/event/submit/{val?}', 'EventPlayController@submit');
@@ -85,7 +85,7 @@ Route::group(['middleware' => ['web']], function () {
                 return view('teacher.create-event')->with('subject', $subject);
             })->name('teacherCreateEvent');
             
-            Route::post('/ajax/event/req', 'AjaxController@event_reqs');
+            Route::post('/ajax/event/req', 'AjaxController@eventReqs');
             Route::post('event/allowaccess/{id}', 'EventController@accessEvent');
 
             Route::group(['middleware' => ['EventOwner']], function ()

@@ -12,31 +12,27 @@ class InfoConnectApiController extends Controller
 {
     public function login(Request $request, $eventid = null)
     {
-        $this->validate(
-            $request, [
+        $this->validate($request, [
             'username' => 'required',
             'password' => 'required',
-            ]
-        );
+        ]);
 
-        $postData = [
+        $postData = array(
             'username' => $request->input('username'),
             'password' => $request->input('password')
-        ];
+        );
         
         //API URL
         $url=config('infoConnectApi.url');
         
         // init the resource
         $ch = curl_init();
-        curl_setopt_array(
-            $ch, [
+        curl_setopt_array($ch, array(
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => $postData
-            ]
-        );
+        ));
         
         //Ignore SSL certificate verification
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
@@ -46,7 +42,7 @@ class InfoConnectApiController extends Controller
         $output = curl_exec($ch);
         
         //Print error if any
-        if(curl_errno($ch)) {
+        if (curl_errno($ch)) {
             echo 'error:' . curl_error($ch);
         }
         
@@ -61,10 +57,8 @@ class InfoConnectApiController extends Controller
                 $user = new User;
                 $user->name = $arr['first_name'];
                 $user->admno = $arr['username'];
-                if($arr['group']=="student") {
+                if ($arr['group']=="student") {
                     $user->type = 0; // Student
-                } else if($arr['group']=="others") {
-                    $user->type = 1; // Society
                 } else {
                     $user->type = 2; // Teacher, HOD, Adminitration
                 }
@@ -74,54 +68,40 @@ class InfoConnectApiController extends Controller
             }
 
             Auth::loginUsingId($user->id, ($request->has('remember')) ? true : false);
-            if($arr['group']=="student") {
+            if ($arr['group']=="student") {
                 session(['UserType' => 'student']);
-                if($newUser == 1) {
-                    return redirect('student/profile/new')->with(['msg' => 'You are first time user hence please update your details.', 'class' => 'alert-primary']);
-                }
-                else
-                {
-                    if($eventid == null) {
+                if ($newUser == 1) {
+                    return redirect('student/profile/new')
+                        ->with([
+                            'msg' => 'You are first time user hence please update your details.',
+                            'class' => 'alert-primary'
+                        ]);
+                } else {
+                    if ($eventid == null) {
                         return redirect('student');
                     } else {
                         return redirect('student/event/'.$eventid);
                     }
                 }
-            }
-            else if($arr['group']=="others") {
-                $event = Event::select('id')->where('creator', $user->id)->get()->toArray();
-                session(['SocietyEvent' => array_column($event, 'id')]);
-                session(['UserType' => 'society']);
-                if($eventid == null) {
-                    return redirect('society');
-                } else
-                {
-                    if(in_array($eventid, $event)) {
-                        return redirect('society/event/view/'.$eventid);
-                    } else {
-                        return redirect('society')->with(['msg' => 'The event you are trying to access does not belongs to you.', 'class' => 'alert-danger']);
-                    }
-                }
-            }
-            else
-            {
+            } else {
                 $event = Event::select('id')->where('creator', $user->id)->get()->toArray();
                 session(['TeacherEvent' => array_column($event, 'id')]);
                 session(['UserType' => 'teacher']);
-                if($eventid == null) {
+                if ($eventid == null) {
                     return redirect('teacher');
-                } else
-                {
-                    if(in_array($eventid, $event)) {
+                } else {
+                    if (in_array($eventid, $event)) {
                         return redirect('teacher/event/view/'.$eventid);
                     } else {
-                        return redirect('teacher')->with(['msg' => 'The event you are trying to access does not belongs to you.', 'class' => 'alert-danger']);
+                        return redirect('teacher')
+                            ->with([
+                                'msg' => 'The event you are trying to access does not belongs to you.',
+                                'class' => 'alert-danger'
+                            ]);
                     }
                 }
             }
-        }
-        else
-        {
+        } else {
             return back()->with('msg', 'The username and/or password you specified are not correct.');
         }
     }
